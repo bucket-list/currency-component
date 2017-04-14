@@ -1,0 +1,93 @@
+md-list {
+    display: block;
+    padding: 0px 0px 0px 0px;
+}
+
+.list-item-48 {
+    height: 48px;
+    min-height: 48px;
+    background-color: #fff;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.paymentSummaryCard {
+    max-width: 440px;
+}
+
+.lineItemIcon {
+    width: 32px;
+    height: 32px;
+    margin: 4px 4px 4px -6px;
+    background: url('https://s3.amazonaws.com/assets.ablsolution.com/icons/stopwatch-2.svg') no-repeat;
+    background-position: center; 
+    background-size: 28px 28px;
+}
+
+.lineItemText {
+    font-size: 12px;
+    letter-spacing: 0.010em;
+    margin: 3px 0 1px 0;
+    font-weight: 500;
+    line-height: 1.2em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: rgba(0, 0, 0, 0.66);
+}
+
+.lineItemHeader {
+    font-size: 14px;
+    letter-spacing: 0.010em;
+    margin: 3px 0 1px 0;
+    font-weight: 500;
+    line-height: 1.2em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.guestIcon {
+    width: 32px;
+    height: 32px;
+    margin: 4px 4px 4px -6px;
+    background: url('https://s3.amazonaws.com/assets.ablsolution.com/icons/user-3.svg') no-repeat;
+    background-position: center; 
+    background-size: 28px 28px;
+}
+
+.lineItemIconRight {
+    width: 40px;
+    height: 40px;
+    margin: 4px -6px 4px 4px;
+    background: url('https://s3.amazonaws.com/assets.ablsolution.com/icons/calendar.svg') no-repeat;
+    background-position: center; 
+    background-size: 28px 28px;
+}
+
+.locationHeader {
+    font-size: 12px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.010em;
+    line-height: 20px;
+    color:rgba(0,0,0,0.64) !important;
+}
+
+md-list-item.md-2-line .md-list-item-text h4, md-list-item.md-2-line > .md-no-style .md-list-item-text h4, md-list-item.md-3-line .md-list-item-text h4, md-list-item.md-3-line > .md-no-style .md-list-item-text h4 {
+    font-size: 14px;
+    letter-spacing: 0.010em;
+    margin: 3px 0 1px 0;
+    font-weight: 500;
+    line-height: 1.2em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color:rgba(0,0,0,0.7);
+}
+
+.spacer {
+    margin: 4px;
+    width: 8px;
+}
+
