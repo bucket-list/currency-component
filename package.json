@@ -1,6 +1,6 @@
 {
   "name": "abl-payment-summary",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ABL Payment Summary",
   "main": "./dst/abl-payment-summary.js",
   "scripts": {
