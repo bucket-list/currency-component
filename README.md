@@ -35,7 +35,7 @@ angular
 ```
 #### Component attributes:
 
-### charges (Array)
+##### charges (Array)
 ```javascript
 [
   {
@@ -62,7 +62,7 @@ angular
 ]
 ```
 
-### addons (Array)
+##### addons (Array)
 ```javascript
 [
   {
