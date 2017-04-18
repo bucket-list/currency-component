@@ -1,4 +1,4 @@
-###ABL Payment Summary Angular Module
+### ABL Payment Summary Angular Module
 
 #### Development with Webpack dev server
 1. npm run start
