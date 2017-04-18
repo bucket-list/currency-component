@@ -7,7 +7,7 @@ app.controller('SampleController', ['$scope', function($scope) {
 
   vm.booking = {
   "checkIn": "2017-04-06",
-  "checkOut": "2017-04-06",
+  "checkOut": "2017-04-16",
   "numberOfNights": 2,
   "numberOfPeople": 3,
   "prices": [],
