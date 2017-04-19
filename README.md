@@ -1,6 +1,6 @@
 ### ABL Payment Summary Angular Module
 
-#### Development with hot-reloading Webpack devwlopment server:
+#### Development with hot-reloading Webpack development server:
 1. npm i && npm run start
 2. http://localhost:9999 in your browser.
 3. Packed module is output to *./dst* folder.

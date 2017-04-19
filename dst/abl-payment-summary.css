@@ -37,7 +37,7 @@ md-list {
 }
 
 .lineItemHeader {
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 0.010em;
     margin: 3px 0 1px 0;
     font-weight: 500;
@@ -75,7 +75,7 @@ md-list {
 }
 
 md-list-item.md-2-line .md-list-item-text h4, md-list-item.md-2-line > .md-no-style .md-list-item-text h4, md-list-item.md-3-line .md-list-item-text h4, md-list-item.md-3-line > .md-no-style .md-list-item-text h4 {
-    font-size: 14px;
+    font-size: 12px;
     letter-spacing: 0.010em;
     margin: 3px 0 1px 0;
     font-weight: 500;
@@ -84,6 +84,10 @@ md-list-item.md-2-line .md-list-item-text h4, md-list-item.md-2-line > .md-no-st
     white-space: nowrap;
     text-overflow: ellipsis;
     color:rgba(0,0,0,0.7);
+}
+
+.total {
+    font-weight: 600 !important;
 }
 
 .spacer {
