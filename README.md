@@ -7,6 +7,7 @@
 
 The sample Angular Material application to test your module during development is located in the *./samples* folder.
 
+![screenshot](screen.png?raw=true)
 
 #### Adding the module to your app:
 1. Include the webpacked .js file: *./dst/abl-payment-summary.js*
@@ -21,7 +22,6 @@ angular
 4. Include the component's html tag within a view:
 ```html      
 <payment-summary 
-    booking="vm.booking" 
     unit="vm.unit" 
     language="'fr'"
     charges="vm.booking.pricing.charges"
@@ -33,7 +33,7 @@ angular
     checkout="vm.booking.checkOut">
 </payment-summary>
 ```
-#### Component attributes:
+#### Component Attributes
 
 ##### charges (Array)
 ```javascript
@@ -97,4 +97,14 @@ angular
   }
 ]
 ```
+##### checkin, checkout (moment.js compatible date)
+
+##### nights, guests, total (string/integer)
+
+##### language (string)
+Key for transcluding translation of title from unit attribute:
+```html
+{{$ctrl.unit.strings[$ctrl.language].title}}
+```
+
 

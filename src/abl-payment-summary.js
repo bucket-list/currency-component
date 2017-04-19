@@ -6,7 +6,6 @@ angular.module('abl-payment-summary', []);
 angular.module('abl-payment-summary')
 .component('paymentSummary', {
     bindings: {
-      booking:  '=',
       unit:     '=',
       checkin:  '=',
       checkout: '=',

@@ -47,16 +47,17 @@
   <body ng-controller="SampleController as vm" data-spy="scroll" data-target="#mainNav">
     <md-content>
       <payment-summary 
-      booking="vm.booking" 
-      unit="vm.unit" 
-      language="'fr'"
-      charges="vm.booking.pricing.charges"
-      addOns="vm.booking.addOns"
-      total="vm.booking.total"
-      nights="vm.booking.numberOfNights"
-      guests="vm.booking.numberOfPeople"
-      checkin="vm.booking.checkIn"
-      checkout="vm.booking.checkOut"></payment-summary>
+        unit="vm.unit" 
+        language="'fr'"
+        charges="vm.booking.pricing.charges"
+        title=""
+        addOns="vm.booking.addOns"
+        total="vm.booking.total"
+        nights="vm.booking.numberOfNights"
+        guests="vm.booking.numberOfPeople"
+        checkin="vm.booking.checkIn"
+        checkout="vm.booking.checkOut">
+      </payment-summary>
     </md-content>
   </body>
   
