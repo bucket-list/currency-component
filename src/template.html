@@ -1,5 +1,5 @@
 <md-card class="paymentSummaryCard">
-  <img ng-src="{{$ctrl.unit.defaultImage}}" class="md-card-image paymentSummaryImage" alt="Washed Out">
+  <img ng-src="{{$ctrl.unit.defaultImage}}" class="md-card-image paymentSummaryImage" alt="Unit Image">
     <md-list class="" flex>
         <md-list-item class="md-2-line list-item-48">
           <div class="md-list-item-text paymentLineItem" layout="row" flex>
@@ -51,8 +51,8 @@
             </div>
           </div>
         </md-list-item>
-        <md-divider></md-divider>
-              <md-list-item class="">
+        <md-divider ng-if="$ctrl.base.price"></md-divider>
+        <md-list-item class="" ng-if="$ctrl.base.price">
           <div class="md-list-item-text paymentLineItem"  layout="row" flex>
             <div layout="row" layout-align="start center" flex="50">
               <p class="lineItemHeader">Base Price </p>
@@ -63,8 +63,8 @@
           </div>
       </md-list-item>  
 
-    <md-divider></md-divider>
-    <md-list-item class="" ng-click="$ctrl.toggleShowAddons()" >
+    <md-divider ng-if="$ctrl.addons"></md-divider>
+    <md-list-item class="" ng-click="$ctrl.toggleShowAddons()" ng-if="$ctrl.addons">
         <div class="md-list-item-text paymentLineItem"  layout="row" flex>
           <div layout="row" layout-align="start center" flex="50">
             <p class="lineItemHeader">Add-ons</p>
@@ -74,9 +74,9 @@
           </div>
         </div>
     </md-list-item>  
-    <md-divider></md-divider>
+    <md-divider ng-if="$ctrl.taxes"></md-divider>
 
-    <md-list-item class="md-2-line list-item-48" ng-repeat="charge in $ctrl.addons" ng-show="$ctrl.showAddons">
+    <md-list-item class="md-2-line list-item-48" ng-repeat="charge in $ctrl.addons" ng-show="$ctrl.showAddons" ng-if="$ctrl.taxes">
       <div class="md-list-item-text paymentLineItem" layout="row" flex>
         <div layout="row" layout-align="start center" flex="50">
           <div layout="column">
@@ -93,7 +93,7 @@
       <md-divider ng-if="$index == $ctrl.addOns.length - 1" ></md-divider>
     </md-list-item>
 
-      <md-list-item class="" ng-click="$ctrl.toggleShowTaxes()" >
+      <md-list-item class="" ng-if="$ctrl.taxes" ng-click="$ctrl.toggleShowTaxes()" >
           <div class="md-list-item-text paymentLineItem"  layout="row" flex>
             <div layout="row" layout-align="start center" flex="50">
               <p class="lineItemHeader">Taxes and Fees </p>
@@ -105,7 +105,7 @@
       </md-list-item>  
     <md-divider></md-divider>
 
-    <md-list-item class="md-2-line list-item-48"  ng-repeat="charge in $ctrl.taxes" ng-show="$ctrl.showTaxes">
+    <md-list-item class="md-2-line list-item-48"  ng-if="$ctrl.taxes" ng-repeat="charge in $ctrl.taxes" ng-show="$ctrl.showTaxes">
       <div class="md-list-item-text paymentLineItem" layout="row" flex>
         <div layout="row" layout-align="start center" flex="50">
           <div layout="column">

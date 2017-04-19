@@ -1,4 +1,4 @@
-import template from './summary.html';
+import template from './template.html';
 require("./abl-payment-summary.css");
 
 angular.module('abl-payment-summary', []);
@@ -19,9 +19,11 @@ angular.module('abl-payment-summary')
     controller: function ($scope, $element, $attrs) {
 
         //Base price
-        this.base = this.charges.filter(function (value) {  
-            return (value['type'] == 'aup');
-        })[0];
+        if(angular.isDefined(this.charges)) {
+            this.base = this.charges.filter(function (value) {  
+                return (value['type'] == 'aup');
+            })[0];
+        }
 
         //Date formatter for checkin/checkout
         function formatDate(d,f) {
@@ -53,9 +55,11 @@ angular.module('abl-payment-summary')
             this.showTaxes = !this.showTaxes;
         }
 
-        this.taxes = this.charges.filter(function (value) {  
-            return (value['type'] != 'aup');
-        });
+        if(angular.isDefined(this.charges)) {
+            this.taxes = this.charges.filter(function (value) {  
+                return (value['type'] != 'aup');
+            });
+        }
 
         function taxTotal() {
             var total = 0;

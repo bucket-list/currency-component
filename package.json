@@ -4,7 +4,7 @@
   "description": "ABL Payment Summary",
   "main": "./dst/abl-payment-summary.js",
   "scripts": {
-    "build": "webpack && uglifyjs ./dst/abl-payment-summary.js --compress --mangle -o ./dst/abl-payment-summary.min.js --source-map ./dst/abl-payment-summary.min.js.map",
+    "build": "rm -r ./dst && webpack && uglifyjs ./dst/abl-payment-summary.js --compress --mangle -o ./dst/abl-payment-summary.min.js --source-map ./dst/abl-payment-summary.min.js.map",
     "start": "webpack-dev-server --hot --inline --port 9999 --content-base ./samples",
     "test": "karma start karma.config.js",
     "test-debug": "karma start karma.config.js --no-single-run --browsers Chrome",
@@ -27,6 +27,10 @@
     "css-loader": "^0.28.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "feathers-client": "^1.6.1",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
     "isparta-loader": "^2.0.0",
     "jasmine-core": "^2.4.1",
     "jshint-stylish": "^2.0.0",
@@ -44,7 +48,8 @@
     "style-loader": "^0.16.1",
     "uglify-js": "^2.6.2",
     "webpack": "^1.9.11",
-    "webpack-dev-server": "^1.14.1"
+    "webpack-dev-server": "^1.14.1",
+    "yargs": "^7.1.0"
   },
   "dependencies": {
     "html-loader": "^0.4.5",
