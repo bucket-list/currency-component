@@ -12,8 +12,8 @@ angular.module('abl-payment-summary').component('paymentSummary', {
       charges:  '=',
       addons:   '=',
       nights:   '=',
-      guests:   '=',
-      title:    '=',
+      guests:   '<',
+      title:    '<',
       total:    '='
     },
     controller: function ($scope, $element, $attrs) {

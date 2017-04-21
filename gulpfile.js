@@ -21,7 +21,7 @@ var oldName = pckg.name;
 var name = (argv.name === undefined) ? 'abl-payment-summary' : argv.name;
 
 gulp.task('new', ['js', 'css'], function(){
-  gulp.src(['webpack.config.js', 'package.json','karma.config.js'])
+  gulp.src(['webpack.config.js', 'webpack.config.dev.js', 'package.json','karma.config.js'])
     .pipe(replace(oldName, name))
     .pipe(gulp.dest('./'), {overwrite: true});
 });

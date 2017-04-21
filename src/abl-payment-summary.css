@@ -4,8 +4,8 @@ md-list {
 }
 
 .list-item-48 {
-    height: 54px;
-    min-height: 54px;
+    height: 36px;
+    min-height: 36px;
     font-size: 14px;
     font-weight: 300;
 }
@@ -47,6 +47,10 @@ md-list {
     color: rgba(0, 0, 0, 0.54) !important;
 }
 
+.lineItemDetail {
+background: rgba(255,255,255,.1);
+
+}
 
 .lineItemDetail p{
     font-size: 12px;
@@ -97,8 +101,8 @@ md-list {
 }
 
 .total {
- font-size: 18px;
-    font-weight: 400;
+ font-size: 16px;
+    font-weight: 500;
     letter-spacing: 0.01em;
     margin: 0 0 0 0;
     line-height: 72px;
@@ -121,4 +125,8 @@ md-list {
 .totalDivider {
     display: block;
     border-top-width: 1px;
+}
+
+.lineItemDetailDivider {
+        border-top-color: rgba(0,0,0,0.0);
 }
