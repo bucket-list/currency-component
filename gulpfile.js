@@ -33,3 +33,14 @@ gulp.task('generate', ['new'], function () {
     return gulp.src(['src/' + oldName + '.*', 'dst/*'], {read: false})
         .pipe(clean());
 });
+
+
+gulp.task('watch', function () {
+
+  watch([
+    'src/*.js',
+    'src/*.css'
+  ], function () {
+    gulp.start('watch-recompile');
+  });
+});

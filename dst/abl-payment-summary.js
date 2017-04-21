@@ -59,6 +59,7 @@
 	angular.module('abl-payment-summary').component('paymentSummary', {
 	    bindings: {
 	        unit: '=',
+	        activity: '=',
 	        checkin: '=',
 	        checkout: '=',
 	        language: '=',

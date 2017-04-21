@@ -25,11 +25,11 @@ The sample Angular Material application to test your module during development i
 ```javascript
 angular
 .module('app', [
-'abl-payment-summary'
+  'abl-payment-summary'
 ]);
 ```
 4. Include the component's html tag within a view:
-```html      
+```html
 <payment-summary 
     unit="vm.unit" 
     language="'fr'"

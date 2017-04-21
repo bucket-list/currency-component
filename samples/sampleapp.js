@@ -650,4 +650,1346 @@ app.controller('SampleController', ['$scope', function($scope) {
     }
   }
 };
+
+vm.activites = [
+  {
+    "_id": "58f6582729b91959f32bf46a",
+    "originalTitle": "9/11 was an inside job ",
+    "originalDescription": "jet fuel can't melt steel beams jet fuel can't melt steel beams jet fuel can't melt steel beams jet fuel can't melt steel beams jet fuel can't melt steel beams ",
+    "location": {
+      "_id": "58f6582729b91959f32bf469",
+      "city": "Regina",
+      "country": "Canada",
+      "state": "Saskatchewan",
+      "zipCode": "S4S 4P6",
+      "location": {
+        "coordinates": [
+          -104.605758,
+          50.4153189
+        ],
+        "type": "Point"
+      },
+      "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+      "tag": "Main Location"
+    },
+    "images": [
+      "https://dev-images.ablsolution.com/T7Vxe02La0EdBYwIPXgX.jpg"
+    ],
+    "title": "9/11 was an inside job ",
+    "description": "jet fuel can't melt steel beams jet fuel can't melt steel beams jet fuel can't melt steel beams jet fuel can't melt steel beams jet fuel can't melt steel beams ",
+    "status": "active",
+    "widgetOrder": 0,
+    "published": true,
+    "whatToBring": [],
+    "whatIncluded": [],
+    "timeZone": "America/Los_Angeles",
+    "requirements": [
+      "tin foil hat",
+      "liberal arts degree"
+    ],
+    "isListed": false,
+    "cutoff": -1,
+    "color": "3333CC",
+    "questions": [],
+    "charges": [],
+    "timeslots": [],
+    "operator": {
+      "_id": "58ebc70f73b1141f5ed7d028",
+      "calendarId": "malt0b7vp4k9q9a9lbc4v0bphg@group.calendar.google.com",
+      "companyName": "ABL",
+      "domainName": "http://a.ralko.com",
+      "email": "adam+10@adventurebucketlist.com",
+      "phoneNumber": "+17783023246",
+      "location": {
+        "_id": "58ebc70f73b1141f5ed7d027",
+        "city": "Regina",
+        "country": "Canada",
+        "countryCode": "CA",
+        "state": "Saskatchewan",
+        "stateCode": "SK",
+        "zipCode": "S4S 4P6",
+        "location": {
+          "coordinates": [
+            -104.60575799999998,
+            50.4153189
+          ],
+          "type": "Point"
+        },
+        "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+        "tag": "Main Location"
+      },
+      "payment": "58ed5591a812ab7ed02b40d0",
+      "lang": "en",
+      "isEmailVerified": false,
+      "status": "active",
+      "stripeId": "cus_AS0lk1FsBd8qF3",
+      "stripeSubscriptionId": "sub_AS0l6YOA6jXB4R",
+      "social": {},
+      "preferences": {
+        "tripadvisorReviewEmail": {
+          "delay": {
+            "period": "hour",
+            "number": 0
+          },
+          "active": false
+        },
+        "widget": {
+          "display": {
+            "timeslot": {
+              "startTime": true,
+              "price": true,
+              "duration": true,
+              "availability": true
+            },
+            "theme": "blue",
+            "event": {
+              "isSiteWide": true,
+              "cutoff": 2880
+            }
+          }
+        },
+        "customFields": {
+          "prior": 15,
+          "notes": "Notes"
+        },
+        "affiliate": {
+          "includeAddons": false
+        },
+        "features": {
+          "affiliates": false,
+          "questions": false,
+          "guides": false,
+          "coupons": true
+        }
+      },
+      "companyImage": "",
+      "applicationFee": 3,
+      "createdDate": "2017-04-10T17:55:27.365Z",
+      "fullName": "ABL"
+    },
+    "image": "https://dev-images.ablsolution.com/T7Vxe02La0EdBYwIPXgX.jpg",
+    "isTitleChanged": false,
+    "isDescriptionChanged": false,
+    "$$hashKey": "object:2218"
+  },
+  {
+    "_id": "58f6551929b91959f32bf455",
+    "originalTitle": "a coconuts a coconuts a coconuts",
+    "originalDescription": "a coconuts a coconuts a coconutsa coconuts a coconuts a coconutsa coconuts a coconuts a coconutsa coconuts a coconuts a coconutsa coconuts a coconuts a coconuts",
+    "location": {
+      "_id": "58f6551929b91959f32bf454",
+      "city": "Regina",
+      "country": "Canada",
+      "state": "Saskatchewan",
+      "zipCode": "S4S 4P6",
+      "location": {
+        "coordinates": [
+          -104.605758,
+          50.4153189
+        ],
+        "type": "Point"
+      },
+      "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+      "tag": "Main Location"
+    },
+    "images": [
+      "https://dev-images.ablsolution.com/TTpB1n1RKWGd61ON23wq.jpg"
+    ],
+    "title": "a coconuts a coconuts a coconuts",
+    "description": "a coconuts a coconuts a coconutsa coconuts a coconuts a coconutsa coconuts a coconuts a coconutsa coconuts a coconuts a coconutsa coconuts a coconuts a coconuts",
+    "status": "active",
+    "widgetOrder": 0,
+    "published": true,
+    "whatToBring": [],
+    "whatIncluded": [],
+    "timeZone": "America/Los_Angeles",
+    "requirements": [],
+    "isListed": false,
+    "cutoff": -1,
+    "color": "336633",
+    "questions": [],
+    "charges": [],
+    "timeslots": [],
+    "operator": {
+      "_id": "58ebc70f73b1141f5ed7d028",
+      "calendarId": "malt0b7vp4k9q9a9lbc4v0bphg@group.calendar.google.com",
+      "companyName": "ABL",
+      "domainName": "http://a.ralko.com",
+      "email": "adam+10@adventurebucketlist.com",
+      "phoneNumber": "+17783023246",
+      "location": {
+        "_id": "58ebc70f73b1141f5ed7d027",
+        "city": "Regina",
+        "country": "Canada",
+        "countryCode": "CA",
+        "state": "Saskatchewan",
+        "stateCode": "SK",
+        "zipCode": "S4S 4P6",
+        "location": {
+          "coordinates": [
+            -104.60575799999998,
+            50.4153189
+          ],
+          "type": "Point"
+        },
+        "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+        "tag": "Main Location"
+      },
+      "payment": "58ed5591a812ab7ed02b40d0",
+      "lang": "en",
+      "isEmailVerified": false,
+      "status": "active",
+      "stripeId": "cus_AS0lk1FsBd8qF3",
+      "stripeSubscriptionId": "sub_AS0l6YOA6jXB4R",
+      "social": {},
+      "preferences": {
+        "tripadvisorReviewEmail": {
+          "delay": {
+            "period": "hour",
+            "number": 0
+          },
+          "active": false
+        },
+        "widget": {
+          "display": {
+            "timeslot": {
+              "startTime": true,
+              "price": true,
+              "duration": true,
+              "availability": true
+            },
+            "theme": "blue",
+            "event": {
+              "isSiteWide": true,
+              "cutoff": 2880
+            }
+          }
+        },
+        "customFields": {
+          "prior": 15,
+          "notes": "Notes"
+        },
+        "affiliate": {
+          "includeAddons": false
+        },
+        "features": {
+          "affiliates": false,
+          "questions": false,
+          "guides": false,
+          "coupons": true
+        }
+      },
+      "companyImage": "",
+      "applicationFee": 3,
+      "createdDate": "2017-04-10T17:55:27.365Z",
+      "fullName": "ABL"
+    },
+    "image": "https://dev-images.ablsolution.com/TTpB1n1RKWGd61ON23wq.jpg",
+    "isTitleChanged": false,
+    "isDescriptionChanged": false,
+    "$$hashKey": "object:2219"
+  },
+  {
+    "_id": "58f6587b29b91959f32bf46f",
+    "originalTitle": "cake farts & wine",
+    "originalDescription": " Moist chocolate cupcakes infused with sweet red wine. They're filled with red wine ganache and topped with a whipped cream-cream cheese wine frosting.",
+    "location": {
+      "_id": "58f6587b29b91959f32bf46e",
+      "city": "Regina",
+      "country": "Canada",
+      "state": "Saskatchewan",
+      "zipCode": "S4S 4P6",
+      "location": {
+        "coordinates": [
+          -104.605758,
+          50.4153189
+        ],
+        "type": "Point"
+      },
+      "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+      "tag": "Main Location"
+    },
+    "images": [
+      "https://dev-images.ablsolution.com/yiz7eaCUGyEeNQS4gEa0.jpg"
+    ],
+    "title": "cake farts & wine",
+    "description": " Moist chocolate cupcakes infused with sweet red wine. They're filled with red wine ganache and topped with a whipped cream-cream cheese wine frosting.",
+    "status": "active",
+    "widgetOrder": 0,
+    "published": true,
+    "whatToBring": [],
+    "whatIncluded": [],
+    "timeZone": "America/Los_Angeles",
+    "requirements": [],
+    "isListed": false,
+    "cutoff": -1,
+    "color": "993399",
+    "questions": [],
+    "charges": [],
+    "timeslots": [
+      {
+        "_id": "58f6588829b91959f32bf472",
+        "eventId": "a6d269kn6juq29ushq3fvlpl94",
+        "originalUntilTime": null,
+        "originalEndTime": "2017-04-30T19:00:00.000Z",
+        "originalStartTime": "2017-04-30T17:00:00.000Z",
+        "originalDescription": " Moist chocolate cupcakes infused with sweet red wine. They're filled with red wine ganache and topped with a whipped cream-cream cheese wine frosting.",
+        "originalTitle": "cake farts & wine",
+        "originalMaxOcc": 1,
+        "originalMinOcc": 1,
+        "endTime": "2017-04-30T19:00:00.000Z",
+        "maxOcc": 1,
+        "startTime": "2017-04-30T17:00:00.000Z",
+        "activity": "58f6587b29b91959f32bf46f",
+        "calendarId": "malt0b7vp4k9q9a9lbc4v0bphg@group.calendar.google.com",
+        "status": "active",
+        "description": " Moist chocolate cupcakes infused with sweet red wine. They're filled with red wine ganache and topped with a whipped cream-cream cheese wine frosting.",
+        "title": "cake farts & wine",
+        "minOcc": 1,
+        "untilTime": "2017-04-30T17:00:00.000Z",
+        "daysRunning": [],
+        "originalDaysRunning": [],
+        "single": true,
+        "timeZone": "America/Los_Angeles",
+        "discounts": [],
+        "charges": [
+          {
+            "_id": "58f6588829b91959f32bf471",
+            "amount": 8800,
+            "name": "Adult",
+            "type": "aap",
+            "status": "active",
+            "isDefault": true,
+            "frequency": "Daily",
+            "percentage": false,
+            "operator": "58ebc70f73b1141f5ed7d028"
+          }
+        ],
+        "events": [],
+        "guides": [],
+        "isDaysRunningChanged": false,
+        "isUntilTimeChanged": false,
+        "isEndTimeChanged": false,
+        "isStartTimeChanged": false,
+        "operator": "58ebc70f73b1141f5ed7d028",
+        "isDescriptionChanged": false,
+        "isTitleChanged": false,
+        "isMaxOccChanged": false,
+        "isMinOccChanged": false
+      }
+    ],
+    "operator": {
+      "_id": "58ebc70f73b1141f5ed7d028",
+      "calendarId": "malt0b7vp4k9q9a9lbc4v0bphg@group.calendar.google.com",
+      "companyName": "ABL",
+      "domainName": "http://a.ralko.com",
+      "email": "adam+10@adventurebucketlist.com",
+      "phoneNumber": "+17783023246",
+      "location": {
+        "_id": "58ebc70f73b1141f5ed7d027",
+        "city": "Regina",
+        "country": "Canada",
+        "countryCode": "CA",
+        "state": "Saskatchewan",
+        "stateCode": "SK",
+        "zipCode": "S4S 4P6",
+        "location": {
+          "coordinates": [
+            -104.60575799999998,
+            50.4153189
+          ],
+          "type": "Point"
+        },
+        "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+        "tag": "Main Location"
+      },
+      "payment": "58ed5591a812ab7ed02b40d0",
+      "lang": "en",
+      "isEmailVerified": false,
+      "status": "active",
+      "stripeId": "cus_AS0lk1FsBd8qF3",
+      "stripeSubscriptionId": "sub_AS0l6YOA6jXB4R",
+      "social": {},
+      "preferences": {
+        "tripadvisorReviewEmail": {
+          "delay": {
+            "period": "hour",
+            "number": 0
+          },
+          "active": false
+        },
+        "widget": {
+          "display": {
+            "timeslot": {
+              "startTime": true,
+              "price": true,
+              "duration": true,
+              "availability": true
+            },
+            "theme": "blue",
+            "event": {
+              "isSiteWide": true,
+              "cutoff": 2880
+            }
+          }
+        },
+        "customFields": {
+          "prior": 15,
+          "notes": "Notes"
+        },
+        "affiliate": {
+          "includeAddons": false
+        },
+        "features": {
+          "affiliates": false,
+          "questions": false,
+          "guides": false,
+          "coupons": true
+        }
+      },
+      "companyImage": "",
+      "applicationFee": 3,
+      "createdDate": "2017-04-10T17:55:27.365Z",
+      "fullName": "ABL"
+    },
+    "image": "https://dev-images.ablsolution.com/yiz7eaCUGyEeNQS4gEa0.jpg",
+    "isTitleChanged": false,
+    "isDescriptionChanged": false,
+    "$$hashKey": "object:2220"
+  },
+  {
+    "_id": "58f6554f29b91959f32bf45a",
+    "originalTitle": "poopios pasta party",
+    "originalDescription": "poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party ",
+    "location": {
+      "_id": "58f6554f29b91959f32bf459",
+      "city": "Regina",
+      "country": "Canada",
+      "state": "Saskatchewan",
+      "zipCode": "S4S 4P6",
+      "location": {
+        "coordinates": [
+          -104.605758,
+          50.4153189
+        ],
+        "type": "Point"
+      },
+      "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+      "tag": "Main Location"
+    },
+    "images": [
+      "https://dev-images.ablsolution.com/PyGCCgqLBSN1GL9aTWKu.jpg"
+    ],
+    "title": "poopios pasta party",
+    "description": "poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party ",
+    "status": "active",
+    "widgetOrder": 0,
+    "published": true,
+    "whatToBring": [],
+    "whatIncluded": [],
+    "timeZone": "America/Los_Angeles",
+    "requirements": [],
+    "isListed": false,
+    "cutoff": -1,
+    "color": "CC6600",
+    "questions": [],
+    "charges": [],
+    "timeslots": [
+      {
+        "_id": "58f6555929b91959f32bf45d",
+        "eventId": "8leqf60eedd4l2b8e4d1rhs3rk",
+        "originalUntilTime": null,
+        "originalEndTime": "2017-04-29T19:00:00.000Z",
+        "originalStartTime": "2017-04-29T17:00:00.000Z",
+        "originalDescription": "poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party ",
+        "originalTitle": "poopios pasta party",
+        "originalMaxOcc": 1,
+        "originalMinOcc": 1,
+        "endTime": "2017-04-29T19:00:00.000Z",
+        "maxOcc": 1,
+        "startTime": "2017-04-29T17:00:00.000Z",
+        "activity": "58f6554f29b91959f32bf45a",
+        "calendarId": "malt0b7vp4k9q9a9lbc4v0bphg@group.calendar.google.com",
+        "status": "active",
+        "description": "poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party poopios pasta party ",
+        "title": "poopios pasta party",
+        "minOcc": 1,
+        "untilTime": "2017-04-29T17:00:00.000Z",
+        "daysRunning": [],
+        "originalDaysRunning": [],
+        "single": true,
+        "timeZone": "America/Los_Angeles",
+        "discounts": [],
+        "charges": [
+          {
+            "_id": "58f6555929b91959f32bf45c",
+            "amount": 11100,
+            "name": "Adult",
+            "type": "aap",
+            "status": "active",
+            "isDefault": true,
+            "frequency": "Daily",
+            "percentage": false,
+            "operator": "58ebc70f73b1141f5ed7d028"
+          }
+        ],
+        "events": [],
+        "guides": [],
+        "isDaysRunningChanged": false,
+        "isUntilTimeChanged": false,
+        "isEndTimeChanged": false,
+        "isStartTimeChanged": false,
+        "operator": "58ebc70f73b1141f5ed7d028",
+        "isDescriptionChanged": false,
+        "isTitleChanged": false,
+        "isMaxOccChanged": false,
+        "isMinOccChanged": false
+      }
+    ],
+    "operator": {
+      "_id": "58ebc70f73b1141f5ed7d028",
+      "calendarId": "malt0b7vp4k9q9a9lbc4v0bphg@group.calendar.google.com",
+      "companyName": "ABL",
+      "domainName": "http://a.ralko.com",
+      "email": "adam+10@adventurebucketlist.com",
+      "phoneNumber": "+17783023246",
+      "location": {
+        "_id": "58ebc70f73b1141f5ed7d027",
+        "city": "Regina",
+        "country": "Canada",
+        "countryCode": "CA",
+        "state": "Saskatchewan",
+        "stateCode": "SK",
+        "zipCode": "S4S 4P6",
+        "location": {
+          "coordinates": [
+            -104.60575799999998,
+            50.4153189
+          ],
+          "type": "Point"
+        },
+        "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+        "tag": "Main Location"
+      },
+      "payment": "58ed5591a812ab7ed02b40d0",
+      "lang": "en",
+      "isEmailVerified": false,
+      "status": "active",
+      "stripeId": "cus_AS0lk1FsBd8qF3",
+      "stripeSubscriptionId": "sub_AS0l6YOA6jXB4R",
+      "social": {},
+      "preferences": {
+        "tripadvisorReviewEmail": {
+          "delay": {
+            "period": "hour",
+            "number": 0
+          },
+          "active": false
+        },
+        "widget": {
+          "display": {
+            "timeslot": {
+              "startTime": true,
+              "price": true,
+              "duration": true,
+              "availability": true
+            },
+            "theme": "blue",
+            "event": {
+              "isSiteWide": true,
+              "cutoff": 2880
+            }
+          }
+        },
+        "customFields": {
+          "prior": 15,
+          "notes": "Notes"
+        },
+        "affiliate": {
+          "includeAddons": false
+        },
+        "features": {
+          "affiliates": false,
+          "questions": false,
+          "guides": false,
+          "coupons": true
+        }
+      },
+      "companyImage": "",
+      "applicationFee": 3,
+      "createdDate": "2017-04-10T17:55:27.365Z",
+      "fullName": "ABL"
+    },
+    "image": "https://dev-images.ablsolution.com/PyGCCgqLBSN1GL9aTWKu.jpg",
+    "isTitleChanged": false,
+    "isDescriptionChanged": false,
+    "$$hashKey": "object:2221"
+  },
+  {
+    "_id": "58f6577729b91959f32bf45f",
+    "originalTitle": "that's nacho cheese ",
+    "originalDescription": "that's nacho cheese that's nacho cheese that's nacho cheese that's nacho cheese that's nacho cheese that's nacho cheese ",
+    "location": {
+      "_id": "58f6577729b91959f32bf45e",
+      "city": "Regina",
+      "country": "Canada",
+      "state": "Saskatchewan",
+      "zipCode": "S4S 4P6",
+      "location": {
+        "coordinates": [
+          -104.605758,
+          50.4153189
+        ],
+        "type": "Point"
+      },
+      "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+      "tag": "Main Location"
+    },
+    "images": [
+      "https://dev-images.ablsolution.com/HY5J5kNPqFKkYWxDDHLQ.png"
+    ],
+    "title": "that's nacho cheese ",
+    "description": "that's nacho cheese that's nacho cheese that's nacho cheese that's nacho cheese that's nacho cheese that's nacho cheese ",
+    "status": "active",
+    "widgetOrder": 0,
+    "published": true,
+    "whatToBring": [],
+    "whatIncluded": [],
+    "timeZone": "America/Los_Angeles",
+    "requirements": [],
+    "isListed": false,
+    "cutoff": -1,
+    "color": "FFCC33",
+    "questions": [],
+    "charges": [],
+    "timeslots": [],
+    "operator": {
+      "_id": "58ebc70f73b1141f5ed7d028",
+      "calendarId": "malt0b7vp4k9q9a9lbc4v0bphg@group.calendar.google.com",
+      "companyName": "ABL",
+      "domainName": "http://a.ralko.com",
+      "email": "adam+10@adventurebucketlist.com",
+      "phoneNumber": "+17783023246",
+      "location": {
+        "_id": "58ebc70f73b1141f5ed7d027",
+        "city": "Regina",
+        "country": "Canada",
+        "countryCode": "CA",
+        "state": "Saskatchewan",
+        "stateCode": "SK",
+        "zipCode": "S4S 4P6",
+        "location": {
+          "coordinates": [
+            -104.60575799999998,
+            50.4153189
+          ],
+          "type": "Point"
+        },
+        "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+        "tag": "Main Location"
+      },
+      "payment": "58ed5591a812ab7ed02b40d0",
+      "lang": "en",
+      "isEmailVerified": false,
+      "status": "active",
+      "stripeId": "cus_AS0lk1FsBd8qF3",
+      "stripeSubscriptionId": "sub_AS0l6YOA6jXB4R",
+      "social": {},
+      "preferences": {
+        "tripadvisorReviewEmail": {
+          "delay": {
+            "period": "hour",
+            "number": 0
+          },
+          "active": false
+        },
+        "widget": {
+          "display": {
+            "timeslot": {
+              "startTime": true,
+              "price": true,
+              "duration": true,
+              "availability": true
+            },
+            "theme": "blue",
+            "event": {
+              "isSiteWide": true,
+              "cutoff": 2880
+            }
+          }
+        },
+        "customFields": {
+          "prior": 15,
+          "notes": "Notes"
+        },
+        "affiliate": {
+          "includeAddons": false
+        },
+        "features": {
+          "affiliates": false,
+          "questions": false,
+          "guides": false,
+          "coupons": true
+        }
+      },
+      "companyImage": "",
+      "applicationFee": 3,
+      "createdDate": "2017-04-10T17:55:27.365Z",
+      "fullName": "ABL"
+    },
+    "image": "https://dev-images.ablsolution.com/HY5J5kNPqFKkYWxDDHLQ.png",
+    "isTitleChanged": false,
+    "isDescriptionChanged": false,
+    "$$hashKey": "object:2222"
+  },
+  {
+    "_id": "58ebc87573b1141f5ed7d032",
+    "originalTitle": "Dino Bounce",
+    "originalDescription": "Bouncey castle within pit of poisonous snakes for prosperity.",
+    "location": {
+      "_id": "58ebc87573b1141f5ed7d031",
+      "city": "Regina",
+      "country": "Canada",
+      "state": "Saskatchewan",
+      "zipCode": "S4S 4P6",
+      "location": {
+        "coordinates": [
+          -104.605758,
+          50.4153189
+        ],
+        "type": "Point"
+      },
+      "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+      "tag": "Main Location"
+    },
+    "images": [
+      "https://dev-images.ablsolution.com/Ytu8Wh8hTzVRFw125QYb.jpg"
+    ],
+    "title": "Dino Bounce",
+    "description": "Bouncey castle within pit of poisonous snakes for prosperity.",
+    "status": "active",
+    "widgetOrder": 1,
+    "published": true,
+    "whatToBring": [],
+    "whatIncluded": [],
+    "timeZone": "America/Los_Angeles",
+    "requirements": [],
+    "isListed": false,
+    "cutoff": -1,
+    "color": "FF33FF",
+    "questions": [],
+    "charges": [],
+    "timeslots": [],
+    "operator": {
+      "_id": "58ebc70f73b1141f5ed7d028",
+      "calendarId": "malt0b7vp4k9q9a9lbc4v0bphg@group.calendar.google.com",
+      "companyName": "ABL",
+      "domainName": "http://a.ralko.com",
+      "email": "adam+10@adventurebucketlist.com",
+      "phoneNumber": "+17783023246",
+      "location": {
+        "_id": "58ebc70f73b1141f5ed7d027",
+        "city": "Regina",
+        "country": "Canada",
+        "countryCode": "CA",
+        "state": "Saskatchewan",
+        "stateCode": "SK",
+        "zipCode": "S4S 4P6",
+        "location": {
+          "coordinates": [
+            -104.60575799999998,
+            50.4153189
+          ],
+          "type": "Point"
+        },
+        "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+        "tag": "Main Location"
+      },
+      "payment": "58ed5591a812ab7ed02b40d0",
+      "lang": "en",
+      "isEmailVerified": false,
+      "status": "active",
+      "stripeId": "cus_AS0lk1FsBd8qF3",
+      "stripeSubscriptionId": "sub_AS0l6YOA6jXB4R",
+      "social": {},
+      "preferences": {
+        "tripadvisorReviewEmail": {
+          "delay": {
+            "period": "hour",
+            "number": 0
+          },
+          "active": false
+        },
+        "widget": {
+          "display": {
+            "timeslot": {
+              "startTime": true,
+              "price": true,
+              "duration": true,
+              "availability": true
+            },
+            "theme": "blue",
+            "event": {
+              "isSiteWide": true,
+              "cutoff": 2880
+            }
+          }
+        },
+        "customFields": {
+          "prior": 15,
+          "notes": "Notes"
+        },
+        "affiliate": {
+          "includeAddons": false
+        },
+        "features": {
+          "affiliates": false,
+          "questions": false,
+          "guides": false,
+          "coupons": true
+        }
+      },
+      "companyImage": "",
+      "applicationFee": 3,
+      "createdDate": "2017-04-10T17:55:27.365Z",
+      "fullName": "ABL"
+    },
+    "image": "https://dev-images.ablsolution.com/Ytu8Wh8hTzVRFw125QYb.jpg",
+    "isTitleChanged": false,
+    "isDescriptionChanged": false,
+    "$$hashKey": "object:2223"
+  },
+  {
+    "_id": "58ee85571836ab64eaf9821c",
+    "originalTitle": "wut wut in the butt",
+    "originalDescription": "I said wut wut in the butt, also fuck your 50 character minimum",
+    "location": {
+      "_id": "58ee85571836ab64eaf9821b",
+      "city": "Regina",
+      "country": "Canada",
+      "state": "Saskatchewan",
+      "zipCode": "S4S 4P6",
+      "location": {
+        "coordinates": [
+          -104.605758,
+          50.4153189
+        ],
+        "type": "Point"
+      },
+      "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+      "tag": "Main Location"
+    },
+    "images": [
+      "https://dev-images.ablsolution.com/Iz87SGFVrMipSWmvZxDa.png"
+    ],
+    "title": "I said wut wut in the butt, also fuck your 50 character minimum",
+    "description": "I said wut wut in the butt, also fuck your 50 character minimum",
+    "status": "active",
+    "widgetOrder": 1,
+    "published": true,
+    "whatToBring": [],
+    "whatIncluded": [],
+    "timeZone": "America/Los_Angeles",
+    "requirements": [],
+    "isListed": false,
+    "cutoff": -1,
+    "color": "336633",
+    "questions": [],
+    "charges": [],
+    "timeslots": [
+      {
+        "_id": "58f5461f29b91959f32bf406",
+        "eventId": "vjh1ptvbttjhojvgspcmiphoq8",
+        "originalUntilTime": null,
+        "originalEndTime": "2017-04-27T19:00:00.000Z",
+        "originalStartTime": "2017-04-27T17:00:00.000Z",
+        "originalDescription": "I said wut wut in the butt, also fuck your 50 character minimum",
+        "originalTitle": "I said wut wut in the butt, also fuck your 50 character minimum",
+        "originalMaxOcc": 1,
+        "originalMinOcc": 1,
+        "endTime": "2017-04-27T19:00:00.000Z",
+        "maxOcc": 1,
+        "startTime": "2017-04-27T17:00:00.000Z",
+        "activity": "58ee85571836ab64eaf9821c",
+        "calendarId": "malt0b7vp4k9q9a9lbc4v0bphg@group.calendar.google.com",
+        "status": "active",
+        "description": "I said wut wut in the butt, also fuck your 50 character minimum",
+        "title": "I said wut wut in the butt, also fuck your 50 character minimum",
+        "minOcc": 1,
+        "untilTime": "2017-04-27T17:00:00.000Z",
+        "daysRunning": [],
+        "originalDaysRunning": [],
+        "single": true,
+        "timeZone": "America/Los_Angeles",
+        "discounts": [],
+        "charges": [
+          {
+            "_id": "58f5461f29b91959f32bf404",
+            "amount": 200,
+            "name": "Adult",
+            "type": "aap",
+            "status": "active",
+            "isDefault": true,
+            "frequency": "Daily",
+            "percentage": false,
+            "operator": "58ebc70f73b1141f5ed7d028"
+          },
+          {
+            "_id": "58f5461f29b91959f32bf405",
+            "amount": 100,
+            "name": "Youth",
+            "type": "aap",
+            "status": "active",
+            "isDefault": false,
+            "frequency": "Daily",
+            "percentage": false,
+            "operator": "58ebc70f73b1141f5ed7d028"
+          }
+        ],
+        "events": [
+          "58f5495929b91959f32bf407"
+        ],
+        "guides": [],
+        "isDaysRunningChanged": false,
+        "isUntilTimeChanged": false,
+        "isEndTimeChanged": false,
+        "isStartTimeChanged": false,
+        "operator": "58ebc70f73b1141f5ed7d028",
+        "isDescriptionChanged": false,
+        "isTitleChanged": false,
+        "isMaxOccChanged": false,
+        "isMinOccChanged": false
+      }
+    ],
+    "operator": {
+      "_id": "58ebc70f73b1141f5ed7d028",
+      "calendarId": "malt0b7vp4k9q9a9lbc4v0bphg@group.calendar.google.com",
+      "companyName": "ABL",
+      "domainName": "http://a.ralko.com",
+      "email": "adam+10@adventurebucketlist.com",
+      "phoneNumber": "+17783023246",
+      "location": {
+        "_id": "58ebc70f73b1141f5ed7d027",
+        "city": "Regina",
+        "country": "Canada",
+        "countryCode": "CA",
+        "state": "Saskatchewan",
+        "stateCode": "SK",
+        "zipCode": "S4S 4P6",
+        "location": {
+          "coordinates": [
+            -104.60575799999998,
+            50.4153189
+          ],
+          "type": "Point"
+        },
+        "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+        "tag": "Main Location"
+      },
+      "payment": "58ed5591a812ab7ed02b40d0",
+      "lang": "en",
+      "isEmailVerified": false,
+      "status": "active",
+      "stripeId": "cus_AS0lk1FsBd8qF3",
+      "stripeSubscriptionId": "sub_AS0l6YOA6jXB4R",
+      "social": {},
+      "preferences": {
+        "tripadvisorReviewEmail": {
+          "delay": {
+            "period": "hour",
+            "number": 0
+          },
+          "active": false
+        },
+        "widget": {
+          "display": {
+            "timeslot": {
+              "startTime": true,
+              "price": true,
+              "duration": true,
+              "availability": true
+            },
+            "theme": "blue",
+            "event": {
+              "isSiteWide": true,
+              "cutoff": 2880
+            }
+          }
+        },
+        "customFields": {
+          "prior": 15,
+          "notes": "Notes"
+        },
+        "affiliate": {
+          "includeAddons": false
+        },
+        "features": {
+          "affiliates": false,
+          "questions": false,
+          "guides": false,
+          "coupons": true
+        }
+      },
+      "companyImage": "",
+      "applicationFee": 3,
+      "createdDate": "2017-04-10T17:55:27.365Z",
+      "fullName": "ABL"
+    },
+    "image": "https://dev-images.ablsolution.com/Iz87SGFVrMipSWmvZxDa.png",
+    "isTitleChanged": false,
+    "isDescriptionChanged": false,
+    "$$hashKey": "object:2224"
+  },
+  {
+    "_id": "58ec0495a812ab7ed02b400e",
+    "originalTitle": "Blue Waffles",
+    "originalDescription": "Free brunch at your mom's house every day of the week.",
+    "location": {
+      "_id": "58ec0495a812ab7ed02b400d",
+      "city": "Regina",
+      "country": "Canada",
+      "state": "Saskatchewan",
+      "zipCode": "S4S 4P6",
+      "location": {
+        "coordinates": [
+          -104.605758,
+          50.4153189
+        ],
+        "type": "Point"
+      },
+      "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+      "tag": "Main Location"
+    },
+    "images": [
+      "https://dev-images.ablsolution.com/SttsOd6LYeL2z9ISPst6.jpg"
+    ],
+    "title": "Poop snacks with Tyler",
+    "description": "Free brunch at your mom's house every day of the week.",
+    "status": "active",
+    "widgetOrder": 2,
+    "published": true,
+    "whatToBring": [],
+    "whatIncluded": [],
+    "timeZone": "America/Los_Angeles",
+    "requirements": [],
+    "isListed": false,
+    "cutoff": -1,
+    "color": "3333FF",
+    "questions": [],
+    "charges": [],
+    "timeslots": [],
+    "operator": {
+      "_id": "58ebc70f73b1141f5ed7d028",
+      "calendarId": "malt0b7vp4k9q9a9lbc4v0bphg@group.calendar.google.com",
+      "companyName": "ABL",
+      "domainName": "http://a.ralko.com",
+      "email": "adam+10@adventurebucketlist.com",
+      "phoneNumber": "+17783023246",
+      "location": {
+        "_id": "58ebc70f73b1141f5ed7d027",
+        "city": "Regina",
+        "country": "Canada",
+        "countryCode": "CA",
+        "state": "Saskatchewan",
+        "stateCode": "SK",
+        "zipCode": "S4S 4P6",
+        "location": {
+          "coordinates": [
+            -104.60575799999998,
+            50.4153189
+          ],
+          "type": "Point"
+        },
+        "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+        "tag": "Main Location"
+      },
+      "payment": "58ed5591a812ab7ed02b40d0",
+      "lang": "en",
+      "isEmailVerified": false,
+      "status": "active",
+      "stripeId": "cus_AS0lk1FsBd8qF3",
+      "stripeSubscriptionId": "sub_AS0l6YOA6jXB4R",
+      "social": {},
+      "preferences": {
+        "tripadvisorReviewEmail": {
+          "delay": {
+            "period": "hour",
+            "number": 0
+          },
+          "active": false
+        },
+        "widget": {
+          "display": {
+            "timeslot": {
+              "startTime": true,
+              "price": true,
+              "duration": true,
+              "availability": true
+            },
+            "theme": "blue",
+            "event": {
+              "isSiteWide": true,
+              "cutoff": 2880
+            }
+          }
+        },
+        "customFields": {
+          "prior": 15,
+          "notes": "Notes"
+        },
+        "affiliate": {
+          "includeAddons": false
+        },
+        "features": {
+          "affiliates": false,
+          "questions": false,
+          "guides": false,
+          "coupons": true
+        }
+      },
+      "companyImage": "",
+      "applicationFee": 3,
+      "createdDate": "2017-04-10T17:55:27.365Z",
+      "fullName": "ABL"
+    },
+    "image": "https://dev-images.ablsolution.com/SttsOd6LYeL2z9ISPst6.jpg",
+    "isTitleChanged": false,
+    "isDescriptionChanged": false,
+    "$$hashKey": "object:2225"
+  },
+  {
+    "_id": "58f654dc29b91959f32bf44f",
+    "originalTitle": "dsfkdfskljsdfkljsdfkljdsfkljdsfjkldfsljkdfsjkldfsjkldfsjkl",
+    "originalDescription": "sakljsdalkjsadlksjadlksadsdjklasdlakjsdakljdskljsdjklsdjklsd",
+    "location": {
+      "_id": "58f654dc29b91959f32bf44e",
+      "city": "Regina",
+      "country": "Canada",
+      "state": "Saskatchewan",
+      "zipCode": "S4S 4P6",
+      "location": {
+        "coordinates": [
+          -104.605758,
+          50.4153189
+        ],
+        "type": "Point"
+      },
+      "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+      "tag": "Main Location"
+    },
+    "images": [
+      "https://dev-images.ablsolution.com/UMoS50hRRSyRjorWC4FI.png"
+    ],
+    "title": "dsfkdfskljsdfkljsdfkljdsfkljdsfjkldfsljkdfsjkldfsjkldfsjkl",
+    "description": "sakljsdalkjsadlksjadlksadsdjklasdlakjsdakljdskljsdjklsdjklsd",
+    "status": "active",
+    "widgetOrder": 3,
+    "published": true,
+    "whatToBring": [],
+    "whatIncluded": [],
+    "timeZone": "America/Los_Angeles",
+    "requirements": [],
+    "isListed": false,
+    "cutoff": -1,
+    "color": "336633",
+    "questions": [],
+    "charges": [],
+    "timeslots": [],
+    "operator": {
+      "_id": "58ebc70f73b1141f5ed7d028",
+      "calendarId": "malt0b7vp4k9q9a9lbc4v0bphg@group.calendar.google.com",
+      "companyName": "ABL",
+      "domainName": "http://a.ralko.com",
+      "email": "adam+10@adventurebucketlist.com",
+      "phoneNumber": "+17783023246",
+      "location": {
+        "_id": "58ebc70f73b1141f5ed7d027",
+        "city": "Regina",
+        "country": "Canada",
+        "countryCode": "CA",
+        "state": "Saskatchewan",
+        "stateCode": "SK",
+        "zipCode": "S4S 4P6",
+        "location": {
+          "coordinates": [
+            -104.60575799999998,
+            50.4153189
+          ],
+          "type": "Point"
+        },
+        "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+        "tag": "Main Location"
+      },
+      "payment": "58ed5591a812ab7ed02b40d0",
+      "lang": "en",
+      "isEmailVerified": false,
+      "status": "active",
+      "stripeId": "cus_AS0lk1FsBd8qF3",
+      "stripeSubscriptionId": "sub_AS0l6YOA6jXB4R",
+      "social": {},
+      "preferences": {
+        "tripadvisorReviewEmail": {
+          "delay": {
+            "period": "hour",
+            "number": 0
+          },
+          "active": false
+        },
+        "widget": {
+          "display": {
+            "timeslot": {
+              "startTime": true,
+              "price": true,
+              "duration": true,
+              "availability": true
+            },
+            "theme": "blue",
+            "event": {
+              "isSiteWide": true,
+              "cutoff": 2880
+            }
+          }
+        },
+        "customFields": {
+          "prior": 15,
+          "notes": "Notes"
+        },
+        "affiliate": {
+          "includeAddons": false
+        },
+        "features": {
+          "affiliates": false,
+          "questions": false,
+          "guides": false,
+          "coupons": true
+        }
+      },
+      "companyImage": "",
+      "applicationFee": 3,
+      "createdDate": "2017-04-10T17:55:27.365Z",
+      "fullName": "ABL"
+    },
+    "image": "https://dev-images.ablsolution.com/UMoS50hRRSyRjorWC4FI.png",
+    "isTitleChanged": false,
+    "isDescriptionChanged": false,
+    "$$hashKey": "object:2226"
+  },
+  {
+    "_id": "58f657a929b91959f32bf464",
+    "originalTitle": "poop snacks with Blake ",
+    "originalDescription": "poop snacks with Blake poop snacks with Blake poop snacks with Blake poop snacks with Blake poop snacks with Blake poop snacks with Blake ",
+    "location": {
+      "_id": "58f657a929b91959f32bf463",
+      "city": "Regina",
+      "country": "Canada",
+      "state": "Saskatchewan",
+      "zipCode": "S4S 4P6",
+      "location": {
+        "coordinates": [
+          -104.605758,
+          50.4153189
+        ],
+        "type": "Point"
+      },
+      "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+      "tag": "Main Location"
+    },
+    "images": [
+      "https://dev-images.ablsolution.com/FNTCAgzCXNHEffR1szRr.jpg"
+    ],
+    "title": "poop snacks with Blake ",
+    "description": "poop snacks with Blake poop snacks with Blake poop snacks with Blake poop snacks with Blake poop snacks with Blake poop snacks with Blake ",
+    "status": "active",
+    "widgetOrder": 3,
+    "published": true,
+    "whatToBring": [],
+    "whatIncluded": [],
+    "timeZone": "America/Los_Angeles",
+    "requirements": [],
+    "isListed": false,
+    "cutoff": -1,
+    "color": "663333",
+    "questions": [],
+    "charges": [],
+    "timeslots": [],
+    "operator": {
+      "_id": "58ebc70f73b1141f5ed7d028",
+      "calendarId": "malt0b7vp4k9q9a9lbc4v0bphg@group.calendar.google.com",
+      "companyName": "ABL",
+      "domainName": "http://a.ralko.com",
+      "email": "adam+10@adventurebucketlist.com",
+      "phoneNumber": "+17783023246",
+      "location": {
+        "_id": "58ebc70f73b1141f5ed7d027",
+        "city": "Regina",
+        "country": "Canada",
+        "countryCode": "CA",
+        "state": "Saskatchewan",
+        "stateCode": "SK",
+        "zipCode": "S4S 4P6",
+        "location": {
+          "coordinates": [
+            -104.60575799999998,
+            50.4153189
+          ],
+          "type": "Point"
+        },
+        "streetAddress": "40 Gardiner Ave, Regina, SK S4S 4P6, Canada",
+        "tag": "Main Location"
+      },
+      "payment": "58ed5591a812ab7ed02b40d0",
+      "lang": "en",
+      "isEmailVerified": false,
+      "status": "active",
+      "stripeId": "cus_AS0lk1FsBd8qF3",
+      "stripeSubscriptionId": "sub_AS0l6YOA6jXB4R",
+      "social": {},
+      "preferences": {
+        "tripadvisorReviewEmail": {
+          "delay": {
+            "period": "hour",
+            "number": 0
+          },
+          "active": false
+        },
+        "widget": {
+          "display": {
+            "timeslot": {
+              "startTime": true,
+              "price": true,
+              "duration": true,
+              "availability": true
+            },
+            "theme": "blue",
+            "event": {
+              "isSiteWide": true,
+              "cutoff": 2880
+            }
+          }
+        },
+        "customFields": {
+          "prior": 15,
+          "notes": "Notes"
+        },
+        "affiliate": {
+          "includeAddons": false
+        },
+        "features": {
+          "affiliates": false,
+          "questions": false,
+          "guides": false,
+          "coupons": true
+        }
+      },
+      "companyImage": "",
+      "applicationFee": 3,
+      "createdDate": "2017-04-10T17:55:27.365Z",
+      "fullName": "ABL"
+    },
+    "image": "https://dev-images.ablsolution.com/FNTCAgzCXNHEffR1szRr.jpg",
+    "isTitleChanged": false,
+    "isDescriptionChanged": false,
+    "$$hashKey": "object:2227"
+  }
+];
 }]);
