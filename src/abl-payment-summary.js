@@ -1,30 +1,22 @@
 import template from './template.html';
-require("./abl-payment-summary.css");
-
+import styles from './abl-payment-summary.css';
 angular.module('abl-payment-summary', []);
 
-angular.module('abl-payment-summary')
-.component('paymentSummary', {
+angular.module('abl-payment-summary').component('paymentSummary', {
     bindings: {
       unit:     '=',
       activity: '=',
+      image:    '=',
       checkin:  '=',
       checkout: '=',
-      language: '=',
       charges:  '=',
       addons:   '=',
       nights:   '=',
       guests:   '=',
+      title:    '=',
       total:    '='
     },
     controller: function ($scope, $element, $attrs) {
-
-        //Base price
-        if(angular.isDefined(this.charges)) {
-            this.base = this.charges.filter(function (value) {  
-                return (value['type'] == 'aup');
-            })[0];
-        }
 
         //Date formatter for checkin/checkout
         function formatDate(d,f) {
@@ -34,6 +26,7 @@ angular.module('abl-payment-summary')
 
         this.formatDate = formatDate;
         
+
         //Add-ons
         this.showAddons = false;
         this.toggleShowAddons = function () {
@@ -56,12 +49,6 @@ angular.module('abl-payment-summary')
             this.showTaxes = !this.showTaxes;
         }
 
-        if(angular.isDefined(this.charges)) {
-            this.taxes = this.charges.filter(function (value) {  
-                return (value['type'] != 'aup');
-            });
-        }
-
         function taxTotal() {
             var total = 0;
             this.taxes.forEach(function(e,i) {
@@ -75,8 +62,20 @@ angular.module('abl-payment-summary')
         //Initialization function
         this.$onInit = function() {
             console.log(this);
-        }
 
+            //If charges are passed, filter/get the taxes
+            if(angular.isDefined(this.charges)) {
+                    this.taxes = this.charges.filter(function (value) {  
+                    return (value['type'] != 'aup');
+                });
+            }
+            //Base price of booking
+            if(angular.isDefined(this.charges)) {
+                this.base = this.charges.filter(function (value) {  
+                    return (value['type'] == 'aup');
+                })[0];
+            }
+        }
     },
     template: template
 });

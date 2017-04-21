@@ -4,9 +4,8 @@ md-list {
 }
 
 .list-item-48 {
-    height: 48px;
-    min-height: 48px;
-    background-color: #fff;
+    height: 54px;
+    min-height: 54px;
     font-size: 14px;
     font-weight: 300;
 }
@@ -15,6 +14,18 @@ md-list {
     max-width: 440px;
 }
 
+.paymentHeader p {
+    color:rgba(0,0,0,.8) !important;
+        font-weight: 500;
+    letter-spacing: 0.012em;
+    margin: 0 0 0 0;
+    line-height: 1.6em;
+
+}
+
+.paymentTitle {
+    font-size: 18px !important;
+}
 .lineItemIcon {
     width: 32px;
     height: 32px;
@@ -25,27 +36,39 @@ md-list {
 }
 
 .lineItemText {
-    font-size: 12px;
-    letter-spacing: 0.010em;
-    margin: 3px 0 1px 0;
+    font-size: 14px;
     font-weight: 500;
-    line-height: 1.2em;
+    letter-spacing: 0.010em;
+    margin: 0 0 0 0;
+    line-height: 1.6em;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    color: rgba(0, 0, 0, 0.66);
+    color: rgba(0, 0, 0, 0.54) !important;
+}
+
+
+.lineItemDetail p{
+    font-size: 12px;
+    color: rgba(0,0,0,.77);
+    font-weight: 400;
+
+}
+
+.lineItemHeader p{
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.010em;
+    margin: 0 0 0 0;
+    line-height: 1.6em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: rgba(0, 0, 0, 0.82) !important;
 }
 
 .lineItemHeader {
-    font-size: 12px;
-    letter-spacing: 0.010em;
-    margin: 3px 0 1px 0;
-    font-weight: 500;
-    line-height: 1.2em;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    color: rgba(0, 0, 0, 0.7) !important;
+    background: rgba(0,0,0,0);
 }
 
 .guestIcon {
@@ -67,30 +90,35 @@ md-list {
 }
 
 .locationHeader {
-    font-size: 12px !important;
-    font-weight: 500 !important;
+    font-size: 14px !important;
     letter-spacing: 0.010em;
     line-height: 20px;
-    color:rgba(0,0,0,0.64) !important;
-}
-
-md-list-item.md-2-line .md-list-item-text h4, md-list-item.md-2-line > .md-no-style .md-list-item-text h4, md-list-item.md-3-line .md-list-item-text h4, md-list-item.md-3-line > .md-no-style .md-list-item-text h4 {
-    font-size: 12px;
-    letter-spacing: 0.010em;
-    margin: 3px 0 1px 0;
-    font-weight: 500;
-    line-height: 1.2em;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    color:rgba(0,0,0,0.7);
+    color:rgba(0,0,0,0.66) !important;
 }
 
 .total {
-    font-weight: 600 !important;
+ font-size: 18px;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    margin: 0 0 0 0;
+    line-height: 72px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    height: 72px;
+    color: rgba(0, 0, 0, 0.8) !important;
 }
 
 .spacer {
     margin: 4px;
     width: 8px;
+}
+
+.darkerDivider {
+    border-top-color: rgba(0,0,0,0.12);
+}
+
+.totalDivider {
+    display: block;
+    border-top-width: 1px;
 }
