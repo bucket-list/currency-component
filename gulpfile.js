@@ -17,47 +17,61 @@ var webpackDevConfig = require("./webpack.config.dev.js");
 
 //Get previous name of module from package.json
 var pckg = require('./package.json');
-var oldName = pckg.name;   
+var oldName = pckg.name;
 var name = (argv.name === undefined) ? 'abl-payment-summary' : argv.name;
 
-gulp.task('new', ['js', 'css'], function(){
-  gulp.src(['webpack.config.js', 'webpack.config.dev.js', 'package.json','karma.config.js'])
+gulp.task('new', ['js', 'css'], function() {
+  gulp.src(['webpack.config.js', 'webpack.config.dev.js', 'package.json', 'karma.config.js'])
     .pipe(replace(oldName, name))
-    .pipe(gulp.dest('./'), {overwrite: true});
+    .pipe(gulp.dest('./'), {
+      overwrite: true
+    });
 });
 
 
-gulp.task('js', function(){
+gulp.task('js', function() {
   gulp.src(['src/*.js'])
     .pipe(replace(oldName, name))
-    .pipe(rename({basename: name}))
-    .pipe(gulp.dest('src/'), {overwrite: true});
+    .pipe(rename({
+      basename: name
+    }))
+    .pipe(gulp.dest('src/'), {
+      overwrite: true
+    });
 });
 
-gulp.task('css', function(){
+gulp.task('css', function() {
   gulp.src(['src/*.css'])
-    .pipe(rename({basename: name}))
-    .pipe(gulp.dest('src/'), {overwrite: true});
+    .pipe(rename({
+      basename: name
+    }))
+    .pipe(gulp.dest('src/'), {
+      overwrite: true
+    });
 });
 
-gulp.task('generate', ['new'], function () {
-    return gulp.src(['src/' + oldName + '.*', 'dst/*'], {read: false})
-        .pipe(clean());
+gulp.task('generate', ['new'], function() {
+  return gulp.src(['src/' + oldName + '.*', 'dst/*'], {
+      read: false
+    })
+    .pipe(clean());
 });
 
-gulp.task('watch-recompile', function () {
+gulp.task('watch-recompile', function() {
   return gulp.src(webpackConfig.entry[0])
-    .pipe(gulpWebpack( require('./webpack.config.js') ))
-    .pipe(gulp.dest('dst/'), {overwrite: true});
+    .pipe(gulpWebpack(require('./webpack.config.js')))
+    .pipe(gulp.dest('dst/'), {
+      overwrite: true
+    });
 });
 
-gulp.task('watch', function () {
+gulp.task('watch', function() {
 
   gulp.watch([
     'src/*.js',
     'src/*.css',
     'src/*.html'
-  ], function () {
+  ], function() {
     gulp.start('watch-recompile');
   });
 });
@@ -67,25 +81,22 @@ gulp.task('watch', function () {
 gulp.task("webpack-dev-server", function(callback) {
 
 
-  const getPort = require('get-port');
+  var myConfig = Object.create(webpackDevConfig);
+  var port = 3232;
+  myConfig.entry.unshift("webpack-dev-server/client?http://localhost:" + port + "/", "webpack/hot/dev-server");
 
-  getPort(9999).then(port => {
-      var myConfig = Object.create(webpackDevConfig);
-      myConfig.entry.unshift("webpack-dev-server/client?http://localhost:" + port + "/", "webpack/hot/dev-server");
+  myConfig.devtool = "eval";
+  myConfig.debug = true;
 
-      myConfig.devtool = "eval";
-      myConfig.debug = true;
-
-    var server = new WebpackDevServer(webpack(myConfig), {
-        hot: true,
-        iframe: true,
-        contentBase: "./samples",
-        noInfo: true,
-        clientLogLevel: 'none'
-      }).listen(port, "localhost", function(err) {
-      if (err) throw new gutil.PluginError("webpack-dev-server", err);
-      gutil.log("[webpack-dev-server]", "http://localhost:" + port + "/webpack-dev-server/index.html");  
-      });
+  var server = new WebpackDevServer(webpack(myConfig), {
+    hot: true,
+    iframe: true,
+    contentBase: "./samples",
+    noInfo: true,
+    clientLogLevel: 'none'
+  }).listen(port, "localhost", function(err) {
+    if (err) throw new gutil.PluginError("webpack-dev-server", err);
+    gutil.log("[webpack-dev-server]", "http://localhost:" + port + "/webpack-dev-server/index.html");
   });
 
 });
