@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "d7e6cc78cac8f5936b91"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "d666e3b38b464da0425c"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -596,9 +596,9 @@
 	
 	var _hostTotals2 = _interopRequireDefault(_hostTotals);
 	
-	var _hostTotalsMobile = __webpack_require__(3);
+	var _hostTotal = __webpack_require__(3);
 	
-	var _hostTotalsMobile2 = _interopRequireDefault(_hostTotalsMobile);
+	var _hostTotal2 = _interopRequireDefault(_hostTotal);
 	
 	var _hostForms = __webpack_require__(4);
 	
@@ -608,23 +608,27 @@
 	
 	var _personalDetails2 = _interopRequireDefault(_personalDetails);
 	
-	var _hostFormsMobile = __webpack_require__(6);
+	var _addons = __webpack_require__(6);
 	
-	var _hostFormsMobile2 = _interopRequireDefault(_hostFormsMobile);
+	var _addons2 = _interopRequireDefault(_addons);
 	
 	var _totals = __webpack_require__(7);
 	
 	var _totals2 = _interopRequireDefault(_totals);
 	
-	var _activityTotals = __webpack_require__(8);
+	var _host = __webpack_require__(8);
+	
+	var _host2 = _interopRequireDefault(_host);
+	
+	var _activityTotals = __webpack_require__(9);
 	
 	var _activityTotals2 = _interopRequireDefault(_activityTotals);
 	
-	var _activityTotalsMobile = __webpack_require__(9);
+	var _activityTotalsMobile = __webpack_require__(10);
 	
 	var _activityTotalsMobile2 = _interopRequireDefault(_activityTotalsMobile);
 	
-	var _ablPaymentSummary = __webpack_require__(10);
+	var _ablPaymentSummary = __webpack_require__(11);
 	
 	var _ablPaymentSummary2 = _interopRequireDefault(_ablPaymentSummary);
 	
@@ -635,8 +639,8 @@
 	angular.module('abl-payment-summary', ['ngMaterial']).run(function ($templateCache) {
 	  $templateCache.put('host-forms.html', _hostForms2.default);
 	  $templateCache.put('host-personal-details.html', _personalDetails2.default);
-	
-	  $templateCache.put('host-totals-mobile.html', _hostTotalsMobile2.default);
+	  $templateCache.put('host-addons.html', _addons2.default);
+	  $templateCache.put('host-total.html', _hostTotal2.default);
 	});
 	
 	function totalCtrl($scope, $rootScope, $mdMedia, $window) {
@@ -682,11 +686,11 @@
 	    checkin: '=',
 	    checkout: '=',
 	    charges: '=',
-	    addons: '=',
 	    nights: '=',
 	    guests: '<',
 	    title: '=',
 	    total: '='
+	
 	  },
 	  controller: function controller($scope, $element, $attrs, $mdBottomSheet) {
 	    //Date formatter for checkin/checkout
@@ -696,32 +700,38 @@
 	    }
 	
 	    this.formatDate = formatDate;
+	    this.availableAddons = [];
 	
-	    this.showGridBottomSheet = function () {
-	      $scope.alert = '';
-	      $mdBottomSheet.show({
-	        template: _hostTotalsMobile2.default,
-	        scope: $scope,
-	        controller: 'totalCtrl',
-	        controllerAs: 'vm',
-	        bindToController: true,
-	        preserveScope: true,
-	        clickOutsideToClose: false
-	      }).then(function (clickedItem) {
-	        console.log($scope);
-	      }).catch(function (error) {
-	        console.log($scope);
-	      });
+	    //Guest details form 
+	    this.guestDetailsExpanded = true;
+	
+	    this.toggleGuestDetails = function () {
+	      this.guestDetailsExpanded = !this.guestDetailsExpanded;
+	      console.log('guestDetailsExpanded', this.guestDetailsExpanded);
+	      if (this.addonsExpanded == true) this.addonsExpanded = false;
 	    };
+	
+	    //Addons form 
+	    this.addonsExpanded = false;
+	    this.toggleAddons = function () {
+	      this.addonsExpanded = !this.addonsExpanded;
+	      if (this.guestDetailsExpanded == true) this.guestDetailsExpanded = false;
+	    };
+	
 	    //Add-ons
 	    this.showAddons = false;
 	    this.toggleShowAddons = function () {
 	      this.showAddons = !this.showAddons;
 	    };
 	
+	    this.adjustAddon = function (i, mode) {
+	      if (mode == 'up') this.availableAddons[i].quantity++;
+	      if (mode == 'down' && this.availableAddons[i].quantity > 0) this.availableAddons[i].quantity--;
+	    };
+	
 	    function addonTotal() {
 	      var total = 0;
-	      this.addons.forEach(function (e, i) {
+	      this.availableAddons.forEach(function (e, i) {
 	        total += e.amount * e.quantity;
 	      });
 	      return total;
@@ -750,6 +760,14 @@
 	      this.title = this.title + 1;
 	    };
 	
+	    this.pay = function () {
+	      $scope.$emit('pay');
+	    };
+	
+	    $scope.$on('paymentResponse', function (e, args) {
+	      console.log('payment response', args);
+	    });
+	
 	    //Initialization function
 	    this.$onInit = function () {
 	      console.log(this);
@@ -759,8 +777,20 @@
 	        this.taxes = this.charges.filter(function (value) {
 	          return value['type'] != 'aup';
 	        });
+	
+	        this.availableAddons = this.unit.property.charges.filter(function (value) {
+	          return value['type'] == 'addon';
+	        });
+	
+	        this.availableAddons.forEach(function (e, i) {
+	          e.quantity = 0;
+	        });
 	      }
 	      //Base price of booking
+	      this.taxes = this.charges.filter(function (value) {
+	        return value['type'] != 'aup';
+	      });
+	
 	      if (angular.isDefined(this.charges)) {
 	        this.base = this.charges.filter(function (value) {
 	          return value['type'] == 'aup';
@@ -782,69 +812,138 @@
 	    };
 	  },
 	  template: _hostForms2.default
-	}).component('verticalWizard', {
-	  transclude: true,
-	  controller: function wizardController($scope, $element, $attrs) {
+	}).directive('ablBook', function ($sce, $compile, $mdMedia) {
+	  return {
+	    restrict: 'E',
+	    scope: {
+	      unit: '=',
+	      language: '=',
 	
-	    this.$onInit = function () {
+	      booking: '='
+	    },
+	    template: _host2.default,
+	    link: function link($scope, element, attrs) {
+	      console.log($scope);
+	      $scope.$watch('', function (n, o) {
+	        console.log(n);
+	      }, true);
+	    },
+	    controllerAs: 'vm',
+	    controller: function controller($scope, $element, $attrs) {
+	      console.log('abl-book', $scope, $attrs);
+	      var vm = this;
 	
-	      this.name = $attrs.name || '';
-	      console.log(this, $attrs);
-	    };
-	    var completed = this.completed = 0;
+	      $scope.$mdMedia = $mdMedia;
 	
-	    var steps = this.steps = [];
+	      $scope.screenIsBig = function () {
+	        return $mdMedia('gt-sm');
+	      };
 	
-	    this.setCompleted = function (i) {
-	      this.completed = i;
-	    };
-	
-	    this.select = function (step) {
-	      angular.forEach(steps, function (step) {
-	        step.selected = false;
-	      });
-	      step.selected = true;
-	    };
-	
-	    this.addStep = function (step) {
-	      if (steps.length === 0) {
-	        this.select(step);
+	      function formatDate(d, f) {
+	        var date = window.moment(d).format(f);
+	        return date;
 	      }
-	      step.form = this.name + step.step;
-	      steps.push(step);
-	    };
-	  },
-	  template: '<div> <div ng-repeat="step in $ctrl.steps" ng-class="{activeWizardStep:step.selected}"> <form name="{{step.form}}"><a href="" ng-click="$ctrl.select(step)">{{step.label}}</a> {{$ctrl.completed >= step.step}} </form></div> </div> <div class="tab-content" ng-transclude></div> '
-	}).component('wizardStep', {
-	  transclude: true,
-	  require: {
-	    wizardCtrl: '^verticalWizard'
-	  },
-	  bindings: {
-	    label: '@'
-	  },
-	  controller: function controller($scope, $element, $attrs) {
 	
-	    var that = this;
-	    //Initialization function
-	    this.$onInit = function () {
-	      var step = that.step = this.wizardCtrl.steps.length + 1;
+	      this.formatDate = formatDate;
+	      this.availableAddons = [];
 	
-	      this.wizardCtrl.addStep(this);
+	      //Guest details form 
+	      this.guestDetailsExpanded = true;
 	
-	      that.form = this.wizardCtrl.name + step;
+	      this.toggleGuestDetails = function () {
+	        this.guestDetailsExpanded = !this.guestDetailsExpanded;
+	        console.log('guestDetailsExpanded', this.guestDetailsExpanded);
+	        if (this.addonsExpanded == true) this.addonsExpanded = false;
+	      };
 	
-	      // Mark the step completed in the parent component controller 
-	      $scope.$watch(this.form + '.$valid', function (newVal) {
-	        that.wizardCtrl.setCompleted(that.step);
+	      //Addons form 
+	      this.addonsExpanded = false;
+	      this.toggleAddons = function () {
+	        this.addonsExpanded = !this.addonsExpanded;
+	        if (this.guestDetailsExpanded == true) this.guestDetailsExpanded = false;
+	      };
+	
+	      //Add-ons
+	      this.showAddons = false;
+	      this.toggleShowAddons = function () {
+	        this.showAddons = !this.showAddons;
+	      };
+	
+	      this.adjustAddon = function (i, mode) {
+	        if (mode == 'up') $scope.booking.addOns[i].quantity++;
+	        if (mode == 'down' && $scope.booking.addOns[i].quantity > 0) $scope.booking.addOns[i].quantity--;
+	      };
+	
+	      function addonTotal() {
+	        var total = 0;
+	        $scope.booking.addOns.forEach(function (e, i) {
+	          total += e.amount * e.quantity;
+	        });
+	        return total;
+	      };
+	
+	      this.addonTotal = addonTotal;
+	
+	      //Taxes
+	      this.showTaxes = false;
+	      this.toggleShowTaxes = function () {
+	        this.showTaxes = !this.showTaxes;
+	      };
+	
+	      function taxTotal() {
+	        var total = 0;
+	        this.taxes.forEach(function (e, i) {
+	          total += e.price;
+	        });
+	        return total;
+	      };
+	
+	      this.taxTotal = taxTotal;
+	
+	      this.update = function () {
+	        this.showGridBottomSheet();
+	        this.title = this.title + 1;
+	      };
+	
+	      this.availableAddons = $scope.unit.property.charges.filter(function (value) {
+	        return value['type'] == 'addon';
 	      });
 	
-	      console.log(this, $scope);
-	    };
-	  },
-	  template: function template() {
-	    return '<form name="{{$ctrl.form}}" class="wizardStep" ng-show="$ctrl.selected"  ng-transclude></form>';
-	  }
+	      this.availableAddons.forEach(function (e, i) {
+	        e.quantity = 0;
+	      });
+	
+	      //Base price of booking
+	      this.taxes = $scope.booking['pricing']['charges'].filter(function (value) {
+	        return value['type'] != 'aup';
+	      });
+	
+	      if (angular.isDefined($scope.booking)) {
+	        this.base = $scope.booking['pricing']['charges'].filter(function (value) {
+	          return value['type'] == 'aup';
+	        })[0];
+	      }
+	
+	      this.payNow = function () {
+	        $scope.booking.unit = $scope.unit;
+	        angular.extend($scope.booking, vm.bookingForm);
+	        $scope.$emit('pay', $scope.booking);
+	      };
+	
+	      //If charges are passed, filter/get the taxes
+	      if (angular.isDefined($scope.booking)) {
+	        this.taxes = $scope.booking['pricing']['charges'].filter(function (value) {
+	          return value['type'] != 'aup';
+	        });
+	      }
+	
+	      vm.bookingResponse = {};
+	      $scope.$on('paymentResponse', function (e, args) {
+	        vm.bookingResponse = angular.copy(args);
+	        console.log('abl-book payment response', args);
+	      });
+	    }
+	  };
 	});
 
 /***/ }),
@@ -857,62 +956,68 @@
 /* 3 */
 /***/ (function(module, exports) {
 
-	module.exports = "<div layout=\"column\" layout-align=\"center stretch\" flex=\"100\">\n\n  <md-list class=\"\" flex>\n    <md-list-item class=\"md-2-line list-item-48 paymentHeader\" ng-click=\"$ctrl.showGridBottomSheet();\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"column\">\n            <p class=\"paymentTitle\" ng-style=\"{'font-size': '16px'}\">{{$ctrl.title}}</p>\n            <span class=\"md-subhead locationHeader\">{{$ctrl.unit.property.location.streetAddress}}</span>\n          </div>\n        </div>\n\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <div class=\"lineItemIcon\">\n          </div>\n          <p class=\"\">{{ $ctrl.nights}} Nights </p>\n          <div class=\"spacer\"></div>\n          <div class=\"guestIcon\">\n          </div>\n          <p class=\"\">{{ $ctrl.guests}} People </p>\n        </div>\n      </div>\n    </md-list-item>\n    <md-divider class=\"darkerDivider\"></md-divider>\n    <md-list-item class=\"lineItemHeader\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"column\">\n            <p class=\"\">Check-In </p>\n          </div>\n        </div>\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n\n          <div layout=\"column\">\n            <p class=\"lineItemHeader\">{{$ctrl.formatDate($ctrl.checkin,'LL')}}</p>\n          </div>\n        </div>\n      </div>\n    </md-list-item>\n    <md-list-item class=\"lineItemHeader\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"column\">\n            <p class=\"\">Check-Out </p>\n          </div>\n        </div>\n\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <div layout=\"column\">\n            <p class=\"lineItemHeader\">{{$ctrl.formatDate($ctrl.checkout,'LL')}}</p>\n          </div>\n        </div>\n      </div>\n    </md-list-item>\n\n    <div class=\"mobileBottomBar\">\n      <md-divider ng-if=\"$ctrl.base\"></md-divider>\n      <md-list-item class=\"lineItemHeader\" ng-if=\"$ctrl.base\">\n        <div class=\"md-list-item-text paymentLineItem\" layout=\"row\" flex>\n          <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n            <p class=\"\">Base Price </p>\n          </div>\n          <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n            <p class=\"\">{{$ctrl.base.price / 100}} CFP</p>\n          </div>\n        </div>\n      </md-list-item>\n\n\n      <md-divider ng-if=\"$ctrl.addons\"></md-divider>\n      <md-list-item class=\"lineItemHeader\" ng-click=\"$ctrl.toggleShowAddons()\" ng-if=\"$ctrl.addons\">\n        <div class=\"md-list-item-text\" layout=\"row\" flex>\n          <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n            <p class=\"\">Add-ons</p>\n          </div>\n          <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n            <p class=\"\">{{$ctrl.addonTotal() / 100}} CFP</p>\n          </div>\n        </div>\n      </md-list-item>\n      <md-divider ng-if=\"$ctrl.taxes\"></md-divider>\n\n      <md-list-item class=\"list-item-48 lineItemDetail\" ng-repeat=\"charge in $ctrl.addons\" ng-show=\"$ctrl.showAddons\" ng-if=\"$ctrl.taxes\">\n        <div class=\"md-list-item-text\" layout=\"row\" flex>\n          <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n            <div layout=\"row\">\n              <p>{{ charge.label }} <span style=\"vertical-align: 'middle'\">x</span> {{ charge.quantity }}</p>\n              <!--<p class=\"\">{{ charge.amount / 100 }} CFP</p>-->\n            </div>\n          </div>\n          <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n            <p class=\"\">{{ charge.amount/100 * charge.quantity}} CFP</p>\n          </div>\n        </div>\n\n        <md-divider md-inset ng-if=\"$index != $ctrl.addons.length - 1\" class=\"lineItemDetailDivider\"></md-divider>\n        <md-divider ng-if=\"$index == $ctrl.addons.length - 1\"></md-divider>\n      </md-list-item>\n\n      <md-list-item class=\"lineItemHeader\" ng-if=\"$ctrl.taxes\" ng-click=\"$ctrl.toggleShowTaxes()\">\n        <div class=\"md-list-item-text\" layout=\"row\" flex>\n          <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n            <p class=\"\">Taxes and Fees </p>\n          </div>\n          <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n            <p class=\"\">{{$ctrl.taxTotal() / 100}} CFP</p>\n          </div>\n        </div>\n      </md-list-item>\n      <md-divider ng-if=\"!$ctrl.showTaxes\" class=\"totalDivider\"></md-divider>\n      <md-divider ng-if=\"$ctrl.showTaxes\"></md-divider>\n\n      <md-list-item class=\"list-item-48 lineItemDetail\" ng-if=\"$ctrl.taxes\" ng-repeat=\"charge in $ctrl.taxes\" ng-show=\"$ctrl.showTaxes\">\n        <div class=\"md-list-item-text\" layout=\"row\" flex>\n          <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n            <div layout=\"row\">\n              <p class=\"\">{{ charge.label }}{{ charge.quantity }}</p>\n              <!--<p class=\"lineItemDetail\" ng-if=\"!charge.percent\"> {{ charge.price / 100 }} CFP</p>-->\n              <p class=\"\" ng-if=\"charge.percent\">&nbsp; {{ charge.percent}}%</p>\n            </div>\n          </div>\n          <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n            <p class=\"lineItemDetail\">{{ charge.price/100}} CFP</p>\n          </div>\n        </div>\n        <md-divider md-inset ng-if=\"$index !=  $ctrl.taxes.length - 1\" class=\"lineItemDetailDivider\"></md-divider>\n        <md-divider ng-if=\"$index ==  $ctrl.taxes.length - 1\" class=\"darkerDivider\"></md-divider>\n      </md-list-item>\n      <md-list-item class=\"total\">\n        <div class=\"md-list-item-text\" layout=\"row\" layout-align=\"space-between center\" flex>\n          <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n            <p class=\"total\">Total </p>\n          </div>\n          <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n            <p class=\"total\">{{$ctrl.total / 100}} CFP</p>\n          </div>\n        </div>\n      </md-list-item>\n    </div>\n\n  </md-list>\n</div>";
+	module.exports = "<md-card class=\"paymentSummaryCard\" ng-if=\"screenIsBig()\">\n  <div class=\"paymentSummaryImageBig\" ng-style=\"{'background-image': 'url({{unit.defaultImage}})'}\">\n  </div>\n</md-card>\n\n<md-card class=\"paymentSummaryCard\">\n  <md-list class=\"\" flex>\n    <md-list-item class=\"paymentHeader md-2-line \" ng-mouseleave=\"addOnsHover = 0\" ng-mouseenter=\"addOnsHover = 1\" ng-init=\"addOnsHover=0\">\n      <div layout=\"row\" class=\"md-list-item-text \" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"column\" class=\"formHeader\">\n            <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n              <ng-md-icon class=\"headerIcon\" icon=\"local_offer\" class=\"listIcon \"></ng-md-icon>\n\n              <span class=\"paymentSubTitle\">Booking Summary</span>\n            </div>\n\n\n          </div>\n        </div>\n\n        <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n          <div layout=\"column \" layout-align=\"center end \" flex>\n            <!--<ng-md-icon icon=\"payment \" class=\"listIcon \"></ng-md-icon>-->\n          </div>\n        </div>\n      </div>\n    </md-list-item>\n\n    <!--<md-divider ng-if=\"vm.base \"></md-divider>-->\n    <md-list-item class=\"lineItemHeader \" ng-if=\"vm.base \" ng-click=\"null\">\n      <div class=\"md-list-item-text  \" layout=\"row \" flex>\n        <div layout=\"row \" layout-align=\"start center \" flex=\"50 \">\n          <p class=\" \">Base Price </p>\n        </div>\n        <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n          <p class=\" \">{{vm.base.price / 100}} CFP</p>\n        </div>\n      </div>\n    </md-list-item>\n\n\n    <!--<md-divider ng-if=\"vm.addons \"></md-divider>-->\n    <md-list-item class=\"lineItemHeader \" ng-click=\"vm.toggleShowAddons() \" ng-if=\"vm.addonTotal() > 0\">\n      <div class=\"md-list-item-text \" layout=\"row \" flex>\n        <div layout=\"row \" layout-align=\"start center \" flex=\"50 \">\n          <p class=\" \">Add-ons</p>\n        </div>\n        <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n          <p class=\" \">{{vm.addonTotal() / 100}} CFP</p>\n        </div>\n      </div>\n    </md-list-item>\n    <!--<md-divider ng-if=\"vm.taxes \"></md-divider>-->\n\n    <md-list-item class=\"list-item-48 lineItemDetail \" ng-repeat=\"charge in vm.booking.addOns \" ng-show=\"vm.showAddons \" ng-if=\"vm.taxes \">\n      <div class=\"md-list-item-text \" layout=\"row \" flex>\n        <div layout=\"row \" layout-align=\"start center \" flex=\"50 \">\n          <div layout=\"row \">\n            <p>{{ charge.label }} <span style=\"vertical-align: 'middle' \">x</span> {{ charge.quantity }}</p>\n            <!--<p class=\" \">{{ charge.amount / 100 }} CFP</p>-->\n          </div>\n        </div>\n        <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n          <p class=\" \">{{ charge.amount/100 * charge.quantity}} CFP</p>\n        </div>\n      </div>\n\n      <!--<md-divider md-inset ng-if=\"$index !=$ ctrl.addons.length - 1 \" class=\"lineItemDetailDivider \"></md-divider>\n          <md-divider ng-if=\"$index==$ ctrl.addons.length - 1 \"></md-divider>-->\n    </md-list-item>\n\n    <md-list-item class=\"lineItemHeader \" ng-if=\"vm.taxes \" ng-click=\"vm.toggleShowTaxes() \">\n      <div class=\"md-list-item-text \" layout=\"row \" flex>\n        <div layout=\"row \" layout-align=\"start center \" flex=\"50 \">\n          <p class=\" \">Taxes and Fees </p>\n        </div>\n        <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n          <p class=\" \">{{vm.taxTotal() / 100}} CFP</p>\n        </div>\n      </div>\n    </md-list-item>\n    <!--<md-divider ng-if=\"!vm.showTaxes \" class=\"totalDivider \"></md-divider>\n        <md-divider ng-if=\"vm.showTaxes \"></md-divider>-->\n\n    <md-list-item class=\"list-item-48 lineItemDetail \" ng-if=\"vm.taxes \" ng-repeat=\"charge in vm.taxes \" ng-show=\"vm.showTaxes \">\n      <div class=\"md-list-item-text \" layout=\"row \" flex>\n        <div layout=\"row \" layout-align=\"start center \" flex=\"50 \">\n          <div layout=\"row \">\n            <p class=\" \">{{ charge.label }}{{ charge.quantity }}</p>\n            <!--<p class=\"lineItemDetail \" ng-if=\"!charge.percent \"> {{ charge.price / 100 }} CFP</p>-->\n            <p class=\" \" ng-if=\"charge.percent \">&nbsp; {{ charge.percent}}%</p>\n          </div>\n        </div>\n        <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n          <p class=\"lineItemDetail \">{{ charge.price/100}} CFP</p>\n        </div>\n      </div>\n      <!--<md-divider md-inset ng-if=\"$index !=$ ctrl.taxes.length - 1 \" class=\"lineItemDetailDivider \"></md-divider>-->\n      <!--<md-divider ng-if=\"$index==$ ctrl.taxes.length - 1 \" class=\"darkerDivider \"></md-divider>-->\n    </md-list-item>\n\n    <md-list-item class=\"paymentHeader md-2-line total \" ng-mouseleave=\"addOnsHover = 0\" ng-mouseenter=\"addOnsHover = 1\" ng-init=\"addOnsHover=0\">\n      <div class=\"md-list-item-text \" layout=\"row \" layout-align=\"space-between center \" flex>\n        <div layout=\"row \" layout-align=\"start center \" flex=\"50 \">\n          <span class=\"total \">Total </span>\n        </div>\n        <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n          <span class=\"total \">{{booking.total / 100}} CFP</span>\n        </div>\n      </div>\n    </md-list-item>\n    <md-divider></md-divider>\n  </md-list>\n</md-card>\n<md-card class=\"paymentSummaryCard\">\n  <md-list>\n    <md-list-item class=\"paymentHeader md-2-line md-primary\" ng-click=\"vm.payNow();\" ng-mouseleave=\"addOnsHover = 0\" ng-mouseenter=\"addOnsHover = 1\" ng-init=\"addOnsHover=0\">\n      <div layout=\"row\" class=\"md-list-item-text \" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <ng-md-icon class=\"headerIcon\" icon=\"filter_3\" class=\"listIcon \"></ng-md-icon>\n\n          <span class=\"paymentSubTitle total\">Pay</span>\n        </div>\n        <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n          <span class=\"paymentSubTitle total\"></span>\n\n          <ng-md-icon icon=\"input\" class=\"listIcon \"></ng-md-icon>\n\n        </div>\n      </div>\n    </md-list-item>\n\n    <div ng-show=\"vm.bookingResponse.paymentResponse == 'completed'\">\n      <md-list-item class=\"paymentHeader md-2-line md-primary\" md-colors=\"{color: 'primary'}\" ng-mouseleave=\"addOnsHover = 0\" ng-mouseenter=\"addOnsHover = 1\" ng-init=\"addOnsHover=0\">\n        <div layout=\"row\" class=\"md-list-item-text \" flex>\n          <div layout=\"row\" layout-align=\"start center\" flex=\"50\" md-colors=\"{color: 'primary'}\">\n            <ng-md-icon class=\"headerIcon\" icon=\"payment\" class=\"listIcon \"></ng-md-icon>\n\n            <span class=\"paymentSubTitle total\">Payment Complete</span>\n          </div>\n          <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n            <span class=\"paymentSubTitle total\" md-colors=\"{color: 'green'}\"></span>\n\n            <ng-md-icon icon=\"check\" class=\"listIcon \" md-colors=\"{fill: 'green-700'}\"></ng-md-icon>\n\n          </div>\n        </div>\n      </md-list-item>\n      <md-divider md-inset></md-divider>\n\n      <md-list-item>\n        <div layout=\"row\" layout-wrap>\n\n          <p class=\"listMessage\">An e-mail will be sent to {{vm.bookingResponse.email }} with details about your reservation.</p>\n        </div>\n      </md-list-item>\n      <md-list-item>\n        <div layout=\"row\" layout-align=\"end center\" flex>\n          <md-button class=\"md-raised md-primary\">Return</md-button>\n\n        </div>\n      </md-list-item>\n    </div>\n\n    <div ng-show=\"vm.bookingResponse.paymentResponse == 'failed'\">\n\n      <md-list-item class=\"paymentHeader md-2-line md-primary\" md-colors=\"{color: 'primary'}\" ng-mouseleave=\"addOnsHover = 0\" ng-mouseenter=\"addOnsHover = 1\" ng-init=\"addOnsHover=0\">\n        <div layout=\"row\" class=\"md-list-item-text \" flex>\n          <div layout=\"row\" layout-align=\"start center\" flex=\"50\" md-colors=\"{color: 'warn'}\">\n            <ng-md-icon class=\"headerIcon\" icon=\"payment\" class=\"listIcon \"></ng-md-icon>\n\n            <span class=\"paymentSubTitle total\">Payment Failed</span>\n          </div>\n          <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n            <span class=\"paymentSubTitle total\" md-colors=\"{color: 'warn'}\"></span>\n\n            <ng-md-icon icon=\"error\" class=\"listIcon \" md-colors=\"{fill: 'warn'}\"></ng-md-icon>\n\n          </div>\n        </div>\n      </md-list-item>\n      <md-divider md-inset></md-divider>\n\n      <md-list-item>\n        <div layout=\"row\" layout-wrap>\n\n          <p class=\"listMessage\">Your credit card has been declined. Please confirm the information you provided is correct and try again.</p>\n        </div>\n      </md-list-item>\n      <md-list-item>\n        <div layout=\"row\" layout-align=\"end center\" flex>\n          <md-button class=\"md-raised md-primary\">Try Again</md-button>\n\n        </div>\n      </md-list-item>\n    </div>\n\n\n    <div ng-show=\"vm.bookingResponse.paymentResponse == 'processing'\">\n\n      <md-list-item class=\"paymentHeader md-2-line md-primary\" md-colors=\"{color: 'primary'}\" ng-mouseleave=\"addOnsHover = 0\" ng-mouseenter=\"addOnsHover = 1\" ng-init=\"addOnsHover=0\">\n\n        <div layout=\"row\" class=\"md-list-item-text \" flex>\n          <div layout=\"row\" layout-align=\"start center\" flex layout-grow md-colors=\"{color: 'primary'}\">\n            <ng-md-icon class=\"headerIcon\" icon=\"payment\" class=\"listIcon \"></ng-md-icon>\n\n            <span class=\"paymentSubTitle total\">Payment Processing</span>\n          </div>\n          <div layout=\"row \" layout-align=\"end center \">\n            <span class=\"paymentSubTitle total\" md-colors=\"{color: 'green'}\"></span>\n\n            <ng-md-icon icon=\"watch_later\" class=\"listIcon \" md-colors=\"{fill: 'amber-700'}\"></ng-md-icon>\n\n          </div>\n        </div>\n      </md-list-item>\n      <md-divider md-inset></md-divider>\n      <md-list-item>\n        <div layout=\"row\" layout-wrap>\n\n          <p class=\"listMessage\">Your booking payment is still processing. An e-mail will be sent to {{vm.bookingResponse.email }} with details about your reservation.</p>\n        </div>\n\n      </md-list-item>\n      <md-list-item>\n        <div layout=\"row\" layout-align=\"end center\" flex>\n          <md-button class=\"md-raised md-primary\">Return</md-button>\n\n        </div>\n      </md-list-item>\n    </div>\n  </md-list>\n\n</md-card>";
 
 /***/ }),
 /* 4 */
 /***/ (function(module, exports) {
 
-	module.exports = "<!--<vertical-wizard name=\"booking\">\n\n  <wizard-step label=\"Hello\">\n    <h4>Fu</h4>\n    <p>Lorem ipsum dolor sit amet</p>\n  </wizard-step>\n\n  <wizard-step label=\"World\">\n    <h4>{{vm.label}}</h4>\n    <em>Mauris elementum elementum enim at suscipit.</em>\n  </wizard-step>\n\n</vertical-wizard>-->\n\n<md-card class=\"paymentSummaryCard\">\n  <md-list class=\"\" flex>\n    <md-list-item class=\"md-2-line paymentHeader\" ng-click=\"null\">\n      <div layout=\"row\" class=\"md-list-item-text \" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"column\" class=\"formHeader\">\n            <span class=\"paymentTitle\">Guest Details</span>\n            <span class=\" md-subhead locationHeader \">{{$ctrl.unit.property.location.streetAddress}}</span>\n\n          </div>\n        </div>\n\n        <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n          <div layout=\"column \" layout-align=\"center end \" flex>\n            <ng-md-icon icon=\"help \" class=\"listIcon \"></ng-md-icon>\n          </div>\n        </div>\n      </div>\n    </md-list-item>\n    <!--<md-divider>\n    </md-divider>-->\n    <div class=\"cardForm\" ng-include=\" 'host-personal-details.html' \" layout-margin></div>\n\n  </md-list>\n\n</md-card>";
+	module.exports = "<md-card class=\"paymentSummaryCard\" ng-if=\"!screenIsBig()\">\n  <div class=\"paymentSummaryImage\" ng-style=\"{'background-image': 'url({{unit.defaultImage}})'}\">\n  </div>\n</md-card>\n\n<md-card class=\"paymentSummaryCard\" layout-margin>\n  <md-list class=\" \" flex>\n    <md-list-item class=\"md-2-line paymentHeader listItemNotButton\">\n      <div class=\"md-list-item-text \" layout=\"row \" flex>\n        <div layout=\"row \" layout-align=\"start center \" flex=\"50 \">\n          <div layout=\"column \">\n            <p class=\"paymentTitle \" ng-style=\"{ 'font-size': '16px'} \">{{unit.strings[language].title}}</p>\n            <span class=\"md-subhead locationHeader \">{{unit.property.location.streetAddress}}</span>\n          </div>\n        </div>\n\n        <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n          <div class=\"lineItemIcon \">\n          </div>\n          <p class=\" \">{{ booking.numberOfNights}} Nights </p>\n          <div class=\"spacer \"></div>\n          <div class=\"guestIcon \">\n          </div>\n          <p class=\" \">{{ booking.numberOfPeople}} People </p>\n        </div>\n      </div>\n    </md-list-item>\n    <!--<md-divider class=\"darkerDivider \"></md-divider>-->\n    <md-list-item class=\"lineItemHeader listItemNotButton\">\n      <div class=\"md-list-item-text \" layout=\"row \" flex>\n        <div layout=\"row \" layout-align=\"start center \" flex=\"50 \">\n          <div layout=\"column \">\n            <p class=\" \">Check-In </p>\n          </div>\n        </div>\n        <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n\n          <div layout=\"column \">\n            <p class=\"lineItemHeader \">{{vm.formatDate(booking.checkin,'LL')}}</p>\n          </div>\n        </div>\n      </div>\n    </md-list-item>\n    <md-list-item class=\"lineItemHeader listItemNotButton\">\n      <div class=\"md-list-item-text \" layout=\"row \" flex>\n        <div layout=\"row \" layout-align=\"start center \" flex=\"50 \">\n          <div layout=\"column \">\n            <p class=\" \">Check-Out </p>\n          </div>\n        </div>\n\n        <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n          <div layout=\"column \">\n            <p class=\"lineItemHeader \">{{vm.formatDate(booking.checkout,'LL')}}</p>\n          </div>\n        </div>\n      </div>\n    </md-list-item>\n    <md-list>\n</md-card>\n\n\n\n<md-card class=\"paymentSummaryCard\">\n  <md-list class=\"\" flex>\n    <md-divider></md-divider>\n\n    <md-list-item class=\"paymentHeader md-2-line \" ng-click=\"vm.toggleGuestDetails()\" ng-mouseleave=\"guestDetailsHover = 0\" ng-mouseenter=\"guestDetailsHover = 1\" ng-init=\"guestDetailsHover=0\">\n      <div layout=\"row\" class=\"md-list-item-text \" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"column\" class=\"formHeader\">\n            <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n              <ng-md-icon class=\"headerIcon\" icon=\"filter_1\" class=\"listIcon \"></ng-md-icon>\n              <span class=\"paymentSubTitle\">Guest Details</span>\n            </div>\n            <!--<div layout=\"row\" class=\"stepStatusRow\">\n              <span class=\"md-subhead locationHeader \">Complete</span>\n              <ng-md-icon icon=\"check\"></ng-md-icon>\n\n            </div>-->\n\n          </div>\n        </div>\n\n        <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n          <div layout=\"column \" layout-align=\"center end \" flex>\n            <ng-md-icon ng-show=\"guestDetailsHover\" icon=\"{{vm.guestDetailsExpanded ? 'expand_less' : 'expand_more'}}\" class=\"listIcon \"></ng-md-icon>\n\n            <ng-md-icon ng-show=\"!guestDetailsHover && detailsForm.$valid\" icon=\"check\" class=\"listIcon \"></ng-md-icon>\n\n            <ng-md-icon ng-show=\"!guestDetailsHover && detailsForm.$invalid\" icon=\"{{vm.guestDetailsExpanded ? 'radio_button_checked' : 'radio_button_unchecked'}}\" class=\"listIcon \"></ng-md-icon>\n          </div>\n        </div>\n      </div>\n    </md-list-item>\n    <div ng-show=\"vm.guestDetailsExpanded\">\n      <div class=\"cardForm\" layout-margin>\n\n        <form name=\"detailsForm\" no-validate>\n          <md-input-container class=\"md-block\">\n            <label>Full Name</label>\n            <input name=\"name\" ng-model=\"vm.bookingForm.name\" required type=\"text\" md-maxlength=\"100\" ng-minlength=\"3\" />\n            <div ng-messages=\"detailsForm.name.$error\">\n              <div ng-message=\"required\">This is required.</div>\n              <div ng-message=\"minlength\">The name must be at least 3 characters long.</div>\n              <div ng-message=\"md-maxlength\">The name must be less than 100 characters long.</div>\n            </div>\n          </md-input-container>\n\n          <md-input-container class=\"md-block\">\n            <label>E-mail</label>\n            <input name=\"email\" ng-model=\"vm.bookingForm.email\" required type=\"email\" md-maxlength=\"100\" />\n            <div ng-messages=\"detailsForm.email.$error\">\n              <div ng-message=\"required\">This is required.</div>\n              <div ng-message=\"email\">You must enter a valid e-mail address.</div>\n              <div ng-message=\"md-maxlength\">The e-mail must be less than 100 characters long.</div>\n            </div>\n          </md-input-container>\n\n          <md-input-container class=\"md-block\">\n            <label>Phone</label>\n            <input ng-model=\"vm.bookingForm.phone\" required type=\"phone\" />\n          </md-input-container>\n\n          <md-input-container class=\"md-block\">\n            <label>Notes</label>\n            <textarea ng-model=\"vm.bookingForm.notes\" md-maxlength=\"150\" rows=\"5\" md-select-on-focus></textarea>\n          </md-input-container>\n\n\n        </form>\n      </div>\n\n      <!--<md-list-item class=\"md-2-line md-primary\" ng-click=\"vm.payNow();\" md-colors=\"{color: 'primary'}\" ng-mouseleave=\"addOnsHover = 0\" ng-mouseenter=\"addOnsHover = 1\" ng-init=\"addOnsHover=0\">\n        <div layout=\"row\" class=\"md-list-item-text \" flex>\n          <div layout=\"row\" layout-align=\"start center\" flex=\"50\" md-colors=\"{color: 'primary'}\">\n\n          </div>\n          <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n            <ng-md-icon class=\"headerIcon\" icon=\"next\" class=\"listIcon \" md-colors=\"{fill: 'primary'}\"></ng-md-icon>\n\n            <span class=\"paymentSubTitle total\" md-colors=\"{color: 'primary'}\">Next</span>\n          </div>\n        </div>\n      </md-list-item>-->\n\n    </div>\n\n    <md-divider ng-if=\"!vm.guestDetailsExpanded\"></md-divider>\n\n  </md-list>\n  <md-list class=\"\" flex>\n    <md-list-item class=\"paymentHeader md-2-line \" ng-click=\"vm.toggleAddons(); vm.addonsSelected = 1\" ng-mouseleave=\"addOnsHover = 0\" ng-mouseenter=\"addOnsHover = 1\" ng-init=\"addOnsHover=0\" ng-disabled=\"detailsForm.$invalid\">\n      <div layout=\"row\" class=\"md-list-item-text \" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"column\" class=\"formHeader\">\n            <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n              <ng-md-icon class=\"headerIcon\" icon=\"filter_2\" class=\"listIcon \"></ng-md-icon>\n              <span class=\"paymentSubTitle\">Add-ons</span>\n            </div>\n            <!--<div layout=\"row\" class=\"stepStatusRow\">\n              <span class=\"md-subhead locationHeader \">Complete</span>\n              <ng-md-icon icon=\"check\"></ng-md-icon>\n\n            </div>-->\n\n          </div>\n        </div>\n\n        <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n          <div layout=\"column \" layout-align=\"center end \" flex>\n            <ng-md-icon ng-show=\"vm.addOnsSelected == 1\" icon=\"check\" class=\"listIcon \"></ng-md-icon>\n            <ng-md-icon ng-show=\"addOnsHover\" icon=\"{{vm.addonsExpanded ? 'expand_less' : 'expand_more'}}\" class=\"listIcon \"></ng-md-icon>\n            <ng-md-icon ng-show=\"!addOnsHover && vm.addonsSelected\" icon=\"check\" class=\"listIcon \"></ng-md-icon>\n\n            <ng-md-icon ng-show=\"!addOnsHover && !vm.addonsSelected\" icon=\"{{vm.addonsExpanded ? 'radio_button_checked' : 'radio_button_unchecked'}}\" class=\"listIcon \"></ng-md-icon>\n          </div>\n        </div>\n      </div>\n    </md-list-item>\n    <div class=\"addonForm\" ng-show=\"vm.addonsExpanded\">\n      <div ng-repeat=\"addon in booking.addOns\">\n        <md-list-item class=\"md-2-line addOnListItem\">\n          <div layout=\"row\" class=\"md-list-item-text \" flex>\n            <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n              <div layout=\"column\" class=\"\">\n                <span class=\"lineItemSubHeader\">{{addon.label}}</span>\n\n                <div layout=\"row\" class=\"\">\n                  <span class=\"lineItemSubDetail \">{{addon.amount/ 100}} CFP</span>\n                  <!--<ng-md-icon icon=\"check\"></ng-md-icon>-->\n\n                </div>\n\n              </div>\n            </div>\n\n            <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n              <div layout=\"column \" class=\"addOnAdjusters\" layout-align=\"center end \" flex layout-grow>\n                <ng-md-icon icon=\"add_circle_outline\" class=\"listIconSub\" ng-click=\"vm.adjustAddon($index,'up');\"> </ng-md-icon>\n                <ng-md-icon icon=\" remove_circle_outline \" class=\"listIconSub\" ng-click=\"vm.adjustAddon($index,'down');\"></ng-md-icon>\n              </div>\n\n              <div layout=\"column\" layout-align=\"end end \">\n                <input class='addOnQuantityText' ng-model=\"addon.quantity \"></input>\n              </div>\n            </div>\n          </div>\n        </md-list-item>\n      </div>\n    </div>\n    <md-divider ng-if=\"!vm.addonsExpanded\"></md-divider>\n    <!--\n    <md-list-item class=\"paymentHeader md-2-line \" ng-mouseleave=\"addOnsHover = 0\" ng-mouseenter=\"addOnsHover = 1\" ng-init=\"addOnsHover=0\">\n      <div layout=\"row\" class=\"md-list-item-text \" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"column\" class=\"formHeader\">\n            <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n              <ng-md-icon class=\"headerIcon\" icon=\"filter_3\" class=\"listIcon \"></ng-md-icon>\n\n              <span class=\"paymentSubTitle\">Payment</span>\n            </div>\n\n\n          </div>\n        </div>\n\n        <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n          <div layout=\"column \" layout-align=\"center end \" flex>\n            <ng-md-icon icon=\"input \" class=\"listIcon \"></ng-md-icon>\n          </div>\n        </div>\n      </div>\n    </md-list-item>-->\n\n\n  </md-list>\n\n\n</md-card>";
 
 /***/ }),
 /* 5 */
 /***/ (function(module, exports) {
 
-	module.exports = "<form name=\"personalDetailsForm\">\n  <div>\n    <md-input-container class=\"md-block\">\n      <label>Full Name</label>\n      <input name=\"name\" ng-model=\"bookingForm.name\" required type=\"text\" md-maxlength=\"100\" ng-minlength=\"3\">\n      <div ng-messages=\"bookingInfoForm.name.$error\">\n        <div ng-message=\"required\">This is required.</div>\n        <div ng-message=\"minlength\">The name must be at least 3 characters long.</div>\n        <div ng-message=\"md-maxlength\">The name must be less than 100 characters long.</div>\n      </div>\n    </md-input-container>\n\n    <md-input-container class=\"md-block\">\n      <label>E-mail</label>\n      <input name=\"email\" ng-model=\"bookingForm.email\" required type=\"email\" md-maxlength=\"100\">\n      <div ng-messages=\"bookingInfoForm.email.$error\">\n        <div ng-message=\"required\">This is required.</div>\n        <div ng-message=\"email\">You must enter a valid e-mail address.</div>\n        <div ng-message=\"md-maxlength\">The e-mail must be less than 100 characters long.</div>\n      </div>\n    </md-input-container>\n\n    <md-input-container class=\"md-block\">\n      <label>Phone</label>\n      <input ng-model=\"bookingForm.phone\" required type=\"phone\">\n    </md-input-container>\n\n    <md-input-container class=\"md-block\">\n      <label>Notes</label>\n      <textarea ng-model=\"bookingForm.notes\" md-maxlength=\"150\" rows=\"5\" md-select-on-focus></textarea>\n    </md-input-container>\n  </div>\n\n  <div layout=\"row\" layout-align=\"end center\">\n    <md-button type=\"submit\" class=\"md-raised md-accent formButton\" ng-click=\"changeState('addBooking.rooms')\" ng-disabled=\"bookingInfoForm.$invalid\">Continue</md-button>\n  </div>\n</form>";
+	module.exports = "<form name=\"detailsForm\" no-validate>\n  <md-input-container class=\"md-block\">\n    <label>Full Name</label>\n    <input name=\"name\" ng-model=\"$ctrl.bookingForm.name\" required type=\"text\" md-maxlength=\"100\" ng-minlength=\"3\" />\n    <div ng-messages=\"detailsForm.name.$error\">\n      <div ng-message=\"required\">This is required.</div>\n      <div ng-message=\"minlength\">The name must be at least 3 characters long.</div>\n      <div ng-message=\"md-maxlength\">The name must be less than 100 characters long.</div>\n    </div>\n  </md-input-container>\n\n  <md-input-container class=\"md-block\">\n    <label>E-mail</label>\n    <input name=\"email\" ng-model=\"bookingForm.email\" required type=\"email\" md-maxlength=\"100\" />\n    <div ng-messages=\"detailsForm.email.$error\">\n      <div ng-message=\"required\">This is required.</div>\n      <div ng-message=\"email\">You must enter a valid e-mail address.</div>\n      <div ng-message=\"md-maxlength\">The e-mail must be less than 100 characters long.</div>\n    </div>\n  </md-input-container>\n\n  <md-input-container class=\"md-block\">\n    <label>Phone</label>\n    <input ng-model=\"personalDetailsForm.phone\" required type=\"phone\" />\n  </md-input-container>\n\n  <md-input-container class=\"md-block\">\n    <label>Notes</label>\n    <textarea ng-model=\"bookingForm.notes\" md-maxlength=\"150\" rows=\"5\" md-select-on-focus></textarea>\n  </md-input-container>\n\n\n</form>";
 
 /***/ }),
 /* 6 */
 /***/ (function(module, exports) {
 
-	module.exports = "";
+	module.exports = "<div ng-repeat=\"addon in $ctrl.availableAddons\">\n  <md-list-item class=\"md-2-line\">\n    <div layout=\"row\" class=\"md-list-item-text \" flex>\n      <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n        <div layout=\"column\" class=\"\">\n          <span class=\"lineItemSubHeader\">{{addon.label}}</span>\n\n          <div layout=\"row\" class=\"\">\n            <span class=\"lineItemSubDetail \">{{addon.amount/ 100}} CFP</span>\n            <!--<ng-md-icon icon=\"check\"></ng-md-icon>-->\n\n          </div>\n\n        </div>\n      </div>\n\n      <div layout=\"row \" layout-align=\"end center \" flex=\"50 \">\n        <div layout=\"column \" layout-align=\"center end \" flex>\n          <ng-md-icon icon=\"add_circle_outline\" class=\"listIconSub\" ng-click=\"$ctrl.adjustAddon($index,'up');\"> </ng-md-icon>\n          <ng-md-icon icon=\" remove_circle_outline \" class=\"listIconSub\" ng-click=\"$ctrl.adjustAddon($index,'down');\"></ng-md-icon>\n        </div>\n\n        <div layout=\"column \" layout-align=\"end end \">\n          <input class='addOnQuantityText' ng-model=\"addon.quantity \"></input>\n        </div>\n      </div>\n    </div>\n  </md-list-item>\n</div>";
 
 /***/ }),
 /* 7 */
 /***/ (function(module, exports) {
 
-	module.exports = "<booking-total></booking-total>";
+	module.exports = "<payment-details></payment-details>\n<booking-total></booking-total>";
 
 /***/ }),
 /* 8 */
 /***/ (function(module, exports) {
 
-	module.exports = "<md-card class=\"paymentSummaryCard\">\n  <div class=\"paymentSummaryImage\" ng-style=\"{'background-image': 'url({{$ctrl.image}})'}\">\n  </div>\n  <md-list class=\"\" flex>\n    <md-list-item class=\"md-2-line list-item-48 paymentHeader\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"column\">\n            <p class=\"paymentTitle\">{{$ctrl.title}}</p>\n            <span class=\"md-subhead locationHeader\">{{$ctrl.unit.property.location.streetAddress}}</span>\n          </div>\n        </div>\n\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <div class=\"lineItemIcon\">\n          </div>\n          <p class=\"\">{{ $ctrl.nights}} Nights </p>\n          <div class=\"spacer\"></div>\n          <div class=\"guestIcon\">\n          </div>\n          <p class=\"\">{{ $ctrl.guests}} People </p>\n        </div>\n      </div>\n    </md-list-item>\n    <md-divider class=\"darkerDivider\"></md-divider>\n    <md-list-item class=\"lineItemHeader\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"column\">\n            <p class=\"\">Check-In </p>\n          </div>\n        </div>\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n\n          <div layout=\"column\">\n            <p class=\"lineItemHeader\">{{$ctrl.formatDate($ctrl.checkin,'LL')}}</p>\n          </div>\n        </div>\n      </div>\n    </md-list-item>\n    <md-list-item class=\"lineItemHeader\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"column\">\n            <p class=\"\">Check-Out </p>\n          </div>\n        </div>\n\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <div layout=\"column\">\n            <p class=\"lineItemHeader\">{{$ctrl.formatDate($ctrl.checkout,'LL')}}</p>\n          </div>\n        </div>\n      </div>\n    </md-list-item>\n    <md-divider ng-if=\"$ctrl.base\"></md-divider>\n    <md-list-item class=\"lineItemHeader\" ng-if=\"$ctrl.base\">\n      <div class=\"md-list-item-text paymentLineItem\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <p class=\"\">Base Price </p>\n        </div>\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <p class=\"\">{{$ctrl.base.price / 100}} CFP</p>\n        </div>\n      </div>\n    </md-list-item>\n\n\n    <md-divider ng-if=\"$ctrl.addons\"></md-divider>\n    <md-list-item class=\"lineItemHeader\" ng-click=\"$ctrl.toggleShowAddons()\" ng-if=\"$ctrl.addons\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <p class=\"\">Add-ons</p>\n        </div>\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <p class=\"\">{{$ctrl.addonTotal() / 100}} CFP</p>\n        </div>\n      </div>\n    </md-list-item>\n    <!--<md-divider ng-if=\"$ctrl.taxes\"></md-divider>-->\n\n    <md-list-item class=\"list-item-48 lineItemDetail\" ng-repeat=\"charge in $ctrl.addons\" ng-show=\"$ctrl.showAddons\" ng-if=\"$ctrl.taxes\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"row\">\n            <p>{{ charge.label }} <span style=\"vertical-align: 'middle'\">x</span> {{ charge.quantity }}</p>\n            <!--<p class=\"\">{{ charge.amount / 100 }} CFP</p>-->\n          </div>\n        </div>\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <p class=\"\">{{ charge.amount/100 * charge.quantity}} CFP</p>\n        </div>\n      </div>\n\n      <md-divider md-inset ng-if=\"$index != $ctrl.addons.length - 1\" class=\"lineItemDetailDivider\"></md-divider>\n      <md-divider ng-if=\"$index == $ctrl.addons.length - 1\"></md-divider>\n    </md-list-item>\n\n    <md-list-item class=\"lineItemHeader\" ng-if=\"$ctrl.taxes\" ng-click=\"$ctrl.toggleShowTaxes()\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <p class=\"\">Taxes and Fees </p>\n        </div>\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <p class=\"\">{{$ctrl.taxTotal() / 100}} CFP</p>\n        </div>\n      </div>\n    </md-list-item>\n    <!--<md-divider ng-if=\"!$ctrl.showTaxes\" class=\"totalDivider\"></md-divider>\n    <md-divider ng-if=\"$ctrl.showTaxes\"></md-divider>-->\n\n    <md-list-item class=\"list-item-48 lineItemDetail\" ng-if=\"$ctrl.taxes\" ng-repeat=\"charge in $ctrl.taxes\" ng-show=\"$ctrl.showTaxes\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"row\">\n            <p class=\"\">{{ charge.label }}{{ charge.quantity }}</p>\n            <!--<p class=\"lineItemDetail\" ng-if=\"!charge.percent\"> {{ charge.price / 100 }} CFP</p>-->\n            <p class=\"\" ng-if=\"charge.percent\">&nbsp; {{ charge.percent}}%</p>\n          </div>\n        </div>\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <p class=\"lineItemDetail\">{{ charge.price/100}} CFP</p>\n        </div>\n      </div>\n      <!--<md-divider md-inset ng-if=\"$index !=  $ctrl.taxes.length - 1\" class=\"lineItemDetailDivider\"></md-divider>\n      <md-divider md-inset ng-if=\"$index ==  $ctrl.taxes.length - 1\" class=\"darkerDivider\"></md-divider>-->\n    </md-list-item>\n\n    <md-list-item class=\"total\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <p class=\"total\">Total </p>\n        </div>\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <p class=\"total\">{{$ctrl.total / 100}} CFP</p>\n        </div>\n      </div>\n    </md-list-item>\n\n  </md-list>\n</md-card>";
+	module.exports = "<div ng-show=\"screenIsBig()\" layout=\"row\" layout-align=\"center start\" flex=\"100\">\n  <div layout=\"row\" layout-align=\"center start\" flex=\"100\">\n    <div layout=\"column\" layout-align=\"start end\" class=\"paymentSummaryCardLarge\">\n      <div ng-include=\"'host-forms.html'\"></div>\n    </div>\n    <div layout=\"column\" layout-align=\"start start\" class=\"paymentSummaryCardLarge\">\n\n      <div ng-include=\"'host-total.html'\"></div>\n    </div>\n  </div>\n</div>\n\n<div ng-show=\"!screenIsBig()\" layout=\"row\" layout-align=\"center start\" flex=\"100\">\n  <div layout=\"row\" layout-align=\"center start\" flex=\"100\">\n    <div layout=\"column\" layout-align=\"center stretch\" flex=\"100\">\n      <div ng-include=\"'host-forms.html'\"></div>\n      <div ng-include=\"'host-total.html'\"></div>\n    </div>\n  </div>\n</div>";
 
 /***/ }),
 /* 9 */
 /***/ (function(module, exports) {
 
-	module.exports = "<md-toolbar>\n  <div class=\"md-toolbar-tools paymentSummaryBottomBar\">\n\n  </div>\n</md-toolbar>";
+	module.exports = "<md-card class=\"paymentSummaryCard\">\n  <div class=\"paymentSummaryImage\" ng-style=\"{'background-image': 'url({{$ctrl.image}})'}\">\n  </div>\n  <md-list class=\"\" flex>\n    <md-list-item class=\"md-2-line list-item-48 paymentHeader\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"column\">\n            <p class=\"paymentTitle\">{{$ctrl.title}}</p>\n            <span class=\"md-subhead locationHeader\">{{$ctrl.unit.property.location.streetAddress}}</span>\n          </div>\n        </div>\n\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <div class=\"lineItemIcon\">\n          </div>\n          <p class=\"\">{{ $ctrl.nights}} Nights </p>\n          <div class=\"spacer\"></div>\n          <div class=\"guestIcon\">\n          </div>\n          <p class=\"\">{{ $ctrl.guests}} People </p>\n        </div>\n      </div>\n    </md-list-item>\n    <md-divider class=\"darkerDivider\"></md-divider>\n    <md-list-item class=\"lineItemHeader\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"column\">\n            <p class=\"\">Check-In </p>\n          </div>\n        </div>\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n\n          <div layout=\"column\">\n            <p class=\"lineItemHeader\">{{$ctrl.formatDate($ctrl.checkin,'LL')}}</p>\n          </div>\n        </div>\n      </div>\n    </md-list-item>\n    <md-list-item class=\"lineItemHeader\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"column\">\n            <p class=\"\">Check-Out </p>\n          </div>\n        </div>\n\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <div layout=\"column\">\n            <p class=\"lineItemHeader\">{{$ctrl.formatDate($ctrl.checkout,'LL')}}</p>\n          </div>\n        </div>\n      </div>\n    </md-list-item>\n    <md-divider ng-if=\"$ctrl.base\"></md-divider>\n    <md-list-item class=\"lineItemHeader\" ng-if=\"$ctrl.base\">\n      <div class=\"md-list-item-text paymentLineItem\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <p class=\"\">Base Price </p>\n        </div>\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <p class=\"\">{{$ctrl.base.price / 100}} CFP</p>\n        </div>\n      </div>\n    </md-list-item>\n\n\n    <md-divider ng-if=\"$ctrl.addons\"></md-divider>\n    <md-list-item class=\"lineItemHeader\" ng-click=\"$ctrl.toggleShowAddons()\" ng-if=\"$ctrl.addons\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <p class=\"\">Add-ons</p>\n        </div>\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <p class=\"\">{{$ctrl.addonTotal() / 100}} CFP</p>\n        </div>\n      </div>\n    </md-list-item>\n    <!--<md-divider ng-if=\"$ctrl.taxes\"></md-divider>-->\n\n    <md-list-item class=\"list-item-48 lineItemDetail\" ng-repeat=\"charge in $ctrl.addons\" ng-show=\"$ctrl.showAddons\" ng-if=\"$ctrl.taxes\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"row\">\n            <p>{{ charge.label }} <span style=\"vertical-align: 'middle'\">x</span> {{ charge.quantity }}</p>\n            <!--<p class=\"\">{{ charge.amount / 100 }} CFP</p>-->\n          </div>\n        </div>\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <p class=\"\">{{ charge.amount/100 * charge.quantity}} CFP</p>\n        </div>\n      </div>\n\n      <md-divider md-inset ng-if=\"$index != $ctrl.addons.length - 1\" class=\"lineItemDetailDivider\"></md-divider>\n      <md-divider ng-if=\"$index == $ctrl.addons.length - 1\"></md-divider>\n    </md-list-item>\n\n    <md-list-item class=\"lineItemHeader\" ng-if=\"$ctrl.taxes\" ng-click=\"$ctrl.toggleShowTaxes()\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <p class=\"\">Taxes and Fees </p>\n        </div>\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <p class=\"\">{{$ctrl.taxTotal() / 100}} CFP</p>\n        </div>\n      </div>\n    </md-list-item>\n    <!--<md-divider ng-if=\"!$ctrl.showTaxes\" class=\"totalDivider\"></md-divider>\n    <md-divider ng-if=\"$ctrl.showTaxes\"></md-divider>-->\n\n    <md-list-item class=\"list-item-48 lineItemDetail\" ng-if=\"$ctrl.taxes\" ng-repeat=\"charge in $ctrl.taxes\" ng-show=\"$ctrl.showTaxes\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <div layout=\"row\">\n            <p class=\"\">{{ charge.label }}{{ charge.quantity }}</p>\n            <!--<p class=\"lineItemDetail\" ng-if=\"!charge.percent\"> {{ charge.price / 100 }} CFP</p>-->\n            <p class=\"\" ng-if=\"charge.percent\">&nbsp; {{ charge.percent}}%</p>\n          </div>\n        </div>\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <p class=\"lineItemDetail\">{{ charge.price/100}} CFP</p>\n        </div>\n      </div>\n      <!--<md-divider md-inset ng-if=\"$index !=  $ctrl.taxes.length - 1\" class=\"lineItemDetailDivider\"></md-divider>\n      <md-divider md-inset ng-if=\"$index ==  $ctrl.taxes.length - 1\" class=\"darkerDivider\"></md-divider>-->\n    </md-list-item>\n\n    <md-list-item class=\"total\">\n      <div class=\"md-list-item-text\" layout=\"row\" flex>\n        <div layout=\"row\" layout-align=\"start center\" flex=\"50\">\n          <p class=\"total\">Total </p>\n        </div>\n        <div layout=\"row\" layout-align=\"end center\" flex=\"50\">\n          <p class=\"total\">{{$ctrl.total / 100}} CFP</p>\n        </div>\n      </div>\n    </md-list-item>\n\n  </md-list>\n</md-card>";
 
 /***/ }),
 /* 10 */
+/***/ (function(module, exports) {
+
+	module.exports = "<md-toolbar>\n  <div class=\"md-toolbar-tools paymentSummaryBottomBar\">\n\n  </div>\n</md-toolbar>";
+
+/***/ }),
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(11);
+	var content = __webpack_require__(12);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(13)(content, {});
+	var update = __webpack_require__(14)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(11, function() {
-				var newContent = __webpack_require__(11);
+			module.hot.accept(12, function() {
+				var newContent = __webpack_require__(12);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -922,21 +1027,21 @@
 	}
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(12)(undefined);
+	exports = module.exports = __webpack_require__(13)(undefined);
 	// imports
 	
 	
 	// module
-	exports.push([module.id, "md-list {\n    display: block;\n    padding: 0px 0px 0px 0px;\n}\n\n.list-item-48 {\n    height: 36px;\n    min-height: 36px;\n    font-size: 14px;\n    font-weight: 300;\n}\n\n.paymentSummaryCard {\n    width: 440px;\n    max-width: 440px;\n}\n\n.paymentHeader p {\n    color: rgba(0, 0, 0, .8) !important;\n    font-weight: 500;\n    letter-spacing: 0.012em;\n    margin: 0 0 0 0;\n    line-height: 1.6em;\n}\n\n.paymentTitle {\n    font-size: 20px !important;\n}\n\n.lineItemIcon {\n    width: 32px;\n    height: 32px;\n    margin: 4px 4px 4px -6px;\n    background: url('https://s3.amazonaws.com/assets.ablsolution.com/icons/stopwatch-2.svg') no-repeat;\n    background-position: center;\n    background-size: 28px 28px;\n}\n\n.lineItemText {\n    font-size: 14px;\n    font-weight: 500;\n    letter-spacing: 0.010em;\n    margin: 0 0 0 0;\n    line-height: 1.6em;\n    overflow: hidden;\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    color: rgba(0, 0, 0, 0.54) !important;\n}\n\n.lineItemDetail {\n    background: rgba(255, 255, 255, .1);\n}\n\n.lineItemDetail p {\n    font-size: 12px;\n    color: rgba(0, 0, 0, .77);\n    font-weight: 400;\n}\n\n.lineItemHeader p {\n    font-size: 14px;\n    font-weight: 400;\n    letter-spacing: 0.010em;\n    margin: 0 0 0 0;\n    line-height: 1.6em;\n    overflow: hidden;\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    color: rgba(0, 0, 0, 0.82) !important;\n}\n\n.lineItemHeader {\n    background: rgba(0, 0, 0, 0);\n}\n\n.guestIcon {\n    width: 32px;\n    height: 32px;\n    margin: 4px 4px 4px -6px;\n    background: url('https://s3.amazonaws.com/assets.ablsolution.com/icons/user-3.svg') no-repeat;\n    background-position: center;\n    background-size: 28px 28px;\n}\n\n.lineItemIconRight {\n    width: 40px;\n    height: 40px;\n    margin: 4px -6px 4px 4px;\n    background: url('https://s3.amazonaws.com/assets.ablsolution.com/icons/calendar.svg') no-repeat;\n    background-position: center;\n    background-size: 28px 28px;\n}\n\n.locationHeader {\n    font-size: 14px !important;\n    letter-spacing: 0.010em;\n    line-height: 20px;\n    color: rgba(0, 0, 0, 0.66) !important;\n}\n\n.total {\n    font-size: 18px;\n    font-weight: 500;\n    letter-spacing: 0.01em;\n    color: rgba(0, 0, 0, 0.8) !important;\n}\n\n.spacer {\n    margin: 4px;\n    width: 8px;\n}\n\n.darkerDivider {\n    border-top-color: rgba(0, 0, 0, 0.12);\n}\n\n.totalDivider {\n    display: block;\n    border-top-width: 1px;\n}\n\n.lineItemDetailDivider {\n    border-top-color: rgba(0, 0, 0, 0.0);\n}\n\n.paymentSummaryImage {\n    width: 440px;\n    height: 264px;\n    background-position: center center;\n    background-repeat: no-repeat;\n}\n\n.mobileList {\n    height: 100%;\n}\n\n.mobileBottomBar {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    right: 0;\n}\n\n.cardForm {\n    margin: 16px 16px 16px 16px;\n}\n\n.formHeader {\n    padding: 16px 12px 24px 10px;\n    margin: 0;\n    font-size: 22px;\n    font-weight: 500;\n}\n\n.paymentHeader._md-button-wrap>div.md-button:first-child {\n    font-size: 22px;\n    /*box-shadow: 0 1px rgba(0, 0, 0, .12);*/\n}\n\n.listIcon {\n    height: 24px;\n    width: 24px;\n}\n\n.formButton {\n    margin-right: 0;\n}", ""]);
+	exports.push([module.id, "md-list {\n    display: block;\n    padding: 0px 0px 0px 0px;\n}\n\n.list-item-48 {\n    height: 36px;\n    min-height: 36px;\n    font-size: 14px;\n    font-weight: 300;\n}\n\n.paymentSummaryCard {\n    min-width: 440px;\n    margin-bottom: 0;\n    margin-top: 0;\n    background: none;\n    box-shadow: none;\n}\n\n.paymentSummaryCardLarge {\n    min-width: 440px;\n    max-width: 440px;\n    margin-bottom: 0;\n    margin-top: 0;\n}\n\n.paymentHeader p {\n    color: rgba(0, 0, 0, .8) !important;\n    font-weight: 500;\n    letter-spacing: 0.012em;\n    margin: 0 0 0 0;\n    line-height: 1.6em;\n}\n\n.paymentTitle {\n    font-size: 20px !important;\n}\n\n.paymentSubTitle {\n    font-size: 18px !important;\n    font-weight: 400;\n}\n\n.lineItemIcon {\n    width: 32px;\n    height: 32px;\n    margin: 4px 4px 4px -6px;\n    background: url('https://s3.amazonaws.com/assets.ablsolution.com/icons/stopwatch-2.svg') no-repeat;\n    background-position: center;\n    background-size: 28px 28px;\n}\n\n.headerIcon {\n    vertical-align: middle;\n    height: 36px;\n    width: 40px;\n    padding-right: 16px;\n}\n\n.headerIconRight {\n    padding-left: 16px;\n}\n\n.headerIcon svg {\n    position: absolute;\n    top: 24px;\n    bottom: 24px;\n    height: 24px;\n    width: 24px;\n}\n\n.lineItemText {\n    font-size: 14px;\n    font-weight: 500;\n    letter-spacing: 0.010em;\n    margin: 0 0 0 0;\n    line-height: 1.6em;\n    overflow: hidden;\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    color: rgba(0, 0, 0, 0.54) !important;\n}\n\n.lineItemDetail {\n    background: rgba(255, 255, 255, .1);\n}\n\n.lineItemDetail p {\n    font-size: 12px;\n    color: rgba(0, 0, 0, .77);\n    font-weight: 400;\n}\n\n.lineItemHeader p {\n    font-size: 16px;\n    font-weight: 400;\n    letter-spacing: 0.010em;\n    margin: 0 0 0 0;\n    line-height: 1.6em;\n    overflow: hidden;\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    color: rgba(0, 0, 0, 0.82) !important;\n}\n\n.lineItemSubHeader {\n    font-size: 16px;\n    font-weight: 400;\n    margin: 0 0 0 0;\n    line-height: 1.6em;\n    overflow: hidden;\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    color: rgba(0, 0, 0, 0.82) !important;\n}\n\n.lineItemSubDetail {\n    font-size: 12px;\n    font-weight: 500;\n    margin: 0 0 0 0;\n    line-height: 1.6em;\n    overflow: hidden;\n    white-space: nowrap;\n    text-overflow: ellipsis;\n    color: rgba(0, 0, 0, .6);\n}\n\n.lineItemHeader {\n    background: rgba(0, 0, 0, 0);\n    color: rgba(0, 0, 0, .7) !important;\n}\n\n.addOnAdjusters {\n    width: 36px;\n    margin-right: 16px;\n}\n\n.addOnQuantityText {\n    border: none;\n    width: 40px;\n    font-weight: 500;\n    text-align: center;\n    font-size: 16px;\n    outline: none;\n}\n\n.guestIcon {\n    width: 32px;\n    height: 32px;\n    margin: 4px 4px 4px -6px;\n    background: url('https://s3.amazonaws.com/assets.ablsolution.com/icons/user-3.svg') no-repeat;\n    background-position: center;\n    background-size: 28px 28px;\n}\n\n.lineItemIconRight {\n    width: 40px;\n    height: 40px;\n    margin: 4px -6px 4px 4px;\n    background: url('https://s3.amazonaws.com/assets.ablsolution.com/icons/calendar.svg') no-repeat;\n    background-position: center;\n    background-size: 28px 28px;\n}\n\n.locationHeader {\n    font-size: 14px !important;\n    letter-spacing: 0.010em;\n    line-height: 20px;\n    color: rgba(0, 0, 0, 0.66) !important;\n}\n\n.total {\n    font-size: 18px;\n    font-weight: 500;\n    letter-spacing: 0.01em;\n    color: rgba(0, 0, 0, 0.8);\n}\n\n.spacer {\n    margin: 4px;\n    width: 8px;\n}\n\n.darkerDivider {\n    border-top-color: rgba(0, 0, 0, 0.12);\n}\n\n.totalDivider {\n    display: block;\n    border-top-width: 1px;\n}\n\n.lineItemDetailDivider {\n    border-top-color: rgba(0, 0, 0, 0.0);\n}\n\n.paymentSummaryImage {\n    height: 120px;\n    margin: 24px 12px 0 12px;\n    background-position: center center;\n    background-repeat: no-repeat;\n    border-radius: 2px;\n}\n\n.paymentSummaryImageBig {\n    height: 288px;\n    margin: 24px 12px 0 12px;\n    background-position: center center;\n    background-repeat: no-repeat;\n    border-radius: 2px;\n}\n\n.mobileList {\n    height: 100%;\n}\n\n.mobileBottomBar {\n    position: fixed;\n    bottom: 0;\n    left: 0;\n    right: 0;\n}\n\n.cardForm {\n    margin: 16px 16px 16px 16px;\n}\n\n.addonForm {\n    padding-left: 16px;\n    padding-right: 16px;\n}\n\n.formHeader {\n    padding: 16px 12px 16px 0;\n    margin: 0;\n    font-size: 22px;\n    font-weight: 500;\n}\n\n.paymentHeader._md-button-wrap>div.md-button:first-child {\n    font-size: 22px;\n    /*box-shadow: 0 1px rgba(0, 0, 0, .12);*/\n}\n\n.listIcon {\n    height: 24px;\n    width: 24px;\n    margin-left: 8px;\n}\n\n.listIconSub {\n    height: 20px;\n    width: 20px;\n    color: rgba(0, 0, 0, .5);\n    fill: rgba(0, 0, 0, .5);\n    outline: none;\n}\n\n.listIconSub svg {\n    height: 20px;\n    width: 20px;\n}\n\n.listIconSub:hover {\n    height: 20px;\n    width: 20px;\n    color: rgba(0, 0, 0, .86);\n    fill: rgba(0, 0, 0, .86);\n    outline: none;\n}\n\n.formButton {\n    margin-right: 0;\n}\n\n.stepStatusRow ng-md-icon svg {\n    height: 16px;\n    margin-top: 1px;\n    vertical-align: top;\n}\n\nmd-list-item.addOnListItem {\n    margin-right: -24px;\n    padding-left: 0;\n}\n\nmd-list-item.listItemNotButton {\n    padding: 0 8px !important;\n}\n\n.totalListItem {\n    margin-bottom: 12px;\n}\n\n.listMessage {\n    font-size: 16px;\n    line-height: 1.6em;\n}\n\n.listSubMessage {}", ""]);
 	
 	// exports
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 	/*
@@ -1018,7 +1123,7 @@
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/*
@@ -1055,7 +1160,7 @@
 		singletonElement = null,
 		singletonCounter = 0,
 		styleElementsInsertedAtTop = [],
-		fixUrls = __webpack_require__(14);
+		fixUrls = __webpack_require__(15);
 	
 	module.exports = function(list, options) {
 		if(false) {
@@ -1314,7 +1419,7 @@
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 	
