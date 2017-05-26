@@ -1,0 +1,240 @@
+<md-card class="paymentSummaryCard" ng-if="!screenIsBig()">
+  <div class="paymentSummaryImage" ng-style="{'background-image': 'url({{unit.defaultImage}})'}">
+  </div>
+</md-card>
+
+<md-card class="paymentSummaryCard" layout-margin>
+  <md-list class=" " flex>
+    <md-list-item class="md-2-line paymentHeader listItemNotButton">
+      <div class="md-list-item-text " layout="row " flex>
+        <div layout="row " layout-align="start center " flex="50 ">
+          <div layout="column ">
+            <p class="paymentTitle " ng-style="{ 'font-size': '16px'} ">{{unit.strings[language].title}}</p>
+            <span class="md-subhead locationHeader ">{{unit.property.location.streetAddress}}</span>
+          </div>
+        </div>
+
+        <div layout="row " layout-align="end center " flex="50 ">
+          <div class="lineItemIcon ">
+          </div>
+          <p class=" ">{{ booking.numberOfNights}} Nights </p>
+          <div class="spacer "></div>
+          <div class="guestIcon ">
+          </div>
+          <p class=" ">{{ booking.numberOfPeople}} People </p>
+        </div>
+      </div>
+    </md-list-item>
+    <!--<md-divider class="darkerDivider "></md-divider>-->
+    <md-list-item class="lineItemHeader listItemNotButton">
+      <div class="md-list-item-text " layout="row " flex>
+        <div layout="row " layout-align="start center " flex="50 ">
+          <div layout="column ">
+            <p class=" ">Check-In </p>
+          </div>
+        </div>
+        <div layout="row " layout-align="end center " flex="50 ">
+
+          <div layout="column ">
+            <p class="lineItemHeader ">{{vm.formatDate(booking.checkin,'LL')}}</p>
+          </div>
+        </div>
+      </div>
+    </md-list-item>
+    <md-list-item class="lineItemHeader listItemNotButton">
+      <div class="md-list-item-text " layout="row " flex>
+        <div layout="row " layout-align="start center " flex="50 ">
+          <div layout="column ">
+            <p class=" ">Check-Out </p>
+          </div>
+        </div>
+
+        <div layout="row " layout-align="end center " flex="50 ">
+          <div layout="column ">
+            <p class="lineItemHeader ">{{vm.formatDate(booking.checkout,'LL')}}</p>
+          </div>
+        </div>
+      </div>
+    </md-list-item>
+    <md-list>
+</md-card>
+
+
+
+<md-card class="paymentSummaryCard">
+  <md-list class="" flex>
+    <md-divider></md-divider>
+
+    <md-list-item class="paymentHeader md-2-line " ng-click="vm.toggleGuestDetails()" ng-mouseleave="guestDetailsHover = 0" ng-mouseenter="guestDetailsHover = 1" ng-init="guestDetailsHover=0">
+      <div layout="row" class="md-list-item-text " flex>
+        <div layout="row" layout-align="start center" flex="50">
+          <div layout="column" class="formHeader">
+            <div layout="row" layout-align="start center" flex="50">
+              <ng-md-icon class="headerIcon" icon="filter_1" class="listIcon "></ng-md-icon>
+              <span class="paymentSubTitle">Guest Details</span>
+            </div>
+            <!--<div layout="row" class="stepStatusRow">
+              <span class="md-subhead locationHeader ">Complete</span>
+              <ng-md-icon icon="check"></ng-md-icon>
+
+            </div>-->
+
+          </div>
+        </div>
+
+        <div layout="row " layout-align="end center " flex="50 ">
+          <div layout="column " layout-align="center end " flex>
+            <ng-md-icon ng-show="guestDetailsHover" icon="{{vm.guestDetailsExpanded ? 'expand_less' : 'expand_more'}}" class="listIcon "></ng-md-icon>
+
+            <ng-md-icon ng-show="!guestDetailsHover && detailsForm.$valid" icon="check" class="listIcon "></ng-md-icon>
+
+            <ng-md-icon ng-show="!guestDetailsHover && detailsForm.$invalid" icon="{{vm.guestDetailsExpanded ? 'radio_button_checked' : 'radio_button_unchecked'}}" class="listIcon "></ng-md-icon>
+          </div>
+        </div>
+      </div>
+    </md-list-item>
+    <div ng-show="vm.guestDetailsExpanded">
+      <div class="cardForm" layout-margin>
+
+        <form name="detailsForm" no-validate>
+          <md-input-container class="md-block">
+            <label>Full Name</label>
+            <input name="name" ng-model="vm.bookingForm.name" required type="text" md-maxlength="100" ng-minlength="3" />
+            <div ng-messages="detailsForm.name.$error">
+              <div ng-message="required">This is required.</div>
+              <div ng-message="minlength">The name must be at least 3 characters long.</div>
+              <div ng-message="md-maxlength">The name must be less than 100 characters long.</div>
+            </div>
+          </md-input-container>
+
+          <md-input-container class="md-block">
+            <label>E-mail</label>
+            <input name="email" ng-model="vm.bookingForm.email" required type="email" md-maxlength="100" />
+            <div ng-messages="detailsForm.email.$error">
+              <div ng-message="required">This is required.</div>
+              <div ng-message="email">You must enter a valid e-mail address.</div>
+              <div ng-message="md-maxlength">The e-mail must be less than 100 characters long.</div>
+            </div>
+          </md-input-container>
+
+          <md-input-container class="md-block">
+            <label>Phone</label>
+            <input ng-model="vm.bookingForm.phone" required type="phone" />
+          </md-input-container>
+
+          <md-input-container class="md-block">
+            <label>Notes</label>
+            <textarea ng-model="vm.bookingForm.notes" md-maxlength="150" rows="5" md-select-on-focus></textarea>
+          </md-input-container>
+
+
+        </form>
+      </div>
+
+      <!--<md-list-item class="md-2-line md-primary" ng-click="vm.payNow();" md-colors="{color: 'primary'}" ng-mouseleave="addOnsHover = 0" ng-mouseenter="addOnsHover = 1" ng-init="addOnsHover=0">
+        <div layout="row" class="md-list-item-text " flex>
+          <div layout="row" layout-align="start center" flex="50" md-colors="{color: 'primary'}">
+
+          </div>
+          <div layout="row " layout-align="end center " flex="50 ">
+            <ng-md-icon class="headerIcon" icon="next" class="listIcon " md-colors="{fill: 'primary'}"></ng-md-icon>
+
+            <span class="paymentSubTitle total" md-colors="{color: 'primary'}">Next</span>
+          </div>
+        </div>
+      </md-list-item>-->
+
+    </div>
+
+    <md-divider ng-if="!vm.guestDetailsExpanded"></md-divider>
+
+  </md-list>
+  <md-list class="" flex>
+    <md-list-item class="paymentHeader md-2-line " ng-click="vm.toggleAddons(); vm.addonsSelected = 1" ng-mouseleave="addOnsHover = 0" ng-mouseenter="addOnsHover = 1" ng-init="addOnsHover=0" ng-disabled="detailsForm.$invalid">
+      <div layout="row" class="md-list-item-text " flex>
+        <div layout="row" layout-align="start center" flex="50">
+          <div layout="column" class="formHeader">
+            <div layout="row" layout-align="start center" flex="50">
+              <ng-md-icon class="headerIcon" icon="filter_2" class="listIcon "></ng-md-icon>
+              <span class="paymentSubTitle">Add-ons</span>
+            </div>
+            <!--<div layout="row" class="stepStatusRow">
+              <span class="md-subhead locationHeader ">Complete</span>
+              <ng-md-icon icon="check"></ng-md-icon>
+
+            </div>-->
+
+          </div>
+        </div>
+
+        <div layout="row " layout-align="end center " flex="50 ">
+          <div layout="column " layout-align="center end " flex>
+            <ng-md-icon ng-show="vm.addOnsSelected == 1" icon="check" class="listIcon "></ng-md-icon>
+            <ng-md-icon ng-show="addOnsHover" icon="{{vm.addonsExpanded ? 'expand_less' : 'expand_more'}}" class="listIcon "></ng-md-icon>
+            <ng-md-icon ng-show="!addOnsHover && vm.addonsSelected" icon="check" class="listIcon "></ng-md-icon>
+
+            <ng-md-icon ng-show="!addOnsHover && !vm.addonsSelected" icon="{{vm.addonsExpanded ? 'radio_button_checked' : 'radio_button_unchecked'}}" class="listIcon "></ng-md-icon>
+          </div>
+        </div>
+      </div>
+    </md-list-item>
+    <div class="addonForm" ng-show="vm.addonsExpanded">
+      <div ng-repeat="addon in booking.addOns">
+        <md-list-item class="md-2-line addOnListItem">
+          <div layout="row" class="md-list-item-text " flex>
+            <div layout="row" layout-align="start center" flex="50">
+              <div layout="column" class="">
+                <span class="lineItemSubHeader">{{addon.label}}</span>
+
+                <div layout="row" class="">
+                  <span class="lineItemSubDetail ">{{addon.amount/ 100}} CFP</span>
+                  <!--<ng-md-icon icon="check"></ng-md-icon>-->
+
+                </div>
+
+              </div>
+            </div>
+
+            <div layout="row " layout-align="end center " flex="50 ">
+              <div layout="column " class="addOnAdjusters" layout-align="center end " flex layout-grow>
+                <ng-md-icon icon="add_circle_outline" class="listIconSub" ng-click="vm.adjustAddon($index,'up');"> </ng-md-icon>
+                <ng-md-icon icon=" remove_circle_outline " class="listIconSub" ng-click="vm.adjustAddon($index,'down');"></ng-md-icon>
+              </div>
+
+              <div layout="column" layout-align="end end ">
+                <input class='addOnQuantityText' ng-model="addon.quantity "></input>
+              </div>
+            </div>
+          </div>
+        </md-list-item>
+      </div>
+    </div>
+    <md-divider ng-if="!vm.addonsExpanded"></md-divider>
+    <!--
+    <md-list-item class="paymentHeader md-2-line " ng-mouseleave="addOnsHover = 0" ng-mouseenter="addOnsHover = 1" ng-init="addOnsHover=0">
+      <div layout="row" class="md-list-item-text " flex>
+        <div layout="row" layout-align="start center" flex="50">
+          <div layout="column" class="formHeader">
+            <div layout="row" layout-align="start center" flex="50">
+              <ng-md-icon class="headerIcon" icon="filter_3" class="listIcon "></ng-md-icon>
+
+              <span class="paymentSubTitle">Payment</span>
+            </div>
+
+
+          </div>
+        </div>
+
+        <div layout="row " layout-align="end center " flex="50 ">
+          <div layout="column " layout-align="center end " flex>
+            <ng-md-icon icon="input " class="listIcon "></ng-md-icon>
+          </div>
+        </div>
+      </div>
+    </md-list-item>-->
+
+
+  </md-list>
+
+
+</md-card>

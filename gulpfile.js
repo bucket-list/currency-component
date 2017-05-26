@@ -83,7 +83,7 @@ gulp.task("webpack-dev-server", function(callback) {
 
   var myConfig = Object.create(webpackDevConfig);
   var port = 3232;
-  myConfig.entry.unshift("webpack-dev-server/client?http://localhost:" + port + "/", "webpack/hot/dev-server");
+  myConfig.entry.unshift("webpack-dev-server/client?http://0.0.0.0:" + port + "/", "webpack/hot/dev-server");
 
   myConfig.devtool = "eval";
   myConfig.debug = true;
@@ -93,8 +93,9 @@ gulp.task("webpack-dev-server", function(callback) {
     iframe: true,
     contentBase: "./samples",
     noInfo: true,
+    disableHostCheck: true,
     clientLogLevel: 'none'
-  }).listen(port, "localhost", function(err) {
+  }).listen(port, "0.0.0.0", function(err) {
     if (err) throw new gutil.PluginError("webpack-dev-server", err);
     gutil.log("[webpack-dev-server]", "http://localhost:" + port + "/webpack-dev-server/index.html");
   });
@@ -103,5 +104,5 @@ gulp.task("webpack-dev-server", function(callback) {
 
 
 
-gulp.task('default', ['webpack-dev-server', 'watch']);
+gulp.task('default', ['watch-recompile', 'webpack-dev-server', 'watch']);
 gulp.task('dev', ['webpack-dev-server']);

@@ -1,65 +1,74 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="sampleapp">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Adam Ralko">
-    <title>Angular Module Development - Samples</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
 
-    <!-- jQuery, from CDN. -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" crossorigin="anonymous"></script>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Adam Ralko">
+  <title>Angular Module Development - Samples</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
 
-    <!-- Material, from CDN. -->
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+  <!-- jQuery, from CDN. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" crossorigin="anonymous"></script>
 
-    <!-- Angular Material Library -->
-    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.3/angular-material.min.css" crossorigin="anonymous">
-      
+  <!-- Material, from CDN. -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-messages.min.js"></script>
 
-    <!-- io & feathersjs, from CDN. -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
-    <script type="text/javascript" src="https://cdn.rawgit.com/feathersjs/feathers-client/v1.1.0/dist/feathers.js"></script>
+  <!-- Angular Material Library -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.3/angular-material.min.css" crossorigin="anonymous">
 
-    <!-- New module code. -->
-    <script src="abl-payment-summary.js"></script>
 
-    <!-- Source for sample app. -->
-    <script src="sampleapp.js"></script>
-    <style>
+  <!-- io & feathersjs, from CDN. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.js"></script>
+  <script type="text/javascript" src="https://cdn.rawgit.com/feathersjs/feathers-client/v1.1.0/dist/feathers.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.7.1/angular-material-icons.min.js"></script>
+
+  <!-- New module code. -->
+  <script src="abl-payment-summary.js"></script>
+
+  <!-- Source for sample app. -->
+  <script src="sampleapp.js"></script>
+  <style>
     body {
       padding: 0;
     }
-    </style>
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
+  </style>
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-  </head>
+</head>
 
-  <body ng-controller="SampleController as vm" data-spy="scroll" data-target="#mainNav">
-    <md-content>
-      <payment-summary 
-        unit="vm.unit" 
-        language="'fr'"
-        title="vm.unit.strings['fr'].title"
-        image="vm.unit.defaultImage"
-        charges="vm.booking.pricing.charges"
-        addOns="vm.booking.addOns"
-        total="vm.booking.total"
-        nights="vm.booking.numberOfNights"
-        guests="vm.booking.numberOfPeople"
-        checkin="vm.booking.checkIn"
-        checkout="vm.booking.checkOut">
-      </payment-summary>
-    </md-content>
-  </body>
-  
+<body ng-controller="SampleController" data-spy="scroll" mode="activity" data-target="#mainNav">
+
+  <!--<payment-summary details-form="personalDetailsForm" mode="host" unit="unit" language="'fr'" title="unit.strings['fr'].title" image="unit.defaultImage" charges="booking.pricing.charges" addOns="booking.addOns" total="booking.total" nights="booking.numberOfNights"
+    guests="booking.numberOfPeople" checkin="booking.checkIn" checkout="booking.checkOut">
+  </payment-summary>-->
+  <div layout="column" layout-align="center stretch">
+
+    <abl-book unit="unit" language="'fr'" booking="booking">
+    </abl-book>
+  </div>
+  <div layout="row" layout-align="center center">
+    <p>Test payment response:</p>
+    <md-button ng-click="paymentResponse = 'completed'" ng-class="{'md-primary' : paymentResponse == 'completed' }">Completed</md-button>
+    <md-button ng-click="paymentResponse = 'processing'" ng-class="{'md-primary' : paymentResponse == 'processing' }">Processing</md-button>
+    <md-button ng-click="paymentResponse = 'failed'" ng-class="{'md-primary' : paymentResponse == 'failed' }">Declined</md-button>
+
+  </div>
+  <!--<div layout="row" layout-align="center center" flex="100">
+
+    <payment-summary mode="activity" activity="activities[0]" language="'fr'" title="activities[0].title" image="activities[0].image" charges="booking.pricing.charges" addOns="booking.addOns" total="booking.total" nights="booking.numberOfNights" guests="booking.numberOfPeople"
+      checkin="booking.checkIn" checkout="booking.checkOut">
+    </payment-summary>
+  </div>-->
+</body>
+
 </html>

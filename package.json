@@ -17,7 +17,7 @@
   "author": "Adam Ralko (github.com/aralko)",
   "license": "MIT",
   "devDependencies": {
-    "angular": "1.5.x",
+    "angular": "1.5.8",
     "angular-mocks": "1.5.x",
     "angular-socket-io": "^0.7.0",
     "babel-core": "^6.9.1",

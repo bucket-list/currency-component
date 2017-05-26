@@ -1,0 +1,29 @@
+<div ng-repeat="addon in $ctrl.availableAddons">
+  <md-list-item class="md-2-line">
+    <div layout="row" class="md-list-item-text " flex>
+      <div layout="row" layout-align="start center" flex="50">
+        <div layout="column" class="">
+          <span class="lineItemSubHeader">{{addon.label}}</span>
+
+          <div layout="row" class="">
+            <span class="lineItemSubDetail ">{{addon.amount/ 100}} CFP</span>
+            <!--<ng-md-icon icon="check"></ng-md-icon>-->
+
+          </div>
+
+        </div>
+      </div>
+
+      <div layout="row " layout-align="end center " flex="50 ">
+        <div layout="column " layout-align="center end " flex>
+          <ng-md-icon icon="add_circle_outline" class="listIconSub" ng-click="$ctrl.adjustAddon($index,'up');"> </ng-md-icon>
+          <ng-md-icon icon=" remove_circle_outline " class="listIconSub" ng-click="$ctrl.adjustAddon($index,'down');"></ng-md-icon>
+        </div>
+
+        <div layout="column " layout-align="end end ">
+          <input class='addOnQuantityText' ng-model="addon.quantity "></input>
+        </div>
+      </div>
+    </div>
+  </md-list-item>
+</div>
