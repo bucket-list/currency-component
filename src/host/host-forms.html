@@ -17,11 +17,11 @@
         <div layout="row " layout-align="end center " flex="50 ">
           <div class="lineItemIcon ">
           </div>
-          <p class=" ">{{ booking.numberOfNights}} Nights </p>
+          <p class=" ">{{ vm.lengthOfStay() }} {{ vm.lengthOfStay() == '1' ? 'Night' :  'Nights' }} </p>
           <div class="spacer "></div>
           <div class="guestIcon ">
           </div>
-          <p class=" ">{{ booking.numberOfPeople}} People </p>
+          <p class=" ">{{ booking.numberOfPeople}} {{ booking.numberOfPeople == '1' ? 'Person' : 'People'}} </p>
         </div>
       </div>
     </md-list-item>
@@ -35,8 +35,19 @@
         </div>
         <div layout="row " layout-align="end center " flex="50 ">
 
-          <div layout="column ">
-            <p class="lineItemHeader ">{{vm.formatDate(booking.checkin,'LL')}}</p>
+          <div layout="row">
+            <p class="lineItemHeader" flex>{{vm.formatDate(booking.checkin,'LL')}}</p>
+              <sm-date-time-picker 
+                  fname="field" 
+                  ng-model="booking.checkin" 
+                  is-required="{{true}}" 
+                  format="LL"
+                  mode="date"
+                  close-on-select="true"
+                  inputtype="input"
+                  week-start-day="Monday"
+                  on-date-selected-call="setCheckInDate(date)">
+              </sm-date-time-picker>
           </div>
         </div>
       </div>
@@ -50,8 +61,19 @@
         </div>
 
         <div layout="row " layout-align="end center " flex="50 ">
-          <div layout="column ">
+          <div layout="row ">
             <p class="lineItemHeader ">{{vm.formatDate(booking.checkout,'LL')}}</p>
+                          <sm-date-time-picker 
+                  fname="field" 
+                  ng-model="booking.checkout" 
+                  is-required="{{true}}" 
+                  format="LL"
+                  mode="date"
+                  close-on-select="true"
+                  inputtype="input"
+                  week-start-day="Monday"
+                  on-date-selected-call="setCheckOutDate(date)">
+              </sm-date-time-picker>
           </div>
         </div>
       </div>
@@ -99,8 +121,8 @@
         <form name="detailsForm" no-validate>
           <md-input-container class="md-block">
             <label>Full Name</label>
-            <input name="name" ng-model="vm.bookingForm.name" required type="text" md-maxlength="100" ng-minlength="3" />
-            <div ng-messages="detailsForm.name.$error">
+            <input name="name" ng-model="vm.bookingForm.fullName" required type="text" md-maxlength="100" ng-minlength="3" />
+            <div ng-messages="detailsForm.fullName.$error">
               <div ng-message="required">This is required.</div>
               <div ng-message="minlength">The name must be at least 3 characters long.</div>
               <div ng-message="md-maxlength">The name must be less than 100 characters long.</div>
@@ -149,8 +171,8 @@
     <md-divider ng-if="!vm.guestDetailsExpanded"></md-divider>
 
   </md-list>
-  <md-list class="" flex>
-    <md-list-item class="paymentHeader md-2-line " ng-click="vm.toggleAddons(); vm.addonsSelected = 1" ng-mouseleave="addOnsHover = 0" ng-mouseenter="addOnsHover = 1" ng-init="addOnsHover=0" ng-disabled="detailsForm.$invalid">
+  <md-list class="" flex ng-disabled="detailsForm.$invalid">
+    <md-list-item class="paymentHeader md-2-line " ng-click="vm.toggleAddons(); vm.addonsSelected = 1" ng-mouseleave="addOnsHover = 0" ng-mouseenter="addOnsHover = 1" ng-init="addOnsHover=0" ng-disabled="detailsForm.$invalid" ng-show="booking.addOns.length > 0">
       <div layout="row" class="md-list-item-text " flex>
         <div layout="row" layout-align="start center" flex="50">
           <div layout="column" class="formHeader">
@@ -178,7 +200,7 @@
         </div>
       </div>
     </md-list-item>
-    <div class="addonForm" ng-show="vm.addonsExpanded">
+    <div class="addonForm" ng-show="vm.addonsExpanded && booking.addOns.length > 0">
       <div ng-repeat="addon in booking.addOns">
         <md-list-item class="md-2-line addOnListItem">
           <div layout="row" class="md-list-item-text " flex>
@@ -187,7 +209,7 @@
                 <span class="lineItemSubHeader">{{addon.label}}</span>
 
                 <div layout="row" class="">
-                  <span class="lineItemSubDetail ">{{addon.amount/ 100}} CFP</span>
+                  <span class="lineItemSubDetail ">{{addon.price/ 100}} CFP</span>
                   <!--<ng-md-icon icon="check"></ng-md-icon>-->
 
                 </div>
@@ -210,28 +232,22 @@
       </div>
     </div>
     <md-divider ng-if="!vm.addonsExpanded"></md-divider>
-    <!--
-    <md-list-item class="paymentHeader md-2-line " ng-mouseleave="addOnsHover = 0" ng-mouseenter="addOnsHover = 1" ng-init="addOnsHover=0">
+    <md-list-item class="paymentHeader md-2-line md-primary" ng-click="vm.payNow();" ng-mouseleave="addOnsHover = 0" ng-mouseenter="addOnsHover = 1" ng-init="addOnsHover=0" ng-show="booking.paymentResponse == ''" ng-disabled="detailsForm.$invalid">
       <div layout="row" class="md-list-item-text " flex>
         <div layout="row" layout-align="start center" flex="50">
-          <div layout="column" class="formHeader">
-            <div layout="row" layout-align="start center" flex="50">
-              <ng-md-icon class="headerIcon" icon="filter_3" class="listIcon "></ng-md-icon>
+          <ng-md-icon class="headerIcon" icon="filter_3" class="listIcon " ng-if="booking.addOns.length > 0"></ng-md-icon>
+          <ng-md-icon class="headerIcon" icon="filter_2" class="listIcon " ng-if="booking.addOns.length < 1"></ng-md-icon>
 
-              <span class="paymentSubTitle">Payment</span>
-            </div>
-
-
-          </div>
+          <span class="paymentSubTitle total">Pay</span>
         </div>
-
         <div layout="row " layout-align="end center " flex="50 ">
-          <div layout="column " layout-align="center end " flex>
-            <ng-md-icon icon="input " class="listIcon "></ng-md-icon>
-          </div>
+          <span class="paymentSubTitle total"></span>
+
+          <ng-md-icon icon="input" class="listIcon "></ng-md-icon>
+
         </div>
       </div>
-    </md-list-item>-->
+    </md-list-item>
 
 
   </md-list>

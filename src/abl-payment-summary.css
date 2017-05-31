@@ -97,7 +97,7 @@ md-list {
     font-weight: 400;
     letter-spacing: 0.010em;
     margin: 0 0 0 0;
-    line-height: 1.6em;
+    line-height: 50px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -204,11 +204,12 @@ md-list {
 }
 
 .paymentSummaryImageBig {
-    height: 288px;
+    height: 244px;
     margin: 24px 12px 0 12px;
     background-position: center center;
     background-repeat: no-repeat;
     border-radius: 2px;
+    box-shadow: 0 1px 3px 0 rgba(0,0,0,.6);
 }
 
 .mobileList {

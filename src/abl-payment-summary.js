@@ -17,7 +17,7 @@ import activityTotalsTemplate from './activity/activity-totals.html';
 import activityTotalsMobileTemplate from './activity/activity-totals-mobile.html';
 
 import styles from './abl-payment-summary.css';
-angular.module('abl-payment-summary', ['ngMaterial']).run(function($templateCache) {
+angular.module('abl-payment-summary', ['ngMaterial','smDateTimeRangePicker']).run(function($templateCache) {
   $templateCache.put('host-forms.html', hostFormsTemplate);
   $templateCache.put('host-personal-details.html', hostPersonalDetailsForm);
   $templateCache.put('host-addons.html', hostAddonsForm);
@@ -118,12 +118,13 @@ angular.module('abl-payment-summary').component('paymentSummary', {
         if (mode == 'down' && this.availableAddons[i].quantity > 0)
           this.availableAddons[i].quantity--;
 
+        $scope.$emit('recalculatePricing');
       }
 
       function addonTotal() {
         var total = 0;
         this.availableAddons.forEach(function(e, i) {
-          total += (e.amount * e.quantity);
+          total += (e.price * e.quantity);
         });
         return total;
       };
@@ -205,14 +206,15 @@ angular.module('abl-payment-summary').component('paymentSummary', {
 
     },
     template: hostFormsTemplate
-  }).directive('ablBook', function($sce, $compile, $mdMedia) {
+  }).directive('ablBook', function($sce, $compile, $mdMedia, $state) {
     return {
       restrict: 'E',
       scope: {
         unit: '=',
         language: '=',
-
-        booking: '='
+        config: '=',
+        booking: '=',
+        pricing: '='
       },
       template: hostTemplate,
       link: function($scope, element, attrs) {
@@ -226,6 +228,23 @@ angular.module('abl-payment-summary').component('paymentSummary', {
         console.log('abl-book', $scope, $attrs);
         var vm = this;
 
+        $scope.goToState = function(state) {
+          $state.go(state);
+        }
+        
+        var moment = window.moment;
+        
+        this.lengthOfStay = function() {
+          if(angular.isDefined($scope.booking)) {
+            var checkin = moment($scope.booking.checkin);
+            var checkout = moment($scope.booking.checkout);
+            return checkout.diff(checkin, 'days');
+          }
+          
+          return '1';
+
+        }
+        
         $scope.$mdMedia = $mdMedia;
 
         $scope.screenIsBig = function() {
@@ -271,13 +290,17 @@ angular.module('abl-payment-summary').component('paymentSummary', {
           if (mode == 'down' && $scope.booking.addOns[i].quantity > 0)
             $scope.booking.addOns[i].quantity--;
 
+          console.log('adjust addons', $scope.booking.addOns);
         }
 
         function addonTotal() {
           var total = 0;
-          $scope.booking.addOns.forEach(function(e, i) {
-            total += (e.amount * e.quantity);
-          });
+          if(angular.isDefined($scope.booking['addOns'])) {
+            $scope.booking['addOns'].forEach(function(e, i) {
+              total += (e.price * e.quantity);
+            });
+          }
+
           return total;
         };
 
@@ -289,15 +312,7 @@ angular.module('abl-payment-summary').component('paymentSummary', {
           this.showTaxes = !this.showTaxes;
         }
 
-        function taxTotal() {
-          var total = 0;
-          this.taxes.forEach(function(e, i) {
-            total += e.price;
-          });
-          return total;
-        };
 
-        this.taxTotal = taxTotal;
 
         this.update = function() {
           this.showGridBottomSheet();
@@ -313,35 +328,96 @@ angular.module('abl-payment-summary').component('paymentSummary', {
           e.quantity = 0;
         })
 
-        //Base price of booking
-        this.taxes = $scope.booking['pricing']['charges'].filter(function(value) {
-          return (value['type'] != 'aup');
-        });
 
-        if (angular.isDefined($scope.booking)) {
-          this.base = $scope.booking['pricing']['charges'].filter(function(value) {
-            return (value['type'] == 'aup');
-          })[0];
+        function base() {
+          var base = 0;
+          if (angular.isDefined($scope.booking['pricing'])) {
+            if (angular.isDefined($scope.booking['pricing']['charges'])) {
+              base = $scope.booking['pricing']['charges'].filter(function(value) {
+                return (value['type'] == 'aup');
+              })[0].price;
+            }
+            //console.log('base', base);
+          }
+          return base;
         }
+        
+        this.base = base;
+           
 
         this.payNow = function() {
           $scope.booking.unit = $scope.unit;
           angular.extend($scope.booking, vm.bookingForm);
+          console.debug('emit pay', $scope.booking);
           $scope.$emit('pay', $scope.booking);
         }
 
-        //If charges are passed, filter/get the taxes
-        if (angular.isDefined($scope.booking)) {
-          this.taxes = $scope.booking['pricing']['charges'].filter(function(value) {
-            return (value['type'] != 'aup');
-          });
+        function taxes() {
+          var taxes = [];
+          if (angular.isDefined($scope.booking['pricing']['charges'])) {
+            taxes = $scope.booking['pricing']['charges'].filter(function(value) {
+              return (value['type'] != 'aup');
+            });
+          }
+          return taxes;
         }
+
+        this.taxes = taxes;
+        
+        function taxTotal() {
+          var total = 0;
+          
+          if(angular.isDefined($scope.booking['pricing']['charges'])) {
+            $scope.booking['pricing']['charges'].forEach(function(e, i) {
+              if(e.type == 'tax' || e.type == 'fee')
+                total += (e.price * e.quantity);
+            });
+          }
+
+          return total;
+        };
+
+        this.taxTotal = taxTotal;
+
 
         vm.bookingResponse = {};
         $scope.$on('paymentResponse', function(e, args) {
           vm.bookingResponse = angular.copy(args);
           console.log('abl-book payment response', args);
         });
+
+        $scope.$watch('detailsForm', function(newValue, oldValue) {
+          console.log('detailsForm watch', newValue, oldValue);
+        });
+        
+        $scope.$watch('booking.checkin', function(newValue, oldValue) {
+          console.log('booking.checkin watch', newValue, oldValue);
+          $scope.setCheckInDate(newValue);
+        });
+        
+        
+        $scope.setCheckInDate = function(d) {
+          var newDate = moment(d).format('LL');
+          if($scope.booking.checkin != newDate)
+            $scope.booking.checkin = newDate;
+          console.log('setCheckInDate', d, newDate, $scope.booking.checkin);
+        }
+        
+        $scope.$watch('booking.checkout', function(newValue, oldValue) {
+          console.log('booking.checkout watch', newValue, oldValue);
+          $scope.setCheckOutDate(newValue);
+        });
+        
+        
+        $scope.setCheckOutDate = function(d) {
+          var newDate = moment(d).format('LL');
+          if($scope.booking.checkout != newDate)
+            $scope.booking.checkout = newDate;
+          console.log('setCheckOutDate', d, newDate, $scope.booking.checkout);
+        }
+        
+        $scope.setCheckOutDate($scope.booking.checkout);
+        $scope.setCheckInDate($scope.booking.checkin);
 
       }
     };
