@@ -17,7 +17,7 @@
         <div layout="row " layout-align="end center " flex="50 ">
           <div class="lineItemIcon ">
           </div>
-          <p class=" ">{{ vm.lengthOfStay() }} {{ vm.lengthOfStay() == '1' ? 'Night' :  'Nights' }} </p>
+          <p class=" ">{{ vm.lengthOfStay() }} {{ vm.lengthOfStay() == '1' ? 'Night' : 'Nights' }} </p>
           <div class="spacer "></div>
           <div class="guestIcon ">
           </div>
@@ -37,17 +37,8 @@
 
           <div layout="row">
             <p class="lineItemHeader" flex>{{vm.formatDate(booking.checkin,'LL')}}</p>
-              <sm-date-time-picker 
-                  fname="field" 
-                  ng-model="booking.checkin" 
-                  is-required="{{true}}" 
-                  format="LL"
-                  mode="date"
-                  close-on-select="true"
-                  inputtype="input"
-                  week-start-day="Monday"
-                  on-date-selected-call="setCheckInDate(date)">
-              </sm-date-time-picker>
+            <sm-date-time-picker fname="field" ng-model="booking.checkin" is-required="{{true}}" format="LL" mode="date" close-on-select="true" inputtype="input" week-start-day="Monday" on-date-selected-call="setCheckInDate(date)">
+            </sm-date-time-picker>
           </div>
         </div>
       </div>
@@ -63,17 +54,8 @@
         <div layout="row " layout-align="end center " flex="50 ">
           <div layout="row ">
             <p class="lineItemHeader ">{{vm.formatDate(booking.checkout,'LL')}}</p>
-                          <sm-date-time-picker 
-                  fname="field" 
-                  ng-model="booking.checkout" 
-                  is-required="{{true}}" 
-                  format="LL"
-                  mode="date"
-                  close-on-select="true"
-                  inputtype="input"
-                  week-start-day="Monday"
-                  on-date-selected-call="setCheckOutDate(date)">
-              </sm-date-time-picker>
+            <sm-date-time-picker fname="field" ng-model="booking.checkout" is-required="{{true}}" format="LL" mode="date" close-on-select="true" inputtype="input" week-start-day="Monday" on-date-selected-call="setCheckOutDate(date)">
+            </sm-date-time-picker>
           </div>
         </div>
       </div>

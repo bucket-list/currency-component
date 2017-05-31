@@ -82,24 +82,24 @@
     </md-list-item>
     <!--<md-divider ng-if="!vm.showTaxes " class="totalDivider "></md-divider>
         <md-divider ng-if="vm.showTaxes "></md-divider>-->
-<div ng-repeat="charge in booking.pricing.charges" ng-show="vm.showTaxes">
-    <md-list-item class="list-item-48 lineItemDetail" ng-if="charge.type == 'tax' || charge.type =='fee'" >
-      <div class="md-list-item-text " layout="row " flex>
-        <div layout="row " layout-align="start center " flex="50 ">
-          <div layout="row ">
-            <p class=" ">{{ charge.label }}</p>
-            <!--<p class="lineItemDetail " ng-if="!charge.percent "> {{ charge.price / 100 }} CFP</p>-->
-            <p class="" ng-if="charge.percent ">&nbsp; {{ charge.percent}}%</p>
+    <div ng-repeat="charge in booking.pricing.charges" ng-show="vm.showTaxes">
+      <md-list-item class="list-item-48 lineItemDetail" ng-if="charge.type == 'tax' || charge.type =='fee'">
+        <div class="md-list-item-text " layout="row " flex>
+          <div layout="row " layout-align="start center " flex="50 ">
+            <div layout="row ">
+              <p class=" ">{{ charge.label }}</p>
+              <!--<p class="lineItemDetail " ng-if="!charge.percent "> {{ charge.price / 100 }} CFP</p>-->
+              <p class="" ng-if="charge.percent ">&nbsp; {{ charge.percent}}%</p>
+            </div>
+          </div>
+          <div layout="row " layout-align="end center " flex="50 ">
+            <p class="lineItemDetail ">{{ charge.price/100}} CFP</p>
           </div>
         </div>
-        <div layout="row " layout-align="end center " flex="50 ">
-          <p class="lineItemDetail ">{{ charge.price/100}} CFP</p>
-        </div>
-      </div>
-      <!--<md-divider md-inset ng-if="$index !=$ ctrl.taxes.length - 1 " class="lineItemDetailDivider "></md-divider>-->
-      <!--<md-divider ng-if="$index==$ ctrl.taxes.length - 1 " class="darkerDivider "></md-divider>-->
-    </md-list-item>
-</div>
+        <!--<md-divider md-inset ng-if="$index !=$ ctrl.taxes.length - 1 " class="lineItemDetailDivider "></md-divider>-->
+        <!--<md-divider ng-if="$index==$ ctrl.taxes.length - 1 " class="darkerDivider "></md-divider>-->
+      </md-list-item>
+    </div>
     <md-list-item class="paymentHeader md-2-line total " ng-mouseleave="addOnsHover = 0" ng-mouseenter="addOnsHover = 1" ng-init="addOnsHover=0">
       <div class="md-list-item-text " layout="row " layout-align="space-between center " flex>
         <div layout="row " layout-align="start center " flex="50 ">
