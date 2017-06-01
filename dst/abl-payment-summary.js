@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "cfe34902045b46ae8b5d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "e39306a22a9d7c8294cc"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -1012,7 +1012,7 @@
 	
 	        if (moment(newDate).isBefore(moment($scope.booking.checkin))) $scope.booking.checkin = moment(newDate).subtract(1, 'days');
 	
-	        $scope.$broadcast('recalculatePricing');
+	        $scope.$emit('recalculatePricing');
 	      };
 	
 	      $scope.setCheckOutDate($scope.booking.checkout);
