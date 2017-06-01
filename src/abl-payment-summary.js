@@ -17,7 +17,7 @@ import activityTotalsTemplate from './activity/activity-totals.html';
 import activityTotalsMobileTemplate from './activity/activity-totals-mobile.html';
 
 import styles from './abl-payment-summary.css';
-angular.module('abl-payment-summary', ['ngMaterial','smDateTimeRangePicker']).run(function($templateCache) {
+angular.module('abl-payment-summary', ['ngMaterial', 'smDateTimeRangePicker']).run(function($templateCache) {
   $templateCache.put('host-forms.html', hostFormsTemplate);
   $templateCache.put('host-personal-details.html', hostPersonalDetailsForm);
   $templateCache.put('host-addons.html', hostAddonsForm);
@@ -231,20 +231,20 @@ angular.module('abl-payment-summary').component('paymentSummary', {
         $scope.goToState = function(state) {
           $state.go(state);
         }
-        
+
         var moment = window.moment;
-        
+
         this.lengthOfStay = function() {
-          if(angular.isDefined($scope.booking)) {
+          if (angular.isDefined($scope.booking)) {
             var checkin = moment($scope.booking.checkin);
             var checkout = moment($scope.booking.checkout);
             return checkout.diff(checkin, 'days');
           }
-          
+
           return '1';
 
         }
-        
+
         $scope.$mdMedia = $mdMedia;
 
         $scope.screenIsBig = function() {
@@ -295,7 +295,7 @@ angular.module('abl-payment-summary').component('paymentSummary', {
 
         function addonTotal() {
           var total = 0;
-          if(angular.isDefined($scope.booking['addOns'])) {
+          if (angular.isDefined($scope.booking['addOns'])) {
             $scope.booking['addOns'].forEach(function(e, i) {
               total += (e.price * e.quantity);
             });
@@ -341,9 +341,9 @@ angular.module('abl-payment-summary').component('paymentSummary', {
           }
           return base;
         }
-        
+
         this.base = base;
-           
+
 
         this.payNow = function() {
           $scope.booking.unit = $scope.unit;
@@ -363,13 +363,13 @@ angular.module('abl-payment-summary').component('paymentSummary', {
         }
 
         this.taxes = taxes;
-        
+
         function taxTotal() {
           var total = 0;
-          
-          if(angular.isDefined($scope.booking['pricing']['charges'])) {
+
+          if (angular.isDefined($scope.booking['pricing']['charges'])) {
             $scope.booking['pricing']['charges'].forEach(function(e, i) {
-              if(e.type == 'tax' || e.type == 'fee')
+              if (e.type == 'tax' || e.type == 'fee')
                 total += (e.price * e.quantity);
             });
           }
@@ -389,33 +389,39 @@ angular.module('abl-payment-summary').component('paymentSummary', {
         $scope.$watch('detailsForm', function(newValue, oldValue) {
           console.log('detailsForm watch', newValue, oldValue);
         });
-        
+
         $scope.$watch('booking.checkin', function(newValue, oldValue) {
           console.log('booking.checkin watch', newValue, oldValue);
           $scope.setCheckInDate(newValue);
         });
-        
-        
+
+
         $scope.setCheckInDate = function(d) {
           var newDate = moment(d).format('LL');
-          if($scope.booking.checkin != newDate)
+          if ($scope.booking.checkin != newDate)
             $scope.booking.checkin = newDate;
           console.log('setCheckInDate', d, newDate, $scope.booking.checkin);
+
+          if (moment(newDate).isAfter(moment($scope.booking.checkout)))
+            $scope.booking.checkout = moment(newDate).add(1, 'days');
         }
-        
+
         $scope.$watch('booking.checkout', function(newValue, oldValue) {
           console.log('booking.checkout watch', newValue, oldValue);
           $scope.setCheckOutDate(newValue);
         });
-        
-        
+
+
         $scope.setCheckOutDate = function(d) {
           var newDate = moment(d).format('LL');
-          if($scope.booking.checkout != newDate)
+          if ($scope.booking.checkout != newDate)
             $scope.booking.checkout = newDate;
           console.log('setCheckOutDate', d, newDate, $scope.booking.checkout);
+
+          if (moment(newDate).isBefore(moment($scope.booking.checkin)))
+            $scope.booking.checkin = moment(newDate).subtract(1, 'days');
         }
-        
+
         $scope.setCheckOutDate($scope.booking.checkout);
         $scope.setCheckInDate($scope.booking.checkin);
 

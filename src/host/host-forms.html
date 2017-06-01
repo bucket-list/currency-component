@@ -213,7 +213,7 @@
         </md-list-item>
       </div>
     </div>
-    <md-divider ng-if="!vm.addonsExpanded"></md-divider>
+    <md-divider ng-if="!vm.addonsExpanded && booking.addOns.length > 0"></md-divider>
     <md-list-item class="paymentHeader md-2-line md-primary" ng-click="vm.payNow();" ng-mouseleave="addOnsHover = 0" ng-mouseenter="addOnsHover = 1" ng-init="addOnsHover=0" ng-show="booking.paymentResponse == ''" ng-disabled="detailsForm.$invalid">
       <div layout="row" class="md-list-item-text " flex>
         <div layout="row" layout-align="start center" flex="50">

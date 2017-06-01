@@ -24,6 +24,8 @@ md-list {
     max-width: 440px;
     margin-bottom: 0;
     margin-top: 0;
+    padding-right: 16px;
+    padding-left: 16px;
 }
 
 .paymentHeader p {
@@ -210,7 +212,7 @@ md-list {
     background-position: center center;
     background-repeat: no-repeat;
     border-radius: 2px;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .6);
+    /*box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .6);*/
 }
 
 .mobileList {

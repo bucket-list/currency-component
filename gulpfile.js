@@ -70,7 +70,7 @@ gulp.task('watch', function() {
   gulp.watch([
     'src/*.js',
     'src/*.css',
-    'src/*.html'
+    'src/**/*.html'
   ], function() {
     gulp.start('watch-recompile');
   });
