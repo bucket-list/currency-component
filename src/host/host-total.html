@@ -53,23 +53,24 @@
     </md-list-item>
     <!--<md-divider ng-if="vm.taxes "></md-divider>-->
 
-    <md-list-item class="list-item-48 lineItemDetail " ng-repeat="charge in booking.addOns " ng-show="vm.showAddons " ng-if="booking.addOns.length > 0">
-      <div class="md-list-item-text " layout="row " flex>
-        <div layout="row " layout-align="start center " flex="50 ">
-          <div layout="row ">
-            <p>{{ charge.label }} <span style="vertical-align: 'middle' ">x</span> {{ charge.quantity }}</p>
-            <!--<p class=" ">{{ charge.amount / 100 }} CFP</p>-->
+    <div ng-repeat="charge in booking.addOns " ng-show="vm.showAddons " ng-if="booking.addOns.length > 0">
+      <md-list-item class="list-item-48 lineItemDetail" ng-if="charge.quantity > 0">
+        <div class="md-list-item-text " layout="row " flex>
+          <div layout="row " layout-align="start center " flex="50 ">
+            <div layout="row ">
+              <p>{{ charge.label }} <span style="vertical-align: 'middle' ">x</span> {{ charge.quantity }}</p>
+              <!--<p class=" ">{{ charge.amount / 100 }} CFP</p>-->
+            </div>
+          </div>
+          <div layout="row " layout-align="end center " flex="50 ">
+            <p class=" ">{{ charge.price/100 * charge.quantity}} CFP</p>
           </div>
         </div>
-        <div layout="row " layout-align="end center " flex="50 ">
-          <p class=" ">{{ charge.price/100 * charge.quantity}} CFP</p>
-        </div>
-      </div>
 
-      <!--<md-divider md-inset ng-if="$index !=$ ctrl.addons.length - 1 " class="lineItemDetailDivider "></md-divider>
+        <!--<md-divider md-inset ng-if="$index !=$ ctrl.addons.length - 1 " class="lineItemDetailDivider "></md-divider>
           <md-divider ng-if="$index==$ ctrl.addons.length - 1 "></md-divider>-->
-    </md-list-item>
-
+      </md-list-item>
+    </div>
     <md-list-item class="lineItemHeader " ng-if="booking.taxes.length > 0" ng-click="vm.toggleShowTaxes() ">
       <div class="md-list-item-text " layout="row " flex>
         <div layout="row " layout-align="start center " flex="50 ">
@@ -108,7 +109,7 @@
           <span class="total ">Total </span>
         </div>
         <div layout="row " layout-align="end center " flex="50 ">
-          <span class="total ">{{booking.pricing.total + vm.addonTotal() / 100}} CFP</span>
+          <span class="total ">{{booking.pricing.total / 100 + vm.addonTotal() / 100 | number:2}} CFP</span>
         </div>
       </div>
     </md-list-item>

@@ -404,6 +404,8 @@ angular.module('abl-payment-summary').component('paymentSummary', {
 
           if (moment(newDate).isAfter(moment($scope.booking.checkout)))
             $scope.booking.checkout = moment(newDate).add(1, 'days');
+
+          $scope.$emit('recalculatePricing');
         }
 
         $scope.$watch('booking.checkout', function(newValue, oldValue) {
@@ -420,6 +422,8 @@ angular.module('abl-payment-summary').component('paymentSummary', {
 
           if (moment(newDate).isBefore(moment($scope.booking.checkin)))
             $scope.booking.checkin = moment(newDate).subtract(1, 'days');
+
+          $scope.$broadcast('recalculatePricing');
         }
 
         $scope.setCheckOutDate($scope.booking.checkout);
