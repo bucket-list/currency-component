@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "e39306a22a9d7c8294cc"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "691ac4016aaa5a3a77d3"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -814,7 +814,7 @@
 	    };
 	  },
 	  template: _hostForms2.default
-	}).directive('ablBook', function ($sce, $compile, $mdMedia, $state) {
+	}).directive('ablBook', function ($sce, $compile, $mdMedia, $window, $state) {
 	  return {
 	    restrict: 'E',
 	    scope: {
@@ -841,6 +841,14 @@
 	      };
 	
 	      var moment = window.moment;
+	
+	      // Digest on resize to recalculate $mdMedia window size
+	      function onResize() {
+	        // console.log('resize');
+	        $scope.$digest();
+	      };
+	
+	      angular.element($window).on('resize', onResize);
 	
 	      this.lengthOfStay = function () {
 	        if (angular.isDefined($scope.booking)) {

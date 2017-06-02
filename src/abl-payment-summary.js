@@ -206,7 +206,7 @@ angular.module('abl-payment-summary').component('paymentSummary', {
 
     },
     template: hostFormsTemplate
-  }).directive('ablBook', function($sce, $compile, $mdMedia, $state) {
+  }).directive('ablBook', function($sce, $compile, $mdMedia, $window, $state) {
     return {
       restrict: 'E',
       scope: {
@@ -233,6 +233,15 @@ angular.module('abl-payment-summary').component('paymentSummary', {
         }
 
         var moment = window.moment;
+
+
+        // Digest on resize to recalculate $mdMedia window size
+        function onResize() {
+          // console.log('resize');
+          $scope.$digest();
+        };
+
+        angular.element($window).on('resize', onResize);
 
         this.lengthOfStay = function() {
           if (angular.isDefined($scope.booking)) {
