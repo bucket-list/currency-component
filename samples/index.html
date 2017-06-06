@@ -14,10 +14,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js" crossorigin="anonymous"></script>
 
   <!-- Material, from CDN. -->
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-messages.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-aria.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-messages.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-sanitize.js"></script>
 
   <!-- Angular Material Library -->
   <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.js"></script>
@@ -30,7 +31,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.7.1/angular-material-icons.min.js"></script>
 
   <!-- New module code. -->
-  <script src="abl-payment-summary.js"></script>
+  <script src="abl-currencies.js"></script>
 
   <!-- Source for sample app. -->
   <script src="sampleapp.js"></script>
@@ -47,28 +48,9 @@
 </head>
 
 <body ng-controller="SampleController" data-spy="scroll" mode="activity" data-target="#mainNav">
-
-  <!--<payment-summary details-form="personalDetailsForm" mode="host" unit="unit" language="'fr'" title="unit.strings['fr'].title" image="unit.defaultImage" charges="booking.pricing.charges" addOns="booking.addOns" total="booking.total" nights="booking.numberOfNights"
-    guests="booking.numberOfPeople" checkin="booking.checkIn" checkout="booking.checkOut">
-  </payment-summary>-->
-  <div layout="column" layout-align="center stretch">
-
-    <abl-book unit="unit" language="'fr'" booking="booking">
-    </abl-book>
-  </div>
   <div layout="row" layout-align="center center">
-    <p>Test payment response:</p>
-    <md-button ng-click="paymentResponse = 'completed'" ng-class="{'md-primary' : paymentResponse == 'completed' }">Completed</md-button>
-    <md-button ng-click="paymentResponse = 'processing'" ng-class="{'md-primary' : paymentResponse == 'processing' }">Processing</md-button>
-    <md-button ng-click="paymentResponse = 'failed'" ng-class="{'md-primary' : paymentResponse == 'failed' }">Declined</md-button>
-
+    <abl-currencies></abl-currencies>
   </div>
-  <!--<div layout="row" layout-align="center center" flex="100">
-
-    <payment-summary mode="activity" activity="activities[0]" language="'fr'" title="activities[0].title" image="activities[0].image" charges="booking.pricing.charges" addOns="booking.addOns" total="booking.total" nights="booking.numberOfNights" guests="booking.numberOfPeople"
-      checkin="booking.checkIn" checkout="booking.checkOut">
-    </payment-summary>
-  </div>-->
 </body>
 
 </html>

@@ -27,7 +27,7 @@ module.exports = function(config) {
     preprocessors: {
       //'../test/*.spec.js': ['webpack'],
       './test/index.js': ['webpack'],
-      'src/abl-payment-summary.js': ['webpack', 'coverage']
+      'src/abl-currencies.js': ['webpack', 'coverage']
     },
 
     webpack: webpackConfig,

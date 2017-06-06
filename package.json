@@ -1,10 +1,10 @@
 {
-  "name": "abl-payment-summary",
+  "name": "abl-currencies",
   "version": "0.0.2",
-  "description": "ABL Payment Summary",
-  "main": "./dst/abl-payment-summary.js",
+  "description": "ABL Currencies",
+  "main": "./dst/abl-currencies.js",
   "scripts": {
-    "build": "rm -r ./dst && webpack && uglifyjs ./dst/abl-payment-summary.js --compress --mangle -o ./dst/abl-payment-summary.min.js --source-map ./dst/abl-payment-summary.min.js.map",
+    "build": "rm -r ./dst && webpack && uglifyjs ./dst/abl-currencies.js --compress --mangle -o ./dst/abl-currencies.min.js --source-map ./dst/abl-currencies.min.js.map",
     "start": "webpack-dev-server --hot --inline --port 9999 --content-base ./samples",
     "test": "karma start karma.config.js",
     "test-debug": "karma start karma.config.js --no-single-run --browsers Chrome",

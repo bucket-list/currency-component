@@ -1,0 +1,64 @@
+<div>
+    <h1>abl-currencies-template</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Currency</th>
+                <th style="width:20px"></th>
+                <th>Example</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>USD</td>
+                <td></td>
+                <td>{{ $ctrl.price | ablCurrency: 'usd' }}</td>
+            </tr>
+            <tr>
+                <td>EUR</td>
+                <td></td>
+                <td>{{ $ctrl.price | ablCurrency: 'eur' }}</td>
+            </tr>
+            <tr>
+                <td>KR</td>
+                <td></td>
+                <td>{{ $ctrl.price | ablCurrency: 'kr' }}</td>
+            </tr>
+            <tr>
+                <td>JPY</td>
+                <td></td>
+                <td><span ng-bind-html="$ctrl.price | ablCurrency: 'jpy': 'html'"></span></td>
+            </tr>
+            <tr>
+                <td>GBP</td>
+                <td></td>
+                <td>{{ $ctrl.price | ablCurrency: 'gbp' }}</td>
+            </tr>
+            <tr>
+                <td>CHF</td>
+                <td></td>
+                <td>{{ $ctrl.price | ablCurrency: 'chf' }}</td>
+            </tr>
+            <tr>
+                <td>BRL</td>
+                <td></td>
+                <td>{{ $ctrl.price | ablCurrency: 'brl' }}</td>
+            </tr>
+            <tr>
+                <td>No currency passed (default $)</td>
+                <td></td>
+                <td>{{ $ctrl.price | ablCurrency }}</td>
+            </tr>
+            <tr>
+                <td>Currency passed but not found on the list</td>
+                <td></td>
+                <td>{{ $ctrl.price | ablCurrency: 'abc' }}</td>
+            </tr>
+            <tr>
+                <td>Currency with html</td>
+                <td></td>
+                <td><span ng-bind-html="$ctrl.price | ablCurrency: 'usd': 'html'"></span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

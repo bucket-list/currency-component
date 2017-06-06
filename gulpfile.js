@@ -18,7 +18,7 @@ var webpackDevConfig = require("./webpack.config.dev.js");
 //Get previous name of module from package.json
 var pckg = require('./package.json');
 var oldName = pckg.name;
-var name = (argv.name === undefined) ? 'abl-payment-summary' : argv.name;
+var name = (argv.name === undefined) ? 'abl-currencies' : argv.name;
 
 gulp.task('new', ['js', 'css'], function() {
   gulp.src(['webpack.config.js', 'webpack.config.dev.js', 'package.json', 'karma.config.js'])
@@ -27,7 +27,6 @@ gulp.task('new', ['js', 'css'], function() {
       overwrite: true
     });
 });
-
 
 gulp.task('js', function() {
   gulp.src(['src/*.js'])
@@ -66,7 +65,6 @@ gulp.task('watch-recompile', function() {
 });
 
 gulp.task('watch', function() {
-
   gulp.watch([
     'src/*.js',
     'src/*.css',
@@ -76,18 +74,12 @@ gulp.task('watch', function() {
   });
 });
 
-
-
 gulp.task("webpack-dev-server", function(callback) {
-
-
   var myConfig = Object.create(webpackDevConfig);
   var port = 3232;
   myConfig.entry.unshift("webpack-dev-server/client?http://0.0.0.0:" + port + "/", "webpack/hot/dev-server");
-
   myConfig.devtool = "eval";
   myConfig.debug = true;
-
   var server = new WebpackDevServer(webpack(myConfig), {
     hot: true,
     iframe: true,
@@ -99,10 +91,7 @@ gulp.task("webpack-dev-server", function(callback) {
     if (err) throw new gutil.PluginError("webpack-dev-server", err);
     gutil.log("[webpack-dev-server]", "http://localhost:" + port + "/webpack-dev-server/index.html");
   });
-
 });
-
-
 
 gulp.task('default', ['watch-recompile', 'webpack-dev-server', 'watch']);
 gulp.task('dev', ['webpack-dev-server']);
