@@ -68,7 +68,7 @@
             </md-card-title-text>
         </md-card-title>
         <md-card-content layout="row" style="text-align:center">
-            <span flex ng-if="!$ctrl.isHtml">{{$ctrl.customPrice | currencyFilter: $ctrl.customCurrency}}</span>
+            <span flex ng-if="!$ctrl.isHtml">{{$ctrl.customPrice | currencyFilter: $ctrl.customCurrency : $ctrl.prependAppendOption}}</span>
             <span flex ng-if="$ctrl.isHtml"><span ng-bind-html="$ctrl.customPrice | currencyFilter: $ctrl.customCurrency : $ctrl.prependAppendOption : 'html'"></span></span>
         </md-card-content>
         <md-divider></md-divider>
@@ -88,15 +88,16 @@
                 </md-select>
             </md-input-container>
             <md-input-container flex="25">
-                <md-checkbox flex ng-model="$ctrl.isHtml" aria-label="Html?">
-                    HTML?
-                </md-checkbox>
-            </md-input-container>
-            <md-input-container flex="25" ng-if="$ctrl.isHtml">
                 <md-checkbox flex ng-model="$ctrl.prependAppend" aria-label="Append?">
                     Append?
                 </md-checkbox>
             </md-input-container>
+            <md-input-container flex="25">
+                <md-checkbox flex aria-label="Html?" ng-model="$ctrl.isHtml">
+                    HTML?
+                </md-checkbox>
+            </md-input-container>
+            
         </md-card-actions>
     </md-card>
 

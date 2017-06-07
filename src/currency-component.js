@@ -39,11 +39,33 @@ angular.module('currency-component')
                     console.log('no html', price);
                     if (typeof currency === 'undefined') { //default currency $
                         console.log('no currency');
-                        return $filter('currency')(price);
+                        if (typeof prependAppend === 'undefined') {
+                            return $filter('currency')(price);
+                        }
+                        else {
+                            if (prependAppend === 'prepend') {
+                                return $filter('currency')(price);
+                            }
+                            else {
+                                return $filter('currency')(price, '') + '$';
+                            }
+                        }
+
                     }
                     else { //currency was passed
                         console.log('currency found', currency);
-                        return $filter('currency')(price, sign[0].sign);
+                        if (typeof prependAppend === 'undefined') {
+                            return $filter('currency')(price, sign[0].sign);
+                        }
+                        else {
+                            console.log('currency found & prependAppend', prependAppend);
+                            if (prependAppend === 'prepend') {
+                                return $filter('currency')(price, sign[0].sign);
+                            }
+                            else {
+                                return $filter('currency')(price, '') + sign[0].sign;
+                            }
+                        }
                     }
                 }
                 else { //html param passed
@@ -55,6 +77,7 @@ angular.module('currency-component')
                             return '<span class="sign">' + sign[0].sign + '</span><span class="price">' + $filter('currency')(price, '') + '</span>';
                         }
                         else {
+                            console.log('prependAppend', prependAppend);
                             if (prependAppend === 'prepend') {
                                 return '<span class="sign">' + sign[0].sign + '</span><span class="price">' + $filter('currency')(price, '') + '</span>';
                             }
