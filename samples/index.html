@@ -31,7 +31,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/angular-material-icons/0.7.1/angular-material-icons.min.js"></script>
 
   <!-- New module code. -->
-  <script src="abl-currencies.js"></script>
+  <script src="currency-component.js"></script>
 
   <!-- Source for sample app. -->
   <script src="sampleapp.js"></script>
@@ -47,9 +47,9 @@
     <![endif]-->
 </head>
 
-<body ng-controller="SampleController" data-spy="scroll" mode="activity" data-target="#mainNav">
+<body ng-controller="SampleController" data-spy="scroll" data-target="#mainNav">
   <div layout="row" layout-align="center center">
-    <abl-currencies></abl-currencies>
+    <currency-component></currency-component>
   </div>
 </body>
 

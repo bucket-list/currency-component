@@ -18,7 +18,7 @@ var webpackDevConfig = require("./webpack.config.dev.js");
 //Get previous name of module from package.json
 var pckg = require('./package.json');
 var oldName = pckg.name;
-var name = (argv.name === undefined) ? 'abl-currencies' : argv.name;
+var name = (argv.name === undefined) ? 'currency-component' : argv.name;
 
 gulp.task('new', ['js', 'css'], function() {
   gulp.src(['webpack.config.js', 'webpack.config.dev.js', 'package.json', 'karma.config.js'])

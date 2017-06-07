@@ -1,0 +1,10 @@
+span.price{
+    font-size: 30px;
+    color: #666;
+}
+span.sign{
+    font-weight: bold;
+    font-size: 20px;
+    vertical-align: baseline;
+    color: #666;
+}

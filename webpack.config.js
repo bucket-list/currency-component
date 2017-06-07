@@ -5,12 +5,12 @@ var webpack = require("webpack");
 module.exports = {
 
   //  Defines the entrypoint of our application.
-  entry: [path.resolve(__dirname, 'src/abl-currencies.js')],
+  entry: [path.resolve(__dirname, 'src/currency-component.js')],
 
   //  Bundle to ./dst.
   output: {
     path: path.resolve(__dirname, 'dst'),
-    filename: 'abl-currencies.js'
+    filename: 'currency-component.js'
   },
   
   //  Make sure we include sourcemaps. This is for the bundled
@@ -59,7 +59,7 @@ module.exports = {
     presets: ['es2015']
   },
   plugins: [
-    new ExtractTextPlugin("abl-currencies.css"),
+    new ExtractTextPlugin("currency-component.css"),
     new webpack.HotModuleReplacementPlugin()
   ]
 };

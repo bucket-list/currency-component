@@ -1,10 +1,10 @@
 {
-  "name": "abl-currencies",
-  "version": "0.0.2",
-  "description": "ABL Currencies",
-  "main": "./dst/abl-currencies.js",
+  "name": "currency-component",
+  "version": "0.0.1",
+  "description": "ABL Currency Component",
+  "main": "./dst/currency-component.js",
   "scripts": {
-    "build": "rm -r ./dst && webpack && uglifyjs ./dst/abl-currencies.js --compress --mangle -o ./dst/abl-currencies.min.js --source-map ./dst/abl-currencies.min.js.map",
+    "build": "rm -r ./dst && webpack && uglifyjs ./dst/currency-component.js --compress --mangle -o ./dst/currency-component.min.js --source-map ./dst/currency-component.min.js.map",
     "start": "webpack-dev-server --hot --inline --port 9999 --content-base ./samples",
     "test": "karma start karma.config.js",
     "test-debug": "karma start karma.config.js --no-single-run --browsers Chrome",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/bucket-list/abl-payment-summary.git"
+    "url": "git://github.com/bucket-list/currency-component.git"
   },
   "author": "Adam Ralko (github.com/aralko)",
   "license": "MIT",
