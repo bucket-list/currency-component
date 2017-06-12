@@ -1,0 +1,19 @@
+{
+  "name": "currency-component",
+  "version": "0.0.1",
+  "main": "./dst/currency-component.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "samples",
+    "node_modules",
+    "test",
+    "*.md",
+    "screen.png",
+    "karma.config.js",
+    "webpack.config.dev.js",
+    "webpack.config.js",
+    "gruntfile.js",
+    "package.json"
+  ]
+}
