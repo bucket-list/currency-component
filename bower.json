@@ -1,13 +1,20 @@
 {
   "name": "currency-component",
   "version": "0.0.1",
+  "description": "ABL Currency Component",
   "main": "./dst/currency-component.js",
-  "license": "MIT",
+  "scripts": {
+    "build": "rm -r ./dst && webpack && uglifyjs ./dst/currency-component.js --compress --mangle -o ./dst/currency-component.min.js --source-map ./dst/currency-component.min.js.map",
+    "start": "webpack-dev-server --hot --inline --port 9999 --content-base ./samples",
+    "test": "karma start karma.config.js",
+    "test-debug": "karma start karma.config.js --no-single-run --browsers Chrome",
+    "coveralls": "cp build/coverage/PhantomJS*/lcov.info lcov.info && node node_modules/coveralls/bin/coveralls.js < lcov.info"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/bucket-list/currency-component.git"
   },
-  "author": "Gonzalo Geraldo (github.com/returnvoid)",
+  "author": "Adam Ralko (github.com/aralko)",
   "license": "MIT",
   "devDependencies": {
     "angular": "1.5.8",
@@ -46,5 +53,10 @@
     "webpack-dev-server": "^1.14.1",
     "webpack-stream": "^3.2.0",
     "yargs": "^7.1.0"
+  },
+  "dependencies": {
+    "get-port": "^3.1.0",
+    "html-loader": "^0.4.5",
+    "ng-annotate-loader": "^0.2.0"
   }
 }
