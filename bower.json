@@ -2,9 +2,9 @@
   "name": "currency-component",
   "version": "0.0.1",
   "description": "ABL Currency Component",
-  "main": "./dst/currency-component.js",
+  "main": "./src/currency-component.js",
   "scripts": {
-    "build": "rm -r ./dst && webpack && uglifyjs ./dst/currency-component.js --compress --mangle -o ./dst/currency-component.min.js --source-map ./dst/currency-component.min.js.map",
+    "build": "mkdir dst && rm -r ./dst && webpack && uglifyjs ./dst/currency-component.js --compress --mangle -o ./dst/currency-component.min.js --source-map ./dst/currency-component.min.js.map",
     "start": "webpack-dev-server --hot --inline --port 9999 --content-base ./samples",
     "test": "karma start karma.config.js",
     "test-debug": "karma start karma.config.js --no-single-run --browsers Chrome",
