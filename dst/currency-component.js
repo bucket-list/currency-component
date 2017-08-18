@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "90e1cc2e7eab47c1b72b"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "2d60a36b55b6916f396d"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -608,6 +608,17 @@
 	
 	angular.module('currency-component').filter('currencyFilter', function ($filter) {
 	    return function (price, currency, prependAppend, html) {
+	        function getPriceByCurrency(_price) {
+	            console.log('getPriceByCurrency', _price, currency);
+	            switch (currency) {
+	                case 'usd':
+	                    return _price / 100;
+	                    break;
+	
+	                default:
+	                    return _price;
+	            }
+	        }
 	        var currencies = [{
 	            name: 'usd',
 	            sign: '$'
@@ -646,25 +657,25 @@
 	                    //default currency $
 	                    console.log('no currency');
 	                    if (typeof prependAppend === 'undefined') {
-	                        return $filter('currency')(price);
+	                        return $filter('currency')(getPriceByCurrency(price));
 	                    } else {
 	                        if (prependAppend === 'prepend') {
-	                            return $filter('currency')(price);
+	                            return $filter('currency')(getPriceByCurrency(price));
 	                        } else {
-	                            return $filter('currency')(price, '') + '$';
+	                            return $filter('currency')(getPriceByCurrency(price), '') + '$';
 	                        }
 	                    }
 	                } else {
 	                    //currency was passed
 	                    console.log('currency found', currency);
 	                    if (typeof prependAppend === 'undefined') {
-	                        return $filter('currency')(price, sign[0].sign);
+	                        return $filter('currency')(getPriceByCurrency(price), sign[0].sign);
 	                    } else {
 	                        console.log('currency found & prependAppend', prependAppend);
 	                        if (prependAppend === 'prepend') {
-	                            return $filter('currency')(price, sign[0].sign);
+	                            return $filter('currency')(getPriceByCurrency(price), sign[0].sign);
 	                        } else {
-	                            return $filter('currency')(price, '') + sign[0].sign;
+	                            return $filter('currency')(getPriceByCurrency(price), '') + sign[0].sign;
 	                        }
 	                    }
 	                }
@@ -672,17 +683,17 @@
 	                //html param passed
 	                if (typeof currency === 'undefined') {
 	                    //default currency $
-	                    return '<span class="sign">' + sign[0].sign + '</span><span class="price">' + $filter('currency')(price) + '</span>';
+	                    return '<span class="sign">' + sign[0].sign + '</span><span class="getPriceByCurrency(price)">' + $filter('currency')(getPriceByCurrency(price)) + '</span>';
 	                } else {
 	                    //currency was passed
 	                    if (typeof prependAppend === 'undefined') {
-	                        return '<span class="sign">' + sign[0].sign + '</span><span class="price">' + $filter('currency')(price, '') + '</span>';
+	                        return '<span class="sign">' + sign[0].sign + '</span><span class="getPriceByCurrency(price)">' + $filter('currency')(getPriceByCurrency(price), '') + '</span>';
 	                    } else {
 	                        console.log('prependAppend', prependAppend);
 	                        if (prependAppend === 'prepend') {
-	                            return '<span class="sign">' + sign[0].sign + '</span><span class="price">' + $filter('currency')(price, '') + '</span>';
+	                            return '<span class="sign">' + sign[0].sign + '</span><span class="getPriceByCurrency(price)">' + $filter('currency')(getPriceByCurrency(price), '') + '</span>';
 	                        } else {
-	                            return '<span class="price">' + $filter('currency')(price, '') + '</span><span class="sign">' + sign[0].sign + '</span>';
+	                            return '<span class="getPriceByCurrency(price)">' + $filter('currency')(getPriceByCurrency(price), '') + '</span><span class="sign">' + sign[0].sign + '</span>';
 	                        }
 	                    }
 	                }
@@ -699,7 +710,7 @@
 	        this.$onInit = function () {
 	            var vm = this;
 	            vm.price = 123456789;
-	            vm.customPrice = 1234567890;
+	            vm.price = 1234567890;
 	            vm.customCurrencies = [{
 	                name: 'usd',
 	                sign: '$'
