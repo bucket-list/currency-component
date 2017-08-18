@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "2d60a36b55b6916f396d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "8fa5804caf99396b5580"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -614,13 +614,18 @@
 	                case 'usd':
 	                    return _price / 100;
 	                    break;
-	
+	                case 'cad':
+	                    return _price / 100;
+	                    break;
 	                default:
 	                    return _price;
 	            }
 	        }
 	        var currencies = [{
 	            name: 'usd',
+	            sign: '$'
+	        }, {
+	            name: 'cad',
 	            sign: '$'
 	        }, {
 	            name: 'eur',

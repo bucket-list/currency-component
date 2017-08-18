@@ -5,42 +5,49 @@ angular.module('currency-component', []);
 angular.module('currency-component')
     .filter('currencyFilter', function($filter) {
         return function(price, currency, prependAppend, html) {
-            function getPriceByCurrency(_price){
+            function getPriceByCurrency(_price) {
                 console.log('getPriceByCurrency', _price, currency);
                 switch (currency) {
                     case 'usd':
                         return _price / 100;
                         break;
-                    
+                    case 'cad':
+                        return _price / 100;
+                        break;
                     default:
                         return _price;
                 }
             }
             var currencies = [{
-                name: 'usd',
-                sign: '$'
-            }, {
-                name: 'eur',
-                sign: '€'
-            }, {
-                name: 'kr',
-                sign: 'kr'
-            }, {
-                name: 'jpy',
-                sign: '¥'
-            }, {
-                name: 'gbp',
-                sign: '£'
-            }, {
-                name: 'chf',
-                sign: 'chf'
-            }, {
-                name: 'brl',
-                sign: 'R$'
-            }, {
-                name: 'cfp',
-                sign: 'cfp'
-            }];
+                    name: 'usd',
+                    sign: '$'
+                },
+                {
+                    name: 'cad',
+                    sign: '$'
+                }, {
+                    name: 'eur',
+                    sign: '€'
+                }, {
+                    name: 'kr',
+                    sign: 'kr'
+                }, {
+                    name: 'jpy',
+                    sign: '¥'
+                }, {
+                    name: 'gbp',
+                    sign: '£'
+                }, {
+                    name: 'chf',
+                    sign: 'chf'
+                }, {
+                    name: 'brl',
+                    sign: 'R$'
+                }, {
+                    name: 'cfp',
+                    sign: 'cfp'
+                }
+            ];
             var sign = $filter('filter')(currencies, {
                 name: currency
             }, true);
