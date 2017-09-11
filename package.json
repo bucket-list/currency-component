@@ -1,6 +1,6 @@
 {
   "name": "currency-component",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "ABL Currency Component",
   "main": "./dst/currency-component.js",
   "scripts": {
