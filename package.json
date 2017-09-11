@@ -4,6 +4,10 @@
   "description": "ABL Currency Component",
   "main": "./dst/currency-component.js",
   "scripts": {
+    "pull": "git checkout master && git pull origin master",
+    "push": "git push origin master --tags && npm publish",
+    "commit": "git commit -a -m ${1}",
+    "release": "release () { npm run pull && if [ -z $1 ]; then npm version patch; else npm version $1; fi && npm run push; }; release",
     "build": "rm -r ./dst && webpack && uglifyjs ./dst/currency-component.js --compress --mangle -o ./dst/currency-component.min.js --source-map ./dst/currency-component.min.js.map",
     "start": "webpack-dev-server --hot --inline --port 9999 --content-base ./samples",
     "test": "karma start karma.config.js",
