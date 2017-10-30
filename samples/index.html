@@ -96,6 +96,11 @@
           <span flex>XPF</span>
           <span flex>{{ $ctrl.price | currencyFilter: 'xpf' }}</span>
         </md-card-content>
+         <md-divider></md-divider>
+        <md-card-content layout="row">
+          <span flex>CL</span>
+          <span flex>{{ $ctrl.price | currencyFilter: 'cl' }}</span>
+        </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>No currency passed (default $)</span>
