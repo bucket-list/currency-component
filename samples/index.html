@@ -47,9 +47,113 @@
     <![endif]-->
 </head>
 
-<body ng-controller="SampleController" data-spy="scroll" data-target="#mainNav">
+<body ng-controller="SampleController as $ctrl" data-spy="scroll" data-target="#mainNav">
   <div layout="row" layout-align="center center">
-    <currency-component></currency-component>
+    <div style="width:700px">
+      <md-card md-theme="{{ showDarkTheme ? 'dark-grey' : 'default' }}" md-theme-watch>
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Currency component</span>
+            <span class="md-subhead">stripe currencies</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content layout="row">
+          <span flex>USD</span>
+          <span flex>{{ $ctrl.price | currencyFilter: 'usd' }}</span>
+        </md-card-content>
+        <md-divider></md-divider>
+        <md-card-content layout="row">
+          <span flex>EUR</span>
+          <span flex>{{ $ctrl.price | currencyFilter: 'eur' }}</span>
+        </md-card-content>
+        <md-divider></md-divider>
+        <md-card-content layout="row">
+          <span flex>KR</span>
+          <span flex>{{ $ctrl.price | currencyFilter: 'kr' }}</span>
+        </md-card-content>
+        <md-divider></md-divider>
+        <md-card-content layout="row">
+          <span flex>JPY</span>
+          <span flex>{{ $ctrl.price | currencyFilter: 'jpy' }}</span>
+        </md-card-content>
+        <md-divider></md-divider>
+        <md-card-content layout="row">
+          <span flex>GBP</span>
+          <span flex>{{ $ctrl.price | currencyFilter: 'gbp' }}</span>
+        </md-card-content>
+        <md-divider></md-divider>
+        <md-card-content layout="row">
+          <span flex>CHF</span>
+          <span flex>{{ $ctrl.price | currencyFilter: 'chf' }}</span>
+        </md-card-content>
+        <md-divider></md-divider>
+        <md-card-content layout="row">
+          <span flex>BRL</span>
+          <span flex>{{ $ctrl.price | currencyFilter: 'brl' }}</span>
+        </md-card-content>
+        <md-divider></md-divider>
+        <md-card-content layout="row">
+          <span flex>XPF</span>
+          <span flex>{{ $ctrl.price | currencyFilter: 'xpf' }}</span>
+        </md-card-content>
+        <md-divider></md-divider>
+        <md-card-content layout="row">
+          <span flex>No currency passed (default $)</span>
+          <span flex>{{ $ctrl.price | currencyFilter }}</span>
+        </md-card-content>
+        <md-divider></md-divider>
+        <md-card-content layout="row">
+          <span flex>Currency passed but not found on the list</span>
+          <span flex>{{ $ctrl.price | currencyFilter: 'abc' }}</span>
+        </md-card-content>
+        <md-divider></md-divider>
+        <md-card-content layout="row">
+          <span flex>Currency with html</span>
+          <span flex><span ng-bind-html="$ctrl.price | currencyFilter: 'usd': 'html'"></span></span>
+        </md-card-content>
+        <md-divider></md-divider>
+        <md-card-content layout="row">
+          <span flex>JPY Currency with html and sign at the end</span>
+          <span flex><span ng-bind-html="$ctrl.price | currencyFilter: 'jpy' : 'html'"></span></span>
+        </md-card-content>
+        <md-divider></md-divider>
+
+        <md-card-title>
+          <md-card-title-text>
+            <span class="md-headline">Custom price</span>
+          </md-card-title-text>
+        </md-card-title>
+        <md-card-content layout="row" style="text-align:center">
+          <span flex ng-if="!$ctrl.isHtml">{{$ctrl.customPrice | currencyFilter: $ctrl.customCurrency}}</span>
+          <span flex ng-if="$ctrl.isHtml"><span ng-bind-html="$ctrl.customPrice | currencyFilter: $ctrl.customCurrency : 'html'"></span></span>
+        </md-card-content>
+        <md-divider></md-divider>
+
+
+        <md-card-actions layout="row" layout-align="start start">
+          <md-input-container flex="33">
+            <label>Price</label>
+            <input ng-model="$ctrl.customPrice">
+          </md-input-container>
+          <md-input-container flex="33">
+            <label>Currency</label>
+            <md-select ng-model="$ctrl.customCurrency">
+              <md-option ng-repeat="currency in $ctrl.customCurrencies" ng-value="currency.name">
+                {{currency.name}}
+              </md-option>
+            </md-select>
+          </md-input-container>
+          <md-input-container flex="33">
+            <md-checkbox flex aria-label="Html?" ng-model="$ctrl.isHtml">
+              HTML?
+            </md-checkbox>
+          </md-input-container>
+
+        </md-card-actions>
+      </md-card>
+
+    </div>
+
   </div>
 </body>
 
