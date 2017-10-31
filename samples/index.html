@@ -136,11 +136,11 @@
 
 
         <md-card-actions layout="row" layout-align="start start">
-          <md-input-container flex="33">
+          <md-input-container flex="25">
             <label>Price</label>
             <input ng-model="$ctrl.customPrice">
           </md-input-container>
-          <md-input-container flex="33">
+          <md-input-container flex="25">
             <label>Currency</label>
             <md-select ng-model="$ctrl.customCurrency">
               <md-option ng-repeat="currency in $ctrl.customCurrencies" ng-value="currency.name">
@@ -148,7 +148,7 @@
               </md-option>
             </md-select>
           </md-input-container>
-          <md-input-container flex="33">
+          <md-input-container flex="25">
             <md-checkbox flex aria-label="Html?" ng-model="$ctrl.isHtml">
               HTML?
             </md-checkbox>
