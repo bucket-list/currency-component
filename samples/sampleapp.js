@@ -5,63 +5,62 @@ app.run(function($ablCurrencyComponentProvider) {
         console.log('$ablCurrencyComponentProvider', $ablCurrencyComponentProvider);
         $ablCurrencyComponentProvider.defaultCurrency = 'usd';
         $ablCurrencyComponentProvider.uniqueCurrency = false;
-        $ablCurrencyComponentProvider.currencies = [{ name: 'cl', sign: '#', signSeparation: '', position: 'prepend' }];
+        $ablCurrencyComponentProvider.currencies = [{ name: 'cl', symbol: '#', symbolSeparation: '', position: 'prepend' }];
     })
-    .controller('SampleController', ['$scope', '$mdMedia', '$rootScope', '$window', '$timeout', '$filter', '$log', function($scope, $mdMedia, $rootScope, $window, $timeout, $filter, availableCurrencies, $log) {
+    .controller('SampleController', ['$scope', '$mdMedia', '$rootScope', '$window', '$timeout', '$filter', '$ablCurrencyComponentProvider', '$log', function($scope, $mdMedia, $rootScope, $window, $timeout, $filter, $ablCurrencyComponentProvider, $log) {
         var vm = this;
         vm.price = 123456789;
         vm.customPrice = 1234567890;
         vm.customCurrencies = [{
             name: 'usd',
-            sign: '$',
-            signSeparation: '',
+            symbol: '$',
+            symbolSeparation: '',
             position: 'prepend'
         }, {
             name: 'cad',
-            sign: '$',
-            signSeparation: '',
+            symbol: '$',
+            symbolSeparation: '',
             position: 'prepend'
         }, {
             name: 'eur',
-            sign: '€',
-            signSeparation: '',
+            symbol: '€',
+            symbolSeparation: '',
             position: 'append'
         }, {
             name: 'kr',
-            sign: 'kr',
-            signSeparation: '',
+            symbol: 'kr',
+            symbolSeparation: '',
             position: 'prepend'
         }, {
             name: 'jpy',
-            sign: '¥',
-            signSeparation: '',
+            symbol: '¥',
+            symbolSeparation: '',
             position: 'prepend'
         }, {
             name: 'gbp',
-            sign: '£',
-            signSeparation: '',
+            symbol: '£',
+            symbolSeparation: '',
             position: 'prepend'
         }, {
             name: 'chf',
-            sign: 'chf',
-            signSeparation: '',
+            symbol: 'chf',
+            symbolSeparation: '',
             position: 'prepend'
         }, {
             name: 'brl',
-            sign: 'R$',
-            signSeparation: '',
+            symbol: 'R$',
+            symbolSeparation: '',
             position: 'prepend'
         }, {
             name: 'cfp',
-            sign: 'cfp',
-            signSeparation: '',
+            symbol: 'cfp',
+            symbolSeparation: '',
             position: 'prepend'
         }, {
             name: 'xpf',
-            sign: 'XPF',
-            signSeparation: ' ',
+            symbol: 'XPF',
+            symbolSeparation: ' ',
             position: 'append'
         }];
-        console.log('vm.customCurrencies', vm.customCurrencies);
         vm.customCurrency = this.customCurrencies[0].name;
     }]);
