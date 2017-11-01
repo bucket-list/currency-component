@@ -1,166 +1,139 @@
-import template from './template.html';
 import styles from './currency-component.css';
 angular.module('currency-component', []);
 
 angular.module('currency-component')
-    .filter('currencyFilter', function($filter) {
-        return function(price, currency, prependAppend, html) {
-            function getPriceByCurrency(_price) {
-                console.log('getPriceByCurrency', _price, currency);
-                switch (currency) {
-                    case 'usd':
-                        return _price / 100;
-                        break;
-                    case 'cad':
-                        return _price / 100;
-                        break;
-                    default:
-                        return _price;
-                }
-            }
-            var currencies = [{
-                    name: 'usd',
-                    sign: '$'
-                },
-                {
-                    name: 'cad',
-                    sign: '$'
-                }, {
-                    name: 'eur',
-                    sign: '€'
-                }, {
-                    name: 'kr',
-                    sign: 'kr'
-                }, {
-                    name: 'jpy',
-                    sign: '¥'
-                }, {
-                    name: 'gbp',
-                    sign: '£'
-                }, {
-                    name: 'chf',
-                    sign: 'chf'
-                }, {
-                    name: 'brl',
-                    sign: 'R$'
-                }, {
-                    name: 'cfp',
-                    sign: 'cfp'
-                }
-            ];
-            var sign = $filter('filter')(currencies, {
-                name: currency
-            }, true);
-            console.log('sign: ', sign, price, currency, html, prependAppend);
-            if (sign.length > 0) { //sign is on the list
-                if (typeof html === 'undefined') { //no html param
-                    console.log('no html', price);
-                    if (typeof currency === 'undefined') { //default currency $
-                        console.log('no currency');
-                        if (typeof prependAppend === 'undefined') {
-                            return $filter('currency')(getPriceByCurrency(price));
-                        }
-                        else {
-                            if (prependAppend === 'prepend') {
-                                return $filter('currency')(getPriceByCurrency(price));
-                            }
-                            else {
-                                return $filter('currency')(getPriceByCurrency(price), '') + '$';
-                            }
-                        }
-
-                    }
-                    else { //currency was passed
-                        console.log('currency found', currency);
-                        if (typeof prependAppend === 'undefined') {
-                            return $filter('currency')(getPriceByCurrency(price), sign[0].sign);
-                        }
-                        else {
-                            console.log('currency found & prependAppend', prependAppend);
-                            if (prependAppend === 'prepend') {
-                                return $filter('currency')(getPriceByCurrency(price), sign[0].sign);
-                            }
-                            else {
-                                return $filter('currency')(getPriceByCurrency(price), '') + sign[0].sign;
-                            }
-                        }
-                    }
-                }
-                else { //html param passed
-                    if (typeof currency === 'undefined') { //default currency $
-                        return '<span class="sign">' + sign[0].sign + '</span><span class="getPriceByCurrency(price)">' + $filter('currency')(getPriceByCurrency(price)) + '</span>';
-                    }
-                    else { //currency was passed
-                        if (typeof prependAppend === 'undefined') {
-                            return '<span class="sign">' + sign[0].sign + '</span><span class="getPriceByCurrency(price)">' + $filter('currency')(getPriceByCurrency(price), '') + '</span>';
-                        }
-                        else {
-                            console.log('prependAppend', prependAppend);
-                            if (prependAppend === 'prepend') {
-                                return '<span class="sign">' + sign[0].sign + '</span><span class="getPriceByCurrency(price)">' + $filter('currency')(getPriceByCurrency(price), '') + '</span>';
-                            }
-                            else {
-                                return '<span class="getPriceByCurrency(price)">' + $filter('currency')(getPriceByCurrency(price), '') + '</span><span class="sign">' + sign[0].sign + '</span>';
-                            }
-                        }
-                    }
-                }
-            }
-            else {
-                return 'no currency found';
-            }
+    .provider('$ablCurrencyComponentProvider', [function $ablCurrencyComponentProvider() {
+        var config = {
+            defaultCurrency: 'usd', //default currency to usd
+            uniqueCurrency: false, //unique means the app will pass by provider an unique currency for the whole app
+            currencies: [] //list (array of objects) of currencies added by provider
         };
-    })
-    .component('currencyComponent', {
-        bindings: {
-            config: '='
-        },
-        controller: function($scope, $element, $attrs, $rootScope, $http) {
-            this.$onInit = function() {
-                var vm = this;
-                vm.price = 123456789;
-                vm.price = 1234567890;
-                vm.customCurrencies = [{
+        return {
+            $get: function() {
+                return config;
+            }
+        }
+    }])
+    .factory('availableCurrencies', function() {
+        return {
+            getAvailableCurrencies: function() {
+                return [{
                     name: 'usd',
-                    sign: '$'
+                    symbol: '$',
+                    symbolSeparation: '',
+                    position: 'prepend'
+                }, {
+                    name: 'cad',
+                    symbol: '$',
+                    symbolSeparation: '',
+                    position: 'prepend'
                 }, {
                     name: 'eur',
-                    sign: '€'
+                    symbol: '€',
+                    symbolSeparation: '',
+                    position: 'prepend'
                 }, {
                     name: 'kr',
-                    sign: 'kr'
+                    symbol: 'kr',
+                    symbolSeparation: '',
+                    position: 'prepend'
                 }, {
                     name: 'jpy',
-                    sign: '¥'
+                    symbol: '¥',
+                    symbolSeparation: '',
+                    position: 'prepend'
                 }, {
                     name: 'gbp',
-                    sign: '£'
+                    symbol: '£',
+                    symbolSeparation: '',
+                    position: 'prepend'
                 }, {
                     name: 'chf',
-                    sign: 'chf'
+                    symbol: 'chf',
+                    symbolSeparation: '',
+                    position: 'prepend'
                 }, {
                     name: 'brl',
-                    sign: 'R$'
+                    symbol: 'R$',
+                    symbolSeparation: '',
+                    position: 'prepend'
                 }, {
                     name: 'cfp',
-                    sign: 'cfp'
+                    symbol: 'cfp',
+                    symbolSeparation: '',
+                    position: 'append'
+                }, {
+                    name: 'xpf',
+                    symbol: 'XPF',
+                    symbolSeparation: ' ',
+                    position: 'append'
                 }];
-                vm.customCurrency = this.customCurrencies[0].name;
-                vm.prependAppend = false;
-                vm.prependAppendOption = 'prepend';
+            }
+        }
+    })
+    .filter('currencyFilter', function($filter, availableCurrencies, $ablCurrencyComponentProvider) {
+        var filter = this;
+        return function(price, currency, html) {
+            //vars
+            var currencies, uniqueCurrency, defaultCurrencies, currentCurrency, prependAppend, defaultCurrency;
 
-                $scope.$watch(function() {
-                    return vm.prependAppend;
-                }, function(newValue, oldValue) {
-                    console.log('$scope.$watch', newValue);
-                    if (!newValue) {
-                        vm.prependAppendOption = 'prepend';
+            //get boolean if the app should use only one currency in the whole app. Default value is false
+            uniqueCurrency = $ablCurrencyComponentProvider.uniqueCurrency;
+
+            //get list of available currencies in component
+            defaultCurrencies = availableCurrencies.getAvailableCurrencies();
+
+            //concat component currencies with the ones provided by user in setup. Default is 'usd'
+            defaultCurrency = $ablCurrencyComponentProvider.defaultCurrency;
+
+            //final list concatenated array from provider
+            currencies = defaultCurrencies.concat($ablCurrencyComponentProvider.currencies);
+            filter.currencies = currencies;
+
+            if (uniqueCurrency) { //force to use defaultCurrency from provider
+                currency = $ablCurrencyComponentProvider.defaultCurrency;
+            }
+            else { //if currency is undefined, use the default one
+                if (angular.isUndefined(currency)) { //module defines a defaultCurrency to usd. By provider defaultCurrency can be overwritten
+                    if (angular.isUndefined($ablCurrencyComponentProvider.defaultCurrency)) {
+                        currency = defaultCurrency;
                     }
                     else {
-                        vm.prependAppendOption = 'append';
+                        currency = $ablCurrencyComponentProvider.defaultCurrency;
                     }
-                });
+                }
             }
-        },
-        template: template
+
+            //find currency in array
+            currentCurrency = $filter('filter')(currencies, {
+                name: currency
+            }, true);
+
+            //if currency is not on the list and it was not provide by the app should return an exception
+            if (currentCurrency.length === 0) {
+                return 'Currency "' + currency + '" not found'; //display message with currency name not found
+            }
+            else {
+                if (angular.isUndefined(currentCurrency[0].symbolSeparation)) { //set separator to no space if symbolSeparation is undefined in the currency object
+                    currentCurrency[0].symbolSeparation = '';
+                }
+            }
+
+            if (angular.isUndefined(html)) { //no html param
+                if (currentCurrency[0].position === 'prepend') {
+                    return $filter('currency')(price, (currentCurrency[0].symbol + currentCurrency[0].symbolSeparation));
+                }
+                else {
+                    return $filter('currency')(price, '') + (currentCurrency[0].symbolSeparation + currentCurrency[0].symbol);
+                }
+            }
+            else { //html param passed
+                if (prependAppend === 'prepend') {
+                    return '<span class="symbol">' + currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + '</span><span class="price">' + $filter('currency')(price, '') + '</span>';
+                }
+                else {
+                    return '<span class="price">' + $filter('currency')(price, '') + '</span><span class="symbol">' + currentCurrency[0].symbolSeparation + currentCurrency[0].symbol + '</span>';
+                }
+            }
+        };
     });
