@@ -27,10 +27,24 @@ angular
   'currency-component'
 ]);
 ```
-4. Use the filter:
+4. Using the filter:
 ```html
 <span flex>{{ $ctrl.price | currencyFilter: 'eur' }}</span>
 ```
+
+#### Component setup
+```javascript
+app.run(function($ablCurrencyComponentProvider) {
+  //this will be used if no currencyFilter is defined
+  $ablCurrencyComponentProvider.defaultCurrency = 'usd';
+  //if this is true the filter will use 'defaultCurrency' in the whole app. Default: false
+  $ablCurrencyComponentProvider.uniqueCurrency = false;
+  //Add an array with extra currencies. 
+  //Example: {name:'abc', symbol:'#', symbolSeparation:' ', position:'append'} => 12345 #
+  $ablCurrencyComponentProvider.currencies = [{ name: 'cl', symbol: '#', symbolSeparation: '', position: 'prepend' }];
+})
+```
+
 #### Filter Attributes
 
 ##### price (Integer)
