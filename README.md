@@ -19,8 +19,7 @@ The sample Angular Material application to test your module during development i
 ![screenshot](screen.png?raw=true)
 
 #### Adding the module to your app:
-1. Include the webpacked .js file: *./dst/abl-payment-summary.js*
-2. Include the .css file: *./dst/abl-payment-summary.css*
+1. Include the webpacked .js file: *./dst/currency-component.js*
 3. Include the module in your app dependencies:
 ```javascript
 angular
