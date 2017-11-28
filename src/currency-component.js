@@ -21,58 +21,112 @@ angular.module('currency-component')
                     name: 'usd',
                     symbol: '$',
                     symbolSeparation: '',
-                    position: 'prepend'
+                    position: 'prepend',
+                    factor: 100,
+                    decimals: 2
                 }, {
                     name: 'cad',
                     symbol: '$',
                     symbolSeparation: '',
-                    position: 'prepend'
+                    position: 'prepend',
+                    factor: 100,
+                    decimals: 2
                 }, {
                     name: 'eur',
                     symbol: '€',
                     symbolSeparation: '',
-                    position: 'prepend'
+                    position: 'prepend',
+                    factor: 100,
+                    decimals: 2
                 }, {
                     name: 'kr',
                     symbol: 'kr',
                     symbolSeparation: '',
-                    position: 'prepend'
+                    position: 'prepend',
+                    factor: 100,
+                    decimals: 2
                 }, {
                     name: 'jpy',
                     symbol: '¥',
                     symbolSeparation: '',
-                    position: 'prepend'
+                    position: 'prepend',
+                    factor: 100,
+                    decimals: 2
                 }, {
                     name: 'gbp',
                     symbol: '£',
                     symbolSeparation: '',
-                    position: 'prepend'
+                    position: 'prepend',
+                    factor: 100,
+                    decimals: 2
                 }, {
                     name: 'chf',
                     symbol: 'chf',
                     symbolSeparation: '',
-                    position: 'prepend'
+                    position: 'prepend',
+                    factor: 100,
+                    decimals: 2
                 }, {
                     name: 'brl',
                     symbol: 'R$',
                     symbolSeparation: '',
-                    position: 'prepend'
+                    position: 'prepend',
+                    factor: 100,
+                    decimals: 2
                 }, {
                     name: 'cfp',
                     symbol: 'cfp',
                     symbolSeparation: '',
-                    position: 'append'
+                    position: 'append',
+                    factor: 100,
+                    decimals: 2
                 }, {
                     name: 'xpf',
                     symbol: 'XPF',
                     symbolSeparation: ' ',
-                    position: 'append'
+                    position: 'append',
+                    factor: null,
+                    decimals: 0
                 }];
             }
         }
     })
-    .filter('currencyFilter', function($filter, availableCurrencies, $ablCurrencyComponentProvider) {
+    .filter('obj', function($log) {
+        return function(object) {
+            var output = '{';
+            for (var property in object) {
+                output += '' + property + ': "' + object[property] + '", ';
+            }
+            output += '}';
+            return output;
+        }
+    })
+    .filter('currencyFilter', function($filter, availableCurrencies, $ablCurrencyComponentProvider, $log) {
         var filter = this;
+        
+        filter.decimalsToString = function(decimals) {
+            $log.debug('decimalsToString', decimals);
+            if (decimals > 0) {
+                var decimalsToString = '';
+                for (var i = 0; i < decimals; i++) {
+                    decimalsToString += '0';
+                }
+                return '.' + decimalsToString;
+            }
+            else {
+                return '';
+            }
+
+        }
+        filter.fixDecimals = function(price, decimals) {
+            var integer = price.toString().substr(price.toString().indexOf('.') + 1);
+            if(integer.toString().length < decimals){
+                var diff = decimals - integer.length;
+                $log.debug('fixDecimals:diff', diff, integer.length, decimals, filter.decimalsToString(diff));
+                return price.toString().substr(0, price.toString().indexOf('.')) + filter.decimalsToString(diff);
+            }
+        }
+        
         return function(price, currency, html) {
             //vars
             var currencies, uniqueCurrency, defaultCurrencies, currentCurrency, prependAppend, defaultCurrency;
@@ -88,6 +142,7 @@ angular.module('currency-component')
 
             //final list concatenated array from provider
             currencies = defaultCurrencies.concat($ablCurrencyComponentProvider.currencies);
+            $log.debug('currencies', currencies);
             filter.currencies = currencies;
 
             if (uniqueCurrency) { //force to use defaultCurrency from provider
@@ -114,25 +169,42 @@ angular.module('currency-component')
                 return 'Currency "' + currency + '" not found'; //display message with currency name not found
             }
             else {
+                //set defaulst values if they are not found in the object
                 if (angular.isUndefined(currentCurrency[0].symbolSeparation)) { //set separator to no space if symbolSeparation is undefined in the currency object
                     currentCurrency[0].symbolSeparation = '';
                 }
+                if (angular.isUndefined(currentCurrency[0].factor)) { //set separator to no space if symbolSeparation is undefined in the currency object
+                    currentCurrency[0].factor = null;
+                }
+                if (angular.isUndefined(currentCurrency[0].decimals)) { //set separator to no space if symbolSeparation is undefined in the currency object
+                    currentCurrency[0].decimals = 0;
+                }
             }
 
+            //calculate price taking factor and adding the decimals
+            var priceFactorixed = currentCurrency[0].factor === null ? price : price / currentCurrency[0].factor;
+
+            //if there is no decimals add string with numbers of zeros: '.00'
+            if (priceFactorixed.toString().indexOf('.') === -1) {
+                priceFactorixed = priceFactorixed + filter.decimalsToString(currentCurrency[0].decimals);
+            }
+            
+            filter.fixDecimals(priceFactorixed, currentCurrency[0].decimals);
+
             if (angular.isUndefined(html)) { //no html param
-                if (currentCurrency[0].position === 'prepend') {
-                    return $filter('currency')(price, (currentCurrency[0].symbol + currentCurrency[0].symbolSeparation));
+                if (currentCurrency[0].position === 'prepend') { //the symbol goes in the front
+                    return (currentCurrency[0].symbol + currentCurrency[0].symbolSeparation) + priceFactorixed;
                 }
                 else {
-                    return $filter('currency')(price, '') + (currentCurrency[0].symbolSeparation + currentCurrency[0].symbol);
+                    return priceFactorixed + (currentCurrency[0].symbolSeparation + currentCurrency[0].symbol);
                 }
             }
             else { //html param passed
                 if (prependAppend === 'prepend') {
-                    return '<span class="symbol">' + currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + '</span><span class="price">' + $filter('currency')(price, '') + '</span>';
+                    return '<span class="symbol">' + currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + '</span><span class="price">' + priceFactorixed + '</span>';
                 }
                 else {
-                    return '<span class="price">' + $filter('currency')(price, '') + '</span><span class="symbol">' + currentCurrency[0].symbolSeparation + currentCurrency[0].symbol + '</span>';
+                    return '<span class="price">' + priceFactorixed + '</span><span class="symbol">' + currentCurrency[0].symbolSeparation + currentCurrency[0].symbol + '</span>';
                 }
             }
         };
