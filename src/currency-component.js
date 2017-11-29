@@ -18,31 +18,24 @@ angular.module('currency-component')
         return {
             getAvailableCurrencies: function() {
                 return [{
-                    name: 'usd',
+                    name: ['usd', 'cad', 'aud', 'hkd', 'nzd', 'sgd'],
                     symbol: '$',
                     symbolSeparation: '',
                     position: 'prepend',
                     factor: 100,
                     decimals: 2
                 }, {
-                    name: 'cad',
-                    symbol: '$',
-                    symbolSeparation: '',
-                    position: 'prepend',
-                    factor: 100,
-                    decimals: 2
-                }, {
-                    name: 'eur',
+                    name: ['eur'],
                     symbol: '€',
                     symbolSeparation: '',
                     position: 'prepend',
                     factor: 100,
                     decimals: 2
                 }, {
-                    name: 'kr',
+                    name: ['dkk', 'nok', 'sek'],
                     symbol: 'kr',
-                    symbolSeparation: '',
-                    position: 'prepend',
+                    symbolSeparation: '-',
+                    position: 'append',
                     factor: 100,
                     decimals: 2
                 }, {
@@ -50,8 +43,15 @@ angular.module('currency-component')
                     symbol: '¥',
                     symbolSeparation: '',
                     position: 'prepend',
-                    factor: 100,
-                    decimals: 2
+                    factor: null,
+                    decimals: 0
+                }, {
+                    name: 'mxn',
+                    symbol: '$',
+                    symbolSeparation: '',
+                    position: 'prepend',
+                    factor: null,
+                    decimals: 0
                 }, {
                     name: 'gbp',
                     symbol: '£',
@@ -61,22 +61,8 @@ angular.module('currency-component')
                     decimals: 2
                 }, {
                     name: 'chf',
-                    symbol: 'chf',
-                    symbolSeparation: '',
-                    position: 'prepend',
-                    factor: 100,
-                    decimals: 2
-                }, {
-                    name: 'brl',
-                    symbol: 'R$',
-                    symbolSeparation: '',
-                    position: 'prepend',
-                    factor: 100,
-                    decimals: 2
-                }, {
-                    name: 'cfp',
-                    symbol: 'cfp',
-                    symbolSeparation: '',
+                    symbol: 'Fr',
+                    symbolSeparation: ' ',
                     position: 'append',
                     factor: 100,
                     decimals: 2
@@ -87,11 +73,18 @@ angular.module('currency-component')
                     position: 'append',
                     factor: null,
                     decimals: 0
+                }, {
+                    name: 'brl',
+                    symbol: 'R$',
+                    symbolSeparation: '',
+                    position: 'prepend',
+                    factor: 100,
+                    decimals: 2
                 }];
             }
         }
     })
-    .filter('obj', function($log) {
+    .filter('objToString', function($log) {
         return function(object) {
             var output = '{';
             for (var property in object) {
@@ -103,7 +96,6 @@ angular.module('currency-component')
     })
     .filter('currencyFilter', function($filter, availableCurrencies, $ablCurrencyComponentProvider, $log) {
         var filter = this;
-        
         filter.decimalsToString = function(decimals) {
             $log.debug('decimalsToString', decimals);
             if (decimals > 0) {
@@ -116,17 +108,16 @@ angular.module('currency-component')
             else {
                 return '';
             }
-
         }
         filter.fixDecimals = function(price, decimals) {
             var integer = price.toString().substr(price.toString().indexOf('.') + 1);
-            if(integer.toString().length < decimals){
+            if (integer.toString().length < decimals) {
                 var diff = decimals - integer.length;
                 $log.debug('fixDecimals:diff', diff, integer.length, decimals, filter.decimalsToString(diff));
                 return price.toString().substr(0, price.toString().indexOf('.')) + filter.decimalsToString(diff);
             }
         }
-        
+
         return function(price, currency, html) {
             //vars
             var currencies, uniqueCurrency, defaultCurrencies, currentCurrency, prependAppend, defaultCurrency;
@@ -188,7 +179,7 @@ angular.module('currency-component')
             if (priceFactorixed.toString().indexOf('.') === -1) {
                 priceFactorixed = priceFactorixed + filter.decimalsToString(currentCurrency[0].decimals);
             }
-            
+
             filter.fixDecimals(priceFactorixed, currentCurrency[0].decimals);
 
             if (angular.isUndefined(html)) { //no html param
