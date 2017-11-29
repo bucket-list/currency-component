@@ -58,52 +58,62 @@
           </md-card-title-text>
         </md-card-title>
         <md-card-content layout="row">
-          <span flex>USD<br>{{$ctrl.customCurrencies[0] | obj}}</span>
+          <span flex>USD<br>{{$ctrl.getCurrencyObject('usd')}}</span>
           <span flex>{{ $ctrl.customPrice | currencyFilter: 'usd' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
-          <span flex>EUR<br> {{$ctrl.customCurrencies[2] | obj}}</span>
+          <span flex>NZD<br>{{$ctrl.getCurrencyObject('nzd')}}</span>
+          <span flex>{{ $ctrl.customPrice | currencyFilter: 'nzd' }}</span>
+        </md-card-content>
+        <md-divider></md-divider>
+        <md-card-content layout="row">
+          <span flex>SGD<br>{{$ctrl.getCurrencyObject('sgd')}}</span>
+          <span flex>{{ $ctrl.customPrice | currencyFilter: 'sgd' }}</span>
+        </md-card-content>
+        <md-divider></md-divider>
+        <md-card-content layout="row">
+          <span flex>EUR<br> {{$ctrl.getCurrencyObject('eur')}}</span>
           <span flex>{{ $ctrl.customPrice | currencyFilter: 'eur' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
-          <span flex>KR<br> {{$ctrl.customCurrencies[3] | obj}}</span>
-          <span flex>{{ $ctrl.customPrice | currencyFilter: 'kr' }}</span>
+          <span flex>DKK<br> {{$ctrl.getCurrencyObject('dkk')}}</span>
+          <span flex>{{ $ctrl.customPrice | currencyFilter: 'dkk' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
-          <span flex>JPY<br> {{$ctrl.customCurrencies[4] | obj}}</span>
+          <span flex>JPY<br> {{$ctrl.getCurrencyObject('jpy')}}</span>
           <span flex>{{ $ctrl.customPrice | currencyFilter: 'jpy' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
-          <span flex>GBP<br> {{$ctrl.customCurrencies[5] | obj}}</span>
+          <span flex>GBP<br> {{$ctrl.getCurrencyObject('gbp')}}</span>
           <span flex>{{ $ctrl.customPrice | currencyFilter: 'gbp' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
-          <span flex>CHF<br> {{$ctrl.customCurrencies[6] | obj}}</span>
+          <span flex>CHF<br> {{$ctrl.getCurrencyObject('chf')}}</span>
           <span flex>{{ $ctrl.customPrice | currencyFilter: 'chf' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
-          <span flex>BRL<br> {{$ctrl.customCurrencies[7] | obj}}</span>
+          <span flex>BRL<br> {{$ctrl.getCurrencyObject('brl')}}</span>
           <span flex>{{ $ctrl.customPrice | currencyFilter: 'brl' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
-          <span flex>XPF<br> {{$ctrl.customCurrencies[9] | obj}}</span>
+          <span flex>XPF<br> {{$ctrl.getCurrencyObject('xpf')}}</span>
           <span flex>{{ $ctrl.customPrice | currencyFilter: 'xpf' }}</span>
         </md-card-content>
          <md-divider></md-divider>
         <md-card-content layout="row">
-          <span flex>CL passed as object in the run method. This object is missing factor and decimals<br> {{$ctrl.customCurrencies[10] | obj}}</span>
+          <span flex>CL passed as object in the run method. This object is missing factor and decimals<br> {{$ctrl.getCurrencyObject('cl')}}</span>
           <span flex>{{ $ctrl.customPrice | currencyFilter: 'cl' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
-          <span flex>BL passed as object in the run method. This object is NOT missing factor and decimals<br> {{$ctrl.customCurrencies[11] | obj}}</span>
+          <span flex>BL passed as object in the run method. This object is NOT missing factor and decimals<br> {{$ctrl.getCurrencyObject('bl')}}</span>
           <span flex>{{ $ctrl.customPrice | currencyFilter: 'bl' }}</span>
         </md-card-content>
         <md-divider></md-divider>
