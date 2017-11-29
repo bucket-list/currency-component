@@ -1,4 +1,4 @@
-### ABL Payment Summary Angular Module
+### ABL Currency Component Filter 
 
 #### Generating a new module:
 1. npm i
@@ -19,101 +19,59 @@ The sample Angular Material application to test your module during development i
 ![screenshot](screen.png?raw=true)
 
 #### Adding the module to your app:
-1. Include the webpacked .js file: *./dst/abl-payment-summary.js*
-2. Include the .css file: *./dst/abl-payment-summary.css*
+1. Include the webpacked .js file: *./dst/currency-component.js*
 3. Include the module in your app dependencies:
 ```javascript
 angular
 .module('app', [
-  'abl-payment-summary'
+  'currency-component'
 ]);
 ```
-4. Include the component's html tag within a view:
+4. Using the filter:
 ```html
-<payment-summary 
-    unit="vm.unit" 
-    language="'fr'"
-    charges="vm.booking.pricing.charges"
-    addons="vm.booking.addOns"
-    total="vm.booking.total"
-    nights="vm.booking.numberOfNights"
-    guests="vm.booking.numberOfPeople"
-    checkin="vm.booking.checkIn"
-    checkout="vm.booking.checkOut">
-</payment-summary>
+<span flex>{{ $ctrl.price | ablCurrency: 'eur' }}</span>
 ```
-#### Component Attributes
 
-##### charges (Array)
+#### Component setup
 ```javascript
-[
-  {
-    "label": "Fare Miti",
-    "type": "aup",
-    "amount": 1,
-    "price": 3300000
-  },
-  {
-    "label": "Daily Laundry",
-    "type": "fee",
-    "amount": 1,
-    "price": 1300000,
-    "$$hashKey": "object:12"
-  },
-  {
-    "label": "GST",
-    "type": "tax",
-    "amount": 1,
-    "percent": 10,
-    "price": 330000,
-    "$$hashKey": "object:13"
-  }
-]
+app.run(function($ablCurrencyComponentProvider) {
+  //this will be used if no currencyFilter is defined
+  $ablCurrencyComponentProvider.defaultCurrency = 'usd';
+  //if this is true the filter will use 'defaultCurrency' in the whole app. Default: false
+  $ablCurrencyComponentProvider.uniqueCurrency = false;
+  //Add an array with extra currencies. 
+  //Example: {name:'abc', symbol:'#', symbolSeparation:' ', position:'append'} => 12345 #
+  $ablCurrencyComponentProvider.currencies = [{ name: 'cl', symbol: '#', symbolSeparation: '', position: 'prepend' }];
+})
 ```
 
-##### addons (Array)
+#### Filter Attributes
+
+##### price (Integer)
 ```javascript
-[
-  {
-    "_id": "58a3a91e04676d28e7af2571",
-    "updatedAt": "2017-04-05T23:48:05.478Z",
-    "createdAt": "2017-02-15T01:04:30.227Z",
-    "organization": "587041e62014771774c02f40",
-    "label": "Breakfast",
-    "type": "addon",
-    "amount": 120000,
-    "percentage": false,
-    "charges": [],
-    "chargeRepetition": "pppd",
-    "id": "58a3a91e04676d28e7af2571",
-    "quantity": 6,
-    "$$hashKey": "object:6"
-  },
-  {
-    "_id": "58b9df7cad1a364c0be81570",
-    "updatedAt": "2017-04-05T23:49:05.214Z",
-    "createdAt": "2017-03-03T21:26:20.331Z",
-    "organization": "587041e62014771774c02f40",
-    "label": "Champagne",
-    "type": "addon",
-    "amount": 500000,
-    "percentage": false,
-    "charges": [],
-    "chargeRepetition": "trip",
-    "id": "58b9df7cad1a364c0be81570",
-    "quantity": 1,
-    "$$hashKey": "object:7"
-  }
-]
+vm.price = 1234567890;
 ```
-##### checkin, checkout (moment.js compatible date)
-
-##### nights, guests, total (string/integer)
-
-##### language (string)
-Key for transcluding translation of title from unit attribute:
 ```html
-{{$ctrl.unit.strings[$ctrl.language].title}}
+<span flex>{{ $ctrl.price | ablCurrency: 'eur' }}</span>
 ```
 
+##### currencyFilter (String)
+```javascript
+vm.price = 1234567890;
+vm.currencyFilter = 'usd';
+```
+```html
+<span flex>{{ $ctrl.price | ablCurrency: $ctrl.currencyFilter }}</span>
+```
+
+
+##### html (String)
+```javascript
+vm.price = 1234567890;
+vm.currencyFilter = 'usd';
+vm.html = 'html';
+```
+```html
+<span flex>{{ $ctrl.price | ablCurrency: $ctrl.currencyFilter : $ctrl.html }}</span>
+```
 
