@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "22608d13ab1a7e184407"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "819dccdd5064011f13a6"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -683,7 +683,7 @@
 	            }];
 	        }
 	    };
-	}).filter('currencyFilter', function ($filter, availableCurrencies, $ablCurrencyComponentProvider, $log) {
+	}).filter('ablCurrency', function ($filter, availableCurrencies, $ablCurrencyComponentProvider, $log) {
 	    var filter = this;
 	    filter.decimalsToString = function (decimals) {
 	        if (decimals > 0) {

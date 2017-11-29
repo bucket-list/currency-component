@@ -85,7 +85,7 @@ angular.module('currency-component')
             }
         }
     })
-    .filter('currencyFilter', function($filter, availableCurrencies, $ablCurrencyComponentProvider, $log) {
+    .filter('ablCurrency', function($filter, availableCurrencies, $ablCurrencyComponentProvider, $log) {
         var filter = this;
         filter.decimalsToString = function(decimals) {
             if (decimals > 0) {
