@@ -1,6 +1,6 @@
 {
   "name": "currency-component",
-  "version": "0.0.6",
+  "version": "0.0.1",
   "description": "ABL Currency Component",
   "main": "./dst/currency-component.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "type": "git",
     "url": "git://github.com/bucket-list/currency-component.git"
   },
-  "author": "Adam Ralko (github.com/aralko)",
+  "author": "Gonzalo Geraldo (github.com/returnvoid)",
   "license": "MIT",
   "devDependencies": {
     "angular": "1.5.8",
