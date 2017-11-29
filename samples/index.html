@@ -59,82 +59,82 @@
         </md-card-title>
         <md-card-content layout="row">
           <span flex>USD<br>{{$ctrl.getCurrencyObject('usd')}}</span>
-          <span flex>{{ $ctrl.customPrice | currencyFilter: 'usd' }}</span>
+          <span flex>{{ $ctrl.customPrice | ablCurrency: 'usd' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>NZD<br>{{$ctrl.getCurrencyObject('nzd')}}</span>
-          <span flex>{{ $ctrl.customPrice | currencyFilter: 'nzd' }}</span>
+          <span flex>{{ $ctrl.customPrice | ablCurrency: 'nzd' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>SGD<br>{{$ctrl.getCurrencyObject('sgd')}}</span>
-          <span flex>{{ $ctrl.customPrice | currencyFilter: 'sgd' }}</span>
+          <span flex>{{ $ctrl.customPrice | ablCurrency: 'sgd' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>EUR<br> {{$ctrl.getCurrencyObject('eur')}}</span>
-          <span flex>{{ $ctrl.customPrice | currencyFilter: 'eur' }}</span>
+          <span flex>{{ $ctrl.customPrice | ablCurrency: 'eur' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>DKK<br> {{$ctrl.getCurrencyObject('dkk')}}</span>
-          <span flex>{{ $ctrl.customPrice | currencyFilter: 'dkk' }}</span>
+          <span flex>{{ $ctrl.customPrice | ablCurrency: 'dkk' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>JPY<br> {{$ctrl.getCurrencyObject('jpy')}}</span>
-          <span flex>{{ $ctrl.customPrice | currencyFilter: 'jpy' }}</span>
+          <span flex>{{ $ctrl.customPrice | ablCurrency: 'jpy' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>GBP<br> {{$ctrl.getCurrencyObject('gbp')}}</span>
-          <span flex>{{ $ctrl.customPrice | currencyFilter: 'gbp' }}</span>
+          <span flex>{{ $ctrl.customPrice | ablCurrency: 'gbp' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>CHF<br> {{$ctrl.getCurrencyObject('chf')}}</span>
-          <span flex>{{ $ctrl.customPrice | currencyFilter: 'chf' }}</span>
+          <span flex>{{ $ctrl.customPrice | ablCurrency: 'chf' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>BRL<br> {{$ctrl.getCurrencyObject('brl')}}</span>
-          <span flex>{{ $ctrl.customPrice | currencyFilter: 'brl' }}</span>
+          <span flex>{{ $ctrl.customPrice | ablCurrency: 'brl' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>XPF<br> {{$ctrl.getCurrencyObject('xpf')}}</span>
-          <span flex>{{ $ctrl.customPrice | currencyFilter: 'xpf' }}</span>
+          <span flex>{{ $ctrl.customPrice | ablCurrency: 'xpf' }}</span>
         </md-card-content>
          <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>CL passed as object in the run method. This object is missing factor and decimals<br> {{$ctrl.getCurrencyObject('cl')}}</span>
-          <span flex>{{ $ctrl.customPrice | currencyFilter: 'cl' }}</span>
+          <span flex>{{ $ctrl.customPrice | ablCurrency: 'cl' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>BL passed as object in the run method. This object is NOT missing factor and decimals<br> {{$ctrl.getCurrencyObject('bl')}}</span>
-          <span flex>{{ $ctrl.customPrice | currencyFilter: 'bl' }}</span>
+          <span flex>{{ $ctrl.customPrice | ablCurrency: 'bl' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>No currency passed (default $) will use defaultCurrency and all its values</span>
-          <span flex>{{ $ctrl.customPrice | currencyFilter }}</span>
+          <span flex>{{ $ctrl.customPrice | ablCurrency }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>Currency passed but not found on the list</span>
-          <span flex>{{ $ctrl.customPrice | currencyFilter: 'abc' }}</span>
+          <span flex>{{ $ctrl.customPrice | ablCurrency: 'abc' }}</span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>Currency with html</span>
-          <span flex><span ng-bind-html="$ctrl.customPrice | currencyFilter: 'usd'"></span></span>
+          <span flex><span ng-bind-html="$ctrl.customPrice | ablCurrency: 'usd'"></span></span>
         </md-card-content>
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>JPY Currency with html and sign at the end</span>
-          <span flex><span ng-bind-html="$ctrl.customPrice | currencyFilter: 'jpy' : 'html'"></span></span>
+          <span flex><span ng-bind-html="$ctrl.customPrice | ablCurrency: 'jpy' : 'html'"></span></span>
         </md-card-content>
         <md-divider></md-divider>
 
@@ -144,8 +144,8 @@
           </md-card-title-text>
         </md-card-title>
         <md-card-content layout="row" style="text-align:center">
-          <span flex ng-if="!$ctrl.isHtml">{{$ctrl.customPrice | currencyFilter: $ctrl.customCurrency}}</span>
-          <span flex ng-if="$ctrl.isHtml"><span ng-bind-html="$ctrl.customPrice | currencyFilter: $ctrl.customCurrency : 'html'"></span></span>
+          <span flex ng-if="!$ctrl.isHtml">{{$ctrl.customPrice | ablCurrency: $ctrl.customCurrency}}</span>
+          <span flex ng-if="$ctrl.isHtml"><span ng-bind-html="$ctrl.customPrice | ablCurrency: $ctrl.customCurrency : 'html'"></span></span>
         </md-card-content>
         <md-divider></md-divider>
 
