@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "26fbeb5feef9107eda8c"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "22608d13ab1a7e184407"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -615,65 +615,99 @@
 	    };
 	}]).factory('availableCurrencies', function () {
 	    return {
+	        //list of currencies availables https://stripe.com/docs/currencies
 	        getAvailableCurrencies: function getAvailableCurrencies() {
 	            return [{
-	                name: 'usd',
+	                name: ['usd', 'cad', 'aud', 'hkd', 'nzd', 'sgd'],
 	                symbol: '$',
 	                symbolSeparation: '',
-	                position: 'prepend'
-	            }, {
-	                name: 'cad',
-	                symbol: '$',
-	                symbolSeparation: '',
-	                position: 'prepend'
+	                position: 'prepend',
+	                factor: 100,
+	                decimals: 2
 	            }, {
 	                name: 'eur',
 	                symbol: '€',
 	                symbolSeparation: '',
-	                position: 'prepend'
+	                position: 'prepend',
+	                factor: 100,
+	                decimals: 2
 	            }, {
-	                name: 'kr',
+	                name: ['dkk', 'nok', 'sek'],
 	                symbol: 'kr',
-	                symbolSeparation: '',
-	                position: 'prepend'
+	                symbolSeparation: '-',
+	                position: 'append',
+	                factor: 100,
+	                decimals: 2
 	            }, {
 	                name: 'jpy',
 	                symbol: '¥',
 	                symbolSeparation: '',
-	                position: 'prepend'
+	                position: 'prepend',
+	                factor: null,
+	                decimals: 0
+	            }, {
+	                name: 'mxn',
+	                symbol: '$',
+	                symbolSeparation: '',
+	                position: 'prepend',
+	                factor: null,
+	                decimals: 0
 	            }, {
 	                name: 'gbp',
 	                symbol: '£',
 	                symbolSeparation: '',
-	                position: 'prepend'
+	                position: 'prepend',
+	                factor: 100,
+	                decimals: 2
 	            }, {
 	                name: 'chf',
-	                symbol: 'chf',
-	                symbolSeparation: '',
-	                position: 'prepend'
-	            }, {
-	                name: 'brl',
-	                symbol: 'R$',
-	                symbolSeparation: '',
-	                position: 'prepend'
-	            }, {
-	                name: 'cfp',
-	                symbol: 'cfp',
-	                symbolSeparation: '',
-	                position: 'append'
+	                symbol: 'Fr',
+	                symbolSeparation: ' ',
+	                position: 'append',
+	                factor: 100,
+	                decimals: 2
 	            }, {
 	                name: 'xpf',
 	                symbol: 'XPF',
 	                symbolSeparation: ' ',
-	                position: 'append'
+	                position: 'append',
+	                factor: null,
+	                decimals: 0
+	            }, {
+	                name: 'brl',
+	                symbol: 'R$',
+	                symbolSeparation: '',
+	                position: 'prepend',
+	                factor: 100,
+	                decimals: 2
 	            }];
 	        }
 	    };
-	}).filter('currencyFilter', function ($filter, availableCurrencies, $ablCurrencyComponentProvider) {
+	}).filter('currencyFilter', function ($filter, availableCurrencies, $ablCurrencyComponentProvider, $log) {
 	    var filter = this;
+	    filter.decimalsToString = function (decimals) {
+	        if (decimals > 0) {
+	            var decimalsToString = '';
+	            for (var i = 0; i < decimals; i++) {
+	                decimalsToString += '0';
+	            }
+	            return '.' + decimalsToString;
+	        } else {
+	            return '';
+	        }
+	    };
+	    filter.fixDecimals = function (price, decimals) {
+	        var integer = price.toString().substr(price.toString().indexOf('.') + 1);
+	        $log.debug('fixDecimals', integer, decimals);
+	        if (integer.toString().length < decimals) {
+	            var diff = decimals - integer.length;
+	            return price.toString().substr(0, price.toString().indexOf('.')) + '666';
+	        }
+	    };
+	
 	    return function (price, currency, html) {
 	        //vars
-	        var currencies, uniqueCurrency, defaultCurrencies, currentCurrency, prependAppend, defaultCurrency;
+	        var currencies, uniqueCurrency, defaultCurrencies, currentCurrency, defaultCurrency;
 	
 	        //get boolean if the app should use only one currency in the whole app. Default value is false
 	        uniqueCurrency = $ablCurrencyComponentProvider.uniqueCurrency;
@@ -712,25 +746,38 @@
 	        if (currentCurrency.length === 0) {
 	            return 'Currency "' + currency + '" not found'; //display message with currency name not found
 	        } else {
+	            //set defaulst values if they are not found in the object
 	            if (angular.isUndefined(currentCurrency[0].symbolSeparation)) {
 	                //set separator to no space if symbolSeparation is undefined in the currency object
 	                currentCurrency[0].symbolSeparation = '';
 	            }
+	            if (angular.isUndefined(currentCurrency[0].factor)) {
+	                //set separator to no space if symbolSeparation is undefined in the currency object
+	                currentCurrency[0].factor = null;
+	            }
+	            if (angular.isUndefined(currentCurrency[0].decimals)) {
+	                //set separator to no space if symbolSeparation is undefined in the currency object
+	                currentCurrency[0].decimals = 0;
+	            }
 	        }
+	
+	        //calculate price taking factor and adding the decimals
+	        var priceFactorixed = currentCurrency[0].factor === null ? price : (price / currentCurrency[0].factor).toFixed(currentCurrency[0].decimals);
 	
 	        if (angular.isUndefined(html)) {
 	            //no html param
 	            if (currentCurrency[0].position === 'prepend') {
-	                return $filter('currency')(price, currentCurrency[0].symbol + currentCurrency[0].symbolSeparation);
+	                //the symbol goes in the front
+	                return currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + priceFactorixed;
 	            } else {
-	                return $filter('currency')(price, '') + (currentCurrency[0].symbolSeparation + currentCurrency[0].symbol);
+	                return priceFactorixed + (currentCurrency[0].symbolSeparation + currentCurrency[0].symbol);
 	            }
 	        } else {
 	            //html param passed
-	            if (prependAppend === 'prepend') {
-	                return '<span class="symbol">' + currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + '</span><span class="price">' + $filter('currency')(price, '') + '</span>';
+	            if (currentCurrency[0].position === 'prepend') {
+	                return '<span class="symbol">' + currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + '</span><span class="price">' + priceFactorixed + '</span>';
 	            } else {
-	                return '<span class="price">' + $filter('currency')(price, '') + '</span><span class="symbol">' + currentCurrency[0].symbolSeparation + currentCurrency[0].symbol + '</span>';
+	                return '<span class="price">' + priceFactorixed + '</span><span class="symbol">' + currentCurrency[0].symbolSeparation + currentCurrency[0].symbol + '</span>';
 	            }
 	        }
 	    };

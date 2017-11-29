@@ -16,6 +16,7 @@ angular.module('currency-component')
     }])
     .factory('availableCurrencies', function() {
         return {
+            //list of currencies availables https://stripe.com/docs/currencies
             getAvailableCurrencies: function() {
                 return [{
                     name: ['usd', 'cad', 'aud', 'hkd', 'nzd', 'sgd'],
@@ -25,7 +26,7 @@ angular.module('currency-component')
                     factor: 100,
                     decimals: 2
                 }, {
-                    name: ['eur'],
+                    name: 'eur',
                     symbol: '€',
                     symbolSeparation: '',
                     position: 'prepend',
@@ -84,20 +85,9 @@ angular.module('currency-component')
             }
         }
     })
-    .filter('objToString', function($log) {
-        return function(object) {
-            var output = '{';
-            for (var property in object) {
-                output += '' + property + ': "' + object[property] + '", ';
-            }
-            output += '}';
-            return output;
-        }
-    })
     .filter('currencyFilter', function($filter, availableCurrencies, $ablCurrencyComponentProvider, $log) {
         var filter = this;
         filter.decimalsToString = function(decimals) {
-            $log.debug('decimalsToString', decimals);
             if (decimals > 0) {
                 var decimalsToString = '';
                 for (var i = 0; i < decimals; i++) {
@@ -111,16 +101,16 @@ angular.module('currency-component')
         }
         filter.fixDecimals = function(price, decimals) {
             var integer = price.toString().substr(price.toString().indexOf('.') + 1);
+            $log.debug('fixDecimals', integer, decimals);
             if (integer.toString().length < decimals) {
                 var diff = decimals - integer.length;
-                $log.debug('fixDecimals:diff', diff, integer.length, decimals, filter.decimalsToString(diff));
-                return price.toString().substr(0, price.toString().indexOf('.')) + filter.decimalsToString(diff);
+                return price.toString().substr(0, price.toString().indexOf('.')) + '666';
             }
         }
 
         return function(price, currency, html) {
             //vars
-            var currencies, uniqueCurrency, defaultCurrencies, currentCurrency, prependAppend, defaultCurrency;
+            var currencies, uniqueCurrency, defaultCurrencies, currentCurrency, defaultCurrency;
 
             //get boolean if the app should use only one currency in the whole app. Default value is false
             uniqueCurrency = $ablCurrencyComponentProvider.uniqueCurrency;
@@ -133,7 +123,6 @@ angular.module('currency-component')
 
             //final list concatenated array from provider
             currencies = defaultCurrencies.concat($ablCurrencyComponentProvider.currencies);
-            $log.debug('currencies', currencies);
             filter.currencies = currencies;
 
             if (uniqueCurrency) { //force to use defaultCurrency from provider
@@ -173,14 +162,7 @@ angular.module('currency-component')
             }
 
             //calculate price taking factor and adding the decimals
-            var priceFactorixed = currentCurrency[0].factor === null ? price : price / currentCurrency[0].factor;
-
-            //if there is no decimals add string with numbers of zeros: '.00'
-            if (priceFactorixed.toString().indexOf('.') === -1) {
-                priceFactorixed = priceFactorixed + filter.decimalsToString(currentCurrency[0].decimals);
-            }
-
-            filter.fixDecimals(priceFactorixed, currentCurrency[0].decimals);
+            var priceFactorixed = currentCurrency[0].factor === null ? price : (price / currentCurrency[0].factor).toFixed(currentCurrency[0].decimals);
 
             if (angular.isUndefined(html)) { //no html param
                 if (currentCurrency[0].position === 'prepend') { //the symbol goes in the front
@@ -191,7 +173,7 @@ angular.module('currency-component')
                 }
             }
             else { //html param passed
-                if (prependAppend === 'prepend') {
+                if (currentCurrency[0].position === 'prepend') {
                     return '<span class="symbol">' + currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + '</span><span class="price">' + priceFactorixed + '</span>';
                 }
                 else {
