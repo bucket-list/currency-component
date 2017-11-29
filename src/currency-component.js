@@ -87,26 +87,6 @@ angular.module('currency-component')
     })
     .filter('ablCurrency', function($filter, availableCurrencies, $ablCurrencyComponentProvider, $log) {
         var filter = this;
-        filter.decimalsToString = function(decimals) {
-            if (decimals > 0) {
-                var decimalsToString = '';
-                for (var i = 0; i < decimals; i++) {
-                    decimalsToString += '0';
-                }
-                return '.' + decimalsToString;
-            }
-            else {
-                return '';
-            }
-        }
-        filter.fixDecimals = function(price, decimals) {
-            var integer = price.toString().substr(price.toString().indexOf('.') + 1);
-            $log.debug('fixDecimals', integer, decimals);
-            if (integer.toString().length < decimals) {
-                var diff = decimals - integer.length;
-                return price.toString().substr(0, price.toString().indexOf('.')) + '666';
-            }
-        }
 
         return function(price, currency, html) {
             //vars
