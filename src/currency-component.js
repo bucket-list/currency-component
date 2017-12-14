@@ -176,10 +176,6 @@ angular.module('currency-component')
                     output = '<span class="abl-currency"><span class="abl-currency-price">' + priceFactorixed + '</span></span>';
                 }
             }
-            console.log('currency:ENV', $rootScope.ENV);
-            if($rootScope.ENV.log){
-                output = '('+currency+') ' + output;
-            }
             
             return output;
         };
