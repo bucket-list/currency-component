@@ -1,6 +1,6 @@
 {
   "name": "currency-component",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "ABL Currency Component",
   "main": "./dst/currency-component.js",
   "scripts": {
@@ -31,6 +31,7 @@
     "css-loader": "^0.28.0",
     "extract-text-webpack-plugin": "^1.0.1",
     "feathers-client": "^1.6.1",
+    "file-loader": "^1.1.5",
     "find-port": "^2.0.1",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
@@ -52,6 +53,7 @@
     "socket.io": "^1.5.0",
     "string-loader": "0.0.1",
     "style-loader": "^0.16.1",
+    "svg-inline-loader": "^0.8.0",
     "uglify-js": "^2.6.2",
     "webpack": "^1.9.11",
     "webpack-dev-server": "^1.14.1",
