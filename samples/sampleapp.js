@@ -23,6 +23,7 @@ app.run(function($ablCurrencyComponentProvider) {
     })
     .controller('SampleController', ['$scope', '$mdMedia', '$rootScope', '$window', '$timeout', '$filter', '$ablCurrencyComponentProvider', '$log', function($scope, $mdMedia, $rootScope, $window, $timeout, $filter, $ablCurrencyComponentProvider, $log) {
         var vm = this;
+        $rootScope.ENV = {log: true};
         vm.price = 123456789;
         vm.customPrice = 1234567890;
         var currencies = [{

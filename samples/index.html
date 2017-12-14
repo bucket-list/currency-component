@@ -134,7 +134,7 @@
         <md-divider></md-divider>
         <md-card-content layout="row">
           <span flex>JPY Currency with html and sign at the end</span>
-          <span flex><span ng-bind-html="$ctrl.customPrice | ablCurrency: 'jpy' : 'html'"></span></span>
+          <span flex><span ng-bind-html="$ctrl.customPrice | ablCurrency: 'jpy' : true"></span></span>
         </md-card-content>
         <md-divider></md-divider>
 
@@ -144,8 +144,8 @@
           </md-card-title-text>
         </md-card-title>
         <md-card-content layout="row" style="text-align:center">
-          <span flex ng-if="!$ctrl.isHtml">{{$ctrl.customPrice | ablCurrency: $ctrl.customCurrency}}</span>
-          <span flex ng-if="$ctrl.isHtml"><span ng-bind-html="$ctrl.customPrice | ablCurrency: $ctrl.customCurrency : 'html'"></span></span>
+          <span flex ng-if="!$ctrl.isHtml">{{$ctrl.customPrice | ablCurrency: $ctrl.customCurrency : false : $ctrl.noSymbol}}</span>
+          <span flex ng-if="$ctrl.isHtml"><span ng-bind-html="$ctrl.customPrice | ablCurrency: $ctrl.customCurrency : true : $ctrl.noSymbol"></span></span>
         </md-card-content>
         <md-divider></md-divider>
 
@@ -166,6 +166,11 @@
           <md-input-container flex="25">
             <md-checkbox flex aria-label="Html?" ng-model="$ctrl.isHtml">
               HTML?
+            </md-checkbox>
+          </md-input-container>
+          <md-input-container flex="25">
+            <md-checkbox flex aria-label="No symbol" ng-model="$ctrl.noSymbol">
+              No symbol
             </md-checkbox>
           </md-input-container>
 
