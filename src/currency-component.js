@@ -14,8 +14,14 @@ angular.module('currency-component')
             }
         }
     }])
-    .factory('availableCurrencies', function() {
+    .factory('currencyService', function($filter) {
         return {
+            //method to get current currency in current filter
+            getCurrentCurrency: function(currency) {
+                return $filter('filter')(this.getAvailableCurrencies(), {
+                    name: currency
+                }, true);
+            },
             //list of currencies availables https://stripe.com/docs/currencies
             getAvailableCurrencies: function() {
                 return [{
@@ -85,7 +91,7 @@ angular.module('currency-component')
             }
         }
     })
-    .filter('ablCurrency', function($filter, $rootScope, availableCurrencies, $ablCurrencyComponentProvider, $log) {
+    .filter('ablCurrency', function($filter, $rootScope, currencyService, $ablCurrencyComponentProvider, $log) {
         var filter = this;
 
         filter.getCountryCode = function(currency) {
@@ -101,7 +107,7 @@ angular.module('currency-component')
             uniqueCurrency = $ablCurrencyComponentProvider.uniqueCurrency;
 
             //get list of available currencies in component
-            defaultCurrencies = availableCurrencies.getAvailableCurrencies();
+            defaultCurrencies = currencyService.getAvailableCurrencies();
 
             //concat component currencies with the ones provided by user in setup. Default is 'usd'
             defaultCurrency = $ablCurrencyComponentProvider.defaultCurrency;
@@ -172,11 +178,12 @@ angular.module('currency-component')
                     else {
                         output = '<span class="abl-currency"><span class="abl-currency-price">' + priceFactorixed + '</span><span class="abl-currency-symbol">' + currentCurrency[0].symbolSeparation + currentCurrency[0].symbol + '</span></span>';
                     }
-                }else{
+                }
+                else {
                     output = '<span class="abl-currency"><span class="abl-currency-price">' + priceFactorixed + '</span></span>';
                 }
             }
-            
+
             return output;
         };
     });

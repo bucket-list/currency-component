@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "d07d3cd9d6c5c05165f1"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "40756e4209906ae7490d"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -613,8 +613,14 @@
 	            return config;
 	        }
 	    };
-	}]).factory('availableCurrencies', function () {
+	}]).factory('currencyService', function ($filter) {
 	    return {
+	        //method to get current currency in current filter
+	        getCurrentCurrency: function getCurrentCurrency(currency) {
+	            return $filter('filter')(this.getAvailableCurrencies(), {
+	                name: currency
+	            }, true);
+	        },
 	        //list of currencies availables https://stripe.com/docs/currencies
 	        getAvailableCurrencies: function getAvailableCurrencies() {
 	            return [{
@@ -683,7 +689,7 @@
 	            }];
 	        }
 	    };
-	}).filter('ablCurrency', function ($filter, $rootScope, availableCurrencies, $ablCurrencyComponentProvider, $log) {
+	}).filter('ablCurrency', function ($filter, $rootScope, currencyService, $ablCurrencyComponentProvider, $log) {
 	    var filter = this;
 	
 	    filter.getCountryCode = function (currency) {
@@ -699,7 +705,7 @@
 	        uniqueCurrency = $ablCurrencyComponentProvider.uniqueCurrency;
 	
 	        //get list of available currencies in component
-	        defaultCurrencies = availableCurrencies.getAvailableCurrencies();
+	        defaultCurrencies = currencyService.getAvailableCurrencies();
 	
 	        //concat component currencies with the ones provided by user in setup. Default is 'usd'
 	        defaultCurrency = $ablCurrencyComponentProvider.defaultCurrency;
