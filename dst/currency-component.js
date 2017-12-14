@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "0a0c26a017f535caff6d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "d07d3cd9d6c5c05165f1"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -683,10 +683,15 @@
 	            }];
 	        }
 	    };
-	}).filter('ablCurrency', function ($filter, availableCurrencies, $ablCurrencyComponentProvider, $log) {
+	}).filter('ablCurrency', function ($filter, $rootScope, availableCurrencies, $ablCurrencyComponentProvider, $log) {
 	    var filter = this;
 	
-	    return function (price, currency, html) {
+	    filter.getCountryCode = function (currency) {
+	        var countriesCode = { 'usd': 'us', 'cad': 'ca', 'aud': 'au', 'hkd': 'hk', 'nzd': 'nz', 'sgd': 'sg' };
+	        return countriesCode[currency];
+	    };
+	
+	    return function (price, currency, html, symbol) {
 	        //vars
 	        var currencies, uniqueCurrency, defaultCurrencies, currentCurrency, defaultCurrency;
 	
@@ -745,22 +750,36 @@
 	        //calculate price taking factor and adding the decimals
 	        var priceFactorixed = currentCurrency[0].factor === null ? price : (price / currentCurrency[0].factor).toFixed(currentCurrency[0].decimals);
 	
-	        if (angular.isUndefined(html)) {
+	        var output = '';
+	        if (angular.isUndefined(html) || !html) {
 	            //no html param
-	            if (currentCurrency[0].position === 'prepend') {
-	                //the symbol goes in the front
-	                return currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + priceFactorixed;
+	            if (angular.isUndefined(symbol) || !symbol) {
+	                //if symbol is not passed the symbol will be included
+	                if (currentCurrency[0].position === 'prepend') {
+	                    //the symbol goes in the front
+	                    output = currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + priceFactorixed;
+	                } else {
+	                    output = priceFactorixed + (currentCurrency[0].symbolSeparation + currentCurrency[0].symbol);
+	                }
 	            } else {
-	                return priceFactorixed + (currentCurrency[0].symbolSeparation + currentCurrency[0].symbol);
+	                output = priceFactorixed;
 	            }
 	        } else {
 	            //html param passed
-	            if (currentCurrency[0].position === 'prepend') {
-	                return '<span class="symbol">' + currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + '</span><span class="price">' + priceFactorixed + '</span>';
+	            $log.debug('angular.isUndefined(symbol)', angular.isUndefined(symbol), symbol);
+	            if (angular.isUndefined(symbol) || !symbol) {
+	                //if symbol is not passed the symbol will be included
+	                if (currentCurrency[0].position === 'prepend') {
+	                    output = '<span class="abl-currency"><span class="abl-currency-symbol">' + currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + '</span><span class="abl-currency-price">' + priceFactorixed + '</span></span>';
+	                } else {
+	                    output = '<span class="abl-currency"><span class="abl-currency-price">' + priceFactorixed + '</span><span class="abl-currency-symbol">' + currentCurrency[0].symbolSeparation + currentCurrency[0].symbol + '</span></span>';
+	                }
 	            } else {
-	                return '<span class="price">' + priceFactorixed + '</span><span class="symbol">' + currentCurrency[0].symbolSeparation + currentCurrency[0].symbol + '</span>';
+	                output = '<span class="abl-currency"><span class="abl-currency-price">' + priceFactorixed + '</span></span>';
 	            }
 	        }
+	
+	        return output;
 	    };
 	});
 
@@ -799,7 +818,7 @@
 	
 	
 	// module
-	exports.push([module.id, "span.price{\n    font-size: 30px;\n    color: #666;\n}\nspan.sign{\n    font-weight: bold;\n    font-size: 20px;\n    vertical-align: baseline;\n    color: #666;\n}", ""]);
+	exports.push([module.id, ".abl-currency span.abl-currency-price{\n    font-size: 30px;\n    color: #666;\n}\n.abl-currency span.abl-currency-symbol{\n    font-weight: bold;\n    font-size: 20px;\n    vertical-align: baseline;\n    color: #666;\n}", ""]);
 	
 	// exports
 
