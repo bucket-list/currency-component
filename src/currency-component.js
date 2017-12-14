@@ -85,10 +85,15 @@ angular.module('currency-component')
             }
         }
     })
-    .filter('ablCurrency', function($filter, availableCurrencies, $ablCurrencyComponentProvider, $log) {
+    .filter('ablCurrency', function($filter, $rootScope, availableCurrencies, $ablCurrencyComponentProvider, $log) {
         var filter = this;
 
-        return function(price, currency, html) {
+        filter.getCountryCode = function(currency) {
+            var countriesCode = { 'usd': 'us', 'cad': 'ca', 'aud': 'au', 'hkd': 'hk', 'nzd': 'nz', 'sgd': 'sg' };
+            return countriesCode[currency];
+        }
+
+        return function(price, currency, html, symbol) {
             //vars
             var currencies, uniqueCurrency, defaultCurrencies, currentCurrency, defaultCurrency;
 
@@ -144,21 +149,38 @@ angular.module('currency-component')
             //calculate price taking factor and adding the decimals
             var priceFactorixed = currentCurrency[0].factor === null ? price : (price / currentCurrency[0].factor).toFixed(currentCurrency[0].decimals);
 
-            if (angular.isUndefined(html)) { //no html param
-                if (currentCurrency[0].position === 'prepend') { //the symbol goes in the front
-                    return (currentCurrency[0].symbol + currentCurrency[0].symbolSeparation) + priceFactorixed;
+            var output = '';
+            if (angular.isUndefined(html) || !html) { //no html param
+                if (angular.isUndefined(symbol) || !symbol) { //if symbol is not passed the symbol will be included
+                    if (currentCurrency[0].position === 'prepend') { //the symbol goes in the front
+                        output = (currentCurrency[0].symbol + currentCurrency[0].symbolSeparation) + priceFactorixed;
+                    }
+                    else {
+                        output = priceFactorixed + (currentCurrency[0].symbolSeparation + currentCurrency[0].symbol);
+                    }
                 }
                 else {
-                    return priceFactorixed + (currentCurrency[0].symbolSeparation + currentCurrency[0].symbol);
+                    output = priceFactorixed;
                 }
             }
             else { //html param passed
-                if (currentCurrency[0].position === 'prepend') {
-                    return '<span class="symbol">' + currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + '</span><span class="price">' + priceFactorixed + '</span>';
-                }
-                else {
-                    return '<span class="price">' + priceFactorixed + '</span><span class="symbol">' + currentCurrency[0].symbolSeparation + currentCurrency[0].symbol + '</span>';
+                $log.debug('angular.isUndefined(symbol)', angular.isUndefined(symbol), symbol);
+                if (angular.isUndefined(symbol) || !symbol) { //if symbol is not passed the symbol will be included
+                    if (currentCurrency[0].position === 'prepend') {
+                        output = '<span class="abl-currency"><span class="abl-currency-symbol">' + currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + '</span><span class="abl-currency-price">' + priceFactorixed + '</span></span>';
+                    }
+                    else {
+                        output = '<span class="abl-currency"><span class="abl-currency-price">' + priceFactorixed + '</span><span class="abl-currency-symbol">' + currentCurrency[0].symbolSeparation + currentCurrency[0].symbol + '</span></span>';
+                    }
+                }else{
+                    output = '<span class="abl-currency"><span class="abl-currency-price">' + priceFactorixed + '</span></span>';
                 }
             }
+            console.log('currency:ENV', $rootScope.ENV);
+            if($rootScope.ENV.log){
+                output = '('+currency+') ' + output;
+            }
+            
+            return output;
         };
     });
