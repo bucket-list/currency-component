@@ -29,7 +29,7 @@ angular
 ```
 4. Using the filter:
 ```html
-<span flex>{{ $ctrl.price | currencyFilter: 'eur' }}</span>
+<span flex>{{ $ctrl.price | ablCurrency: 'eur' }}</span>
 ```
 
 #### Component setup
@@ -52,7 +52,7 @@ app.run(function($ablCurrencyComponentProvider) {
 vm.price = 1234567890;
 ```
 ```html
-<span flex>{{ $ctrl.price | currencyFilter: 'eur' }}</span>
+<span flex>{{ $ctrl.price | ablCurrency: 'eur' }}</span>
 ```
 
 ##### currencyFilter (String)
@@ -61,7 +61,7 @@ vm.price = 1234567890;
 vm.currencyFilter = 'usd';
 ```
 ```html
-<span flex>{{ $ctrl.price | currencyFilter: $ctrl.currencyFilter }}</span>
+<span flex>{{ $ctrl.price | ablCurrency: $ctrl.currencyFilter }}</span>
 ```
 
 
@@ -72,6 +72,6 @@ vm.currencyFilter = 'usd';
 vm.html = 'html';
 ```
 ```html
-<span flex>{{ $ctrl.price | currencyFilter: $ctrl.currencyFilter : $ctrl.html }}</span>
+<span flex>{{ $ctrl.price | ablCurrency: $ctrl.currencyFilter : $ctrl.html }}</span>
 ```
 

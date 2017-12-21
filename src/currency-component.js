@@ -1,166 +1,189 @@
-import template from './template.html';
 import styles from './currency-component.css';
 angular.module('currency-component', []);
 
 angular.module('currency-component')
-    .filter('currencyFilter', function($filter) {
-        return function(price, currency, prependAppend, html) {
-            function getPriceByCurrency(_price) {
-                console.log('getPriceByCurrency', _price, currency);
-                switch (currency) {
-                    case 'usd':
-                        return _price / 100;
-                        break;
-                    case 'cad':
-                        return _price / 100;
-                        break;
-                    default:
-                        return _price;
-                }
-            }
-            var currencies = [{
-                    name: 'usd',
-                    sign: '$'
-                },
-                {
-                    name: 'cad',
-                    sign: '$'
-                }, {
-                    name: 'eur',
-                    sign: '€'
-                }, {
-                    name: 'kr',
-                    sign: 'kr'
-                }, {
-                    name: 'jpy',
-                    sign: '¥'
-                }, {
-                    name: 'gbp',
-                    sign: '£'
-                }, {
-                    name: 'chf',
-                    sign: 'chf'
-                }, {
-                    name: 'brl',
-                    sign: 'R$'
-                }, {
-                    name: 'cfp',
-                    sign: 'cfp'
-                }
-            ];
-            var sign = $filter('filter')(currencies, {
-                name: currency
-            }, true);
-            console.log('sign: ', sign, price, currency, html, prependAppend);
-            if (sign.length > 0) { //sign is on the list
-                if (typeof html === 'undefined') { //no html param
-                    console.log('no html', price);
-                    if (typeof currency === 'undefined') { //default currency $
-                        console.log('no currency');
-                        if (typeof prependAppend === 'undefined') {
-                            return $filter('currency')(getPriceByCurrency(price));
-                        }
-                        else {
-                            if (prependAppend === 'prepend') {
-                                return $filter('currency')(getPriceByCurrency(price));
-                            }
-                            else {
-                                return $filter('currency')(getPriceByCurrency(price), '') + '$';
-                            }
-                        }
-
-                    }
-                    else { //currency was passed
-                        console.log('currency found', currency);
-                        if (typeof prependAppend === 'undefined') {
-                            return $filter('currency')(getPriceByCurrency(price), sign[0].sign);
-                        }
-                        else {
-                            console.log('currency found & prependAppend', prependAppend);
-                            if (prependAppend === 'prepend') {
-                                return $filter('currency')(getPriceByCurrency(price), sign[0].sign);
-                            }
-                            else {
-                                return $filter('currency')(getPriceByCurrency(price), '') + sign[0].sign;
-                            }
-                        }
-                    }
-                }
-                else { //html param passed
-                    if (typeof currency === 'undefined') { //default currency $
-                        return '<span class="sign">' + sign[0].sign + '</span><span class="getPriceByCurrency(price)">' + $filter('currency')(getPriceByCurrency(price)) + '</span>';
-                    }
-                    else { //currency was passed
-                        if (typeof prependAppend === 'undefined') {
-                            return '<span class="sign">' + sign[0].sign + '</span><span class="getPriceByCurrency(price)">' + $filter('currency')(getPriceByCurrency(price), '') + '</span>';
-                        }
-                        else {
-                            console.log('prependAppend', prependAppend);
-                            if (prependAppend === 'prepend') {
-                                return '<span class="sign">' + sign[0].sign + '</span><span class="getPriceByCurrency(price)">' + $filter('currency')(getPriceByCurrency(price), '') + '</span>';
-                            }
-                            else {
-                                return '<span class="getPriceByCurrency(price)">' + $filter('currency')(getPriceByCurrency(price), '') + '</span><span class="sign">' + sign[0].sign + '</span>';
-                            }
-                        }
-                    }
-                }
-            }
-            else {
-                return 'no currency found';
-            }
+    .provider('$ablCurrencyComponentProvider', [function $ablCurrencyComponentProvider() {
+        var config = {
+            defaultCurrency: 'usd', //default currency to usd
+            uniqueCurrency: false, //unique means the app will pass by provider an unique currency for the whole app
+            currencies: [] //list (array of objects) of currencies added by provider
         };
-    })
-    .component('currencyComponent', {
-        bindings: {
-            config: '='
-        },
-        controller: function($scope, $element, $attrs, $rootScope, $http) {
-            this.$onInit = function() {
-                var vm = this;
-                vm.price = 123456789;
-                vm.price = 1234567890;
-                vm.customCurrencies = [{
-                    name: 'usd',
-                    sign: '$'
+        return {
+            $get: function() {
+                return config;
+            }
+        }
+    }])
+    .factory('currencyService', function($filter) {
+        return {
+            //method to get current currency in current filter
+            getCurrentCurrency: function(currency) {
+                return $filter('filter')(this.getAvailableCurrencies(), {
+                    name: currency
+                }, true);
+            },
+            //list of currencies availables https://stripe.com/docs/currencies
+            getAvailableCurrencies: function() {
+                return [{
+                    name: ['usd', 'cad', 'aud', 'hkd', 'nzd', 'sgd'],
+                    symbol: '$',
+                    symbolSeparation: '',
+                    position: 'prepend',
+                    factor: 100,
+                    decimals: 2
                 }, {
                     name: 'eur',
-                    sign: '€'
+                    symbol: '€',
+                    symbolSeparation: '',
+                    position: 'prepend',
+                    factor: 100,
+                    decimals: 2
                 }, {
-                    name: 'kr',
-                    sign: 'kr'
+                    name: ['dkk', 'nok', 'sek'],
+                    symbol: 'kr',
+                    symbolSeparation: '-',
+                    position: 'append',
+                    factor: 100,
+                    decimals: 2
                 }, {
                     name: 'jpy',
-                    sign: '¥'
+                    symbol: '¥',
+                    symbolSeparation: '',
+                    position: 'prepend',
+                    factor: null,
+                    decimals: 0
+                }, {
+                    name: 'mxn',
+                    symbol: '$',
+                    symbolSeparation: '',
+                    position: 'prepend',
+                    factor: null,
+                    decimals: 0
                 }, {
                     name: 'gbp',
-                    sign: '£'
+                    symbol: '£',
+                    symbolSeparation: '',
+                    position: 'prepend',
+                    factor: 100,
+                    decimals: 2
                 }, {
                     name: 'chf',
-                    sign: 'chf'
+                    symbol: 'Fr',
+                    symbolSeparation: ' ',
+                    position: 'append',
+                    factor: 100,
+                    decimals: 2
+                }, {
+                    name: 'xpf',
+                    symbol: 'XPF',
+                    symbolSeparation: ' ',
+                    position: 'append',
+                    factor: null,
+                    decimals: 0
                 }, {
                     name: 'brl',
-                    sign: 'R$'
-                }, {
-                    name: 'cfp',
-                    sign: 'cfp'
+                    symbol: 'R$',
+                    symbolSeparation: '',
+                    position: 'prepend',
+                    factor: 100,
+                    decimals: 2
                 }];
-                vm.customCurrency = this.customCurrencies[0].name;
-                vm.prependAppend = false;
-                vm.prependAppendOption = 'prepend';
+            }
+        }
+    })
+    .filter('ablCurrency', function($filter, $rootScope, currencyService, $ablCurrencyComponentProvider, $log) {
+        var filter = this;
 
-                $scope.$watch(function() {
-                    return vm.prependAppend;
-                }, function(newValue, oldValue) {
-                    console.log('$scope.$watch', newValue);
-                    if (!newValue) {
-                        vm.prependAppendOption = 'prepend';
+        filter.getCountryCode = function(currency) {
+            var countriesCode = { 'usd': 'us', 'cad': 'ca', 'aud': 'au', 'hkd': 'hk', 'nzd': 'nz', 'sgd': 'sg' };
+            return countriesCode[currency];
+        }
+
+        return function(price, currency, html, symbol) {
+            //vars
+            var currencies, uniqueCurrency, defaultCurrencies, currentCurrency, defaultCurrency;
+
+            //get boolean if the app should use only one currency in the whole app. Default value is false
+            uniqueCurrency = $ablCurrencyComponentProvider.uniqueCurrency;
+
+            //get list of available currencies in component
+            defaultCurrencies = currencyService.getAvailableCurrencies();
+
+            //concat component currencies with the ones provided by user in setup. Default is 'usd'
+            defaultCurrency = $ablCurrencyComponentProvider.defaultCurrency;
+
+            //final list concatenated array from provider
+            currencies = defaultCurrencies.concat($ablCurrencyComponentProvider.currencies);
+            filter.currencies = currencies;
+
+            if (uniqueCurrency) { //force to use defaultCurrency from provider
+                currency = $ablCurrencyComponentProvider.defaultCurrency;
+            }
+            else { //if currency is undefined, use the default one
+                if (angular.isUndefined(currency)) { //module defines a defaultCurrency to usd. By provider defaultCurrency can be overwritten
+                    if (angular.isUndefined($ablCurrencyComponentProvider.defaultCurrency)) {
+                        currency = defaultCurrency;
                     }
                     else {
-                        vm.prependAppendOption = 'append';
+                        currency = $ablCurrencyComponentProvider.defaultCurrency;
                     }
-                });
+                }
             }
-        },
-        template: template
+
+            //find currency in array
+            currentCurrency = $filter('filter')(currencies, {
+                name: currency
+            }, true);
+
+            //if currency is not on the list and it was not provide by the app should return an exception
+            if (currentCurrency.length === 0) {
+                return 'Currency "' + currency + '" not found'; //display message with currency name not found
+            }
+            else {
+                //set defaulst values if they are not found in the object
+                if (angular.isUndefined(currentCurrency[0].symbolSeparation)) { //set separator to no space if symbolSeparation is undefined in the currency object
+                    currentCurrency[0].symbolSeparation = '';
+                }
+                if (angular.isUndefined(currentCurrency[0].factor)) { //set separator to no space if symbolSeparation is undefined in the currency object
+                    currentCurrency[0].factor = null;
+                }
+                if (angular.isUndefined(currentCurrency[0].decimals)) { //set separator to no space if symbolSeparation is undefined in the currency object
+                    currentCurrency[0].decimals = 0;
+                }
+            }
+
+            //calculate price taking factor and adding the decimals
+            var priceFactorixed = currentCurrency[0].factor === null ? price : (price / currentCurrency[0].factor).toFixed(currentCurrency[0].decimals);
+
+            var output = '';
+            if (angular.isUndefined(html) || !html) { //no html param
+                if (angular.isUndefined(symbol) || !symbol) { //if symbol is not passed the symbol will be included
+                    if (currentCurrency[0].position === 'prepend') { //the symbol goes in the front
+                        output = (currentCurrency[0].symbol + currentCurrency[0].symbolSeparation) + priceFactorixed;
+                    }
+                    else {
+                        output = priceFactorixed + (currentCurrency[0].symbolSeparation + currentCurrency[0].symbol);
+                    }
+                }
+                else {
+                    output = priceFactorixed;
+                }
+            }
+            else { //html param passed
+                $log.debug('angular.isUndefined(symbol)', angular.isUndefined(symbol), symbol);
+                if (angular.isUndefined(symbol) || !symbol) { //if symbol is not passed the symbol will be included
+                    if (currentCurrency[0].position === 'prepend') {
+                        output = '<span class="abl-currency"><span class="abl-currency-symbol">' + currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + '</span><span class="abl-currency-price">' + priceFactorixed + '</span></span>';
+                    }
+                    else {
+                        output = '<span class="abl-currency"><span class="abl-currency-price">' + priceFactorixed + '</span><span class="abl-currency-symbol">' + currentCurrency[0].symbolSeparation + currentCurrency[0].symbol + '</span></span>';
+                    }
+                }
+                else {
+                    output = '<span class="abl-currency"><span class="abl-currency-price">' + priceFactorixed + '</span></span>';
+                }
+            }
+
+            return output;
+        };
     });

@@ -75,23 +75,31 @@ gulp.task('watch', function() {
 });
 
 gulp.task("webpack-dev-server", function(callback) {
-  var myConfig = Object.create(webpackDevConfig);
-  var port = 3232;
-  myConfig.entry.unshift("webpack-dev-server/client?http://0.0.0.0:" + port + "/", "webpack/hot/dev-server");
-  myConfig.devtool = "eval";
-  myConfig.debug = true;
-  var server = new WebpackDevServer(webpack(myConfig), {
-    hot: true,
-    iframe: true,
-    contentBase: "./samples",
-    noInfo: true,
-    disableHostCheck: true,
-    clientLogLevel: 'none'
-  }).listen(port, "0.0.0.0", function(err) {
-    if (err) throw new gutil.PluginError("webpack-dev-server", err);
-    gutil.log("[webpack-dev-server]", "http://localhost:" + port + "/webpack-dev-server/index.html");
-  });
+      var myConfig = Object.create(webpackDevConfig);
+      var port = 3233;
+      myConfig.entry.unshift("webpack-dev-server/client?http://localhost:" + port + "/", "webpack/hot/dev-server");
+
+      myConfig.devtool = "eval";
+      myConfig.debug = true;
+
+    var server = new WebpackDevServer(webpack(myConfig), {
+      hot: true,
+      inline: true,
+      iframe: true,
+      contentBase: "./samples",
+      noInfo: true,
+      disableHostCheck: true,
+      clientLogLevel: 'none',
+      headers: {
+        'Access-Control-Allow-Origin': '*'
+      }
+      }).listen(port, "0.0.0.0", function(err) {
+      if (err) throw new gutil.PluginError("webpack-dev-server", err);
+      gutil.log("[webpack-dev-server]", "http://0.0.0.0:" + port + "/webpack-dev-server/index.html");  
+      });
+  // });
+
 });
 
-gulp.task('default', ['watch-recompile', 'webpack-dev-server', 'watch']);
+gulp.task('default', ['webpack-dev-server', 'watch-recompile', 'watch']);
 gulp.task('dev', ['webpack-dev-server']);
