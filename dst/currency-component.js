@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "40756e4209906ae7490d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "c6cb3bfbedcf3004b5d5"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -754,7 +754,12 @@
 	        }
 	
 	        //calculate price taking factor and adding the decimals
+	        var negativePriceFactorixed = false; //save negative sign for adding it later to the formatter
 	        var priceFactorixed = currentCurrency[0].factor === null ? price : (price / currentCurrency[0].factor).toFixed(currentCurrency[0].decimals);
+	        if (priceFactorixed < 0) {
+	            var negativePriceFactorixed = true;
+	            priceFactorixed = (priceFactorixed * -1).toFixed(currentCurrency[0].decimals); //add decimals after making number positive
+	        }
 	
 	        var output = '';
 	        if (angular.isUndefined(html) || !html) {
@@ -763,25 +768,24 @@
 	                //if symbol is not passed the symbol will be included
 	                if (currentCurrency[0].position === 'prepend') {
 	                    //the symbol goes in the front
-	                    output = currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + priceFactorixed;
+	                    output = (negativePriceFactorixed ? '-' : '') + (currentCurrency[0].symbol + currentCurrency[0].symbolSeparation) + priceFactorixed;
 	                } else {
-	                    output = priceFactorixed + (currentCurrency[0].symbolSeparation + currentCurrency[0].symbol);
+	                    output = (negativePriceFactorixed ? '-' : '') + priceFactorixed + (currentCurrency[0].symbolSeparation + currentCurrency[0].symbol);
 	                }
 	            } else {
-	                output = priceFactorixed;
+	                output = (negativePriceFactorixed ? '-' : '') + priceFactorixed;
 	            }
 	        } else {
 	            //html param passed
-	            $log.debug('angular.isUndefined(symbol)', angular.isUndefined(symbol), symbol);
 	            if (angular.isUndefined(symbol) || !symbol) {
 	                //if symbol is not passed the symbol will be included
 	                if (currentCurrency[0].position === 'prepend') {
-	                    output = '<span class="abl-currency"><span class="abl-currency-symbol">' + currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + '</span><span class="abl-currency-price">' + priceFactorixed + '</span></span>';
+	                    output = '<span class="abl-currency"><span class="abl-currency-symbol">' + (negativePriceFactorixed ? '-' : '') + currentCurrency[0].symbol + currentCurrency[0].symbolSeparation + '</span><span class="abl-currency-price">' + priceFactorixed + '</span></span>';
 	                } else {
-	                    output = '<span class="abl-currency"><span class="abl-currency-price">' + priceFactorixed + '</span><span class="abl-currency-symbol">' + currentCurrency[0].symbolSeparation + currentCurrency[0].symbol + '</span></span>';
+	                    output = '<span class="abl-currency"><span class="abl-currency-price">' + (negativePriceFactorixed ? '-' : '') + priceFactorixed + '</span><span class="abl-currency-symbol">' + currentCurrency[0].symbolSeparation + currentCurrency[0].symbol + '</span></span>';
 	                }
 	            } else {
-	                output = '<span class="abl-currency"><span class="abl-currency-price">' + priceFactorixed + '</span></span>';
+	                output = '<span class="abl-currency"><span class="abl-currency-price">' + (negativePriceFactorixed ? '-' : '') + priceFactorixed + '</span></span>';
 	            }
 	        }
 	
