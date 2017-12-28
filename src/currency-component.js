@@ -157,7 +157,7 @@ angular.module('currency-component')
             var priceFactorixed = currentCurrency[0].factor === null ? price : (price / currentCurrency[0].factor).toFixed(currentCurrency[0].decimals);
             if(priceFactorixed < 0){
                 var negativePriceFactorixed = true;
-                priceFactorixed = priceFactorixed * -1;
+                priceFactorixed = (priceFactorixed * -1).toFixed(currentCurrency[0].decimals);//add decimals after making number positive
             }    
                 
             var output = '';

@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "53175cdba001129c92e9"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "c6cb3bfbedcf3004b5d5"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -758,7 +758,7 @@
 	        var priceFactorixed = currentCurrency[0].factor === null ? price : (price / currentCurrency[0].factor).toFixed(currentCurrency[0].decimals);
 	        if (priceFactorixed < 0) {
 	            var negativePriceFactorixed = true;
-	            priceFactorixed = priceFactorixed * -1;
+	            priceFactorixed = (priceFactorixed * -1).toFixed(currentCurrency[0].decimals); //add decimals after making number positive
 	        }
 	
 	        var output = '';
