@@ -144,16 +144,19 @@
           </md-card-title-text>
         </md-card-title>
         <md-card-content layout="row" style="text-align:center">
-          <span flex ng-if="!$ctrl.isHtml">{{$ctrl.customPrice | ablCurrency: $ctrl.customCurrency : false : $ctrl.noSymbol}}</span>
-          <span flex ng-if="$ctrl.isHtml"><span ng-bind-html="$ctrl.customPrice | ablCurrency: $ctrl.customCurrency : true : $ctrl.noSymbol"></span></span>
+          <span flex ng-if="!$ctrl.isHtml">{{$ctrl.customPrice | ablCurrency: $ctrl.customCurrency : false : $ctrl.noSymbol}} <md-icon md-svg-src="flags/1x1/{{$ctrl.getCountryCode($ctrl.customCurrency)}}.svg" class="s24" aria-label="Cake"></md-icon></span>
+          <span flex ng-if="$ctrl.isHtml"><span ng-bind-html="$ctrl.customPrice | ablCurrency: $ctrl.customCurrency : true : $ctrl.noSymbol"></span>{{$ctrl.getCountryCode($ctrl.customCurrency)}}</span>
         </md-card-content>
         <md-divider></md-divider>
 
-
         <md-card-actions layout="row" layout-align="start start">
-          <md-input-container flex="25">
+          <md-input-container flex="15">
             <label>Price</label>
             <input ng-model="$ctrl.customPrice">
+          </md-input-container>
+          <md-input-container flex="15">
+            <label>Price Clean</label>
+            <input ng-model="$ctrl.customPrice" input-clean>
           </md-input-container>
           <md-input-container flex="25">
             <label>Currency</label>

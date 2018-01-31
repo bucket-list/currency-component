@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "c6cb3bfbedcf3004b5d5"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "bfb758effbd2cef53e82"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -687,15 +687,14 @@
 	                factor: 100,
 	                decimals: 2
 	            }];
+	        },
+	        getCountryCode: function getCountryCode(currency) {
+	            var countriesCode = { 'usd': 'us', 'cad': 'ca', 'aud': 'au', 'hkd': 'hk', 'nzd': 'nz', 'sgd': 'sg', 'eur': 'eu', 'dkk': 'dk', 'nok': 'no', 'sek': 'se', 'jpy': 'jp', 'mxn': 'mx', 'gbp': 'gb', 'chf': 'ch', 'xpf': 'pf', 'brl': 'br' };
+	            return countriesCode[currency];
 	        }
 	    };
 	}).filter('ablCurrency', function ($filter, $rootScope, currencyService, $ablCurrencyComponentProvider, $log) {
 	    var filter = this;
-	
-	    filter.getCountryCode = function (currency) {
-	        var countriesCode = { 'usd': 'us', 'cad': 'ca', 'aud': 'au', 'hkd': 'hk', 'nzd': 'nz', 'sgd': 'sg' };
-	        return countriesCode[currency];
-	    };
 	
 	    return function (price, currency, html, symbol) {
 	        //vars
@@ -823,7 +822,7 @@
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(4)(undefined);
+	exports = module.exports = __webpack_require__(4)(false);
 	// imports
 	
 	

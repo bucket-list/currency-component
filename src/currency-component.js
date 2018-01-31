@@ -88,16 +88,15 @@ angular.module('currency-component')
                     factor: 100,
                     decimals: 2
                 }];
+            },
+            getCountryCode: function(currency) {
+                var countriesCode = { 'usd': 'us', 'cad': 'ca', 'aud': 'au', 'hkd': 'hk', 'nzd': 'nz', 'sgd': 'sg', 'eur':'eu', 'dkk':'dk', 'nok': 'no', 'sek': 'se', 'jpy': 'jp', 'mxn': 'mx', 'gbp': 'gb', 'chf': 'ch', 'xpf': 'pf', 'brl': 'br' };
+                return countriesCode[currency];
             }
         }
     })
     .filter('ablCurrency', function($filter, $rootScope, currencyService, $ablCurrencyComponentProvider, $log) {
         var filter = this;
-
-        filter.getCountryCode = function(currency) {
-            var countriesCode = { 'usd': 'us', 'cad': 'ca', 'aud': 'au', 'hkd': 'hk', 'nzd': 'nz', 'sgd': 'sg' };
-            return countriesCode[currency];
-        }
 
         return function(price, currency, html, symbol) {
             //vars
