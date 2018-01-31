@@ -62,6 +62,8 @@
   },
   "dependencies": {
     "get-port": "^3.1.0",
+    "gulp-util": "^3.0.8",
+    "gulp-wait": "0.0.2",
     "html-loader": "^0.4.5",
     "ng-annotate-loader": "^0.2.0"
   }
