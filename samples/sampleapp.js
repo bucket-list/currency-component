@@ -7,6 +7,15 @@ app.run(function($ablCurrencyComponentProvider) {
         $ablCurrencyComponentProvider.uniqueCurrency = false;
         $ablCurrencyComponentProvider.currencies = [{ name: 'cl', symbol: '#', symbolSeparation: '', position: 'prepend' }, { name: 'bl', symbol: '#', symbolSeparation: '', position: 'prepend', factor: 10, decimals: 1 }];
     })
+    .directive('inputClean', function($filter, currencyService, $log){
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            link: function($scope, $element, attrs, ngModel){
+                $log.debug('inputClean', ngModel);
+            }
+        }
+    })
     .filter('objToString', function($log) {
         return function(object) {
             if(typeof object === 'object'){
@@ -21,11 +30,10 @@ app.run(function($ablCurrencyComponentProvider) {
             }
         }
     })
-    .controller('SampleController', ['$scope', '$mdMedia', '$rootScope', '$window', '$timeout', '$filter', '$ablCurrencyComponentProvider', '$log', function($scope, $mdMedia, $rootScope, $window, $timeout, $filter, $ablCurrencyComponentProvider, $log) {
+    .controller('SampleController', ['$scope', '$mdMedia', '$rootScope', '$window', '$timeout', '$filter', '$ablCurrencyComponentProvider', 'currencyService', '$log', function($scope, $mdMedia, $rootScope, $window, $timeout, $filter, $ablCurrencyComponentProvider, currencyService, $log) {
         var vm = this;
-        $rootScope.ENV = {log: true};
-        vm.price = 123456789;
-        vm.customPrice = 1234567890;
+        vm.price = 1234;
+        vm.customPrice = 1234;
         var currencies = [{
             name: 'usd',
             symbol: '$',
@@ -142,10 +150,23 @@ app.run(function($ablCurrencyComponentProvider) {
         vm.customCurrencies = currencies.concat($ablCurrencyComponentProvider.currencies);
         $log.debug('$ablCurrencyComponentProvider:sample', vm.customCurrencies);
         vm.customCurrency = this.customCurrencies[0].name;
+        vm.getCountryCode = function(currency){
+            console.log('getCountryCode()', currency);
+            return currencyService.getCountryCode(currency);
+        }
         vm.getCurrencyObject = function(currency) {
             var currentCurrency = $filter('filter')(vm.customCurrencies, {
                 name: currency
             }, true);
             return currentCurrency.length > 0 ? $filter('objToString')(currentCurrency[0]) : 'Currency not found';
         }
+        
+        $scope.$watch(function(){
+            return vm.customCurrency;
+        }, function(newValue, oldValue){
+            if(newValue){
+                $log.debug('currencyService', currencyService.getCurrentCurrency(vm.customCurrency));
+            }
+        })
+        
     }]);
