@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "41041a99a9b9e37e841b"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "bc175800444a59dc42d0"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -730,7 +730,7 @@
 	            html: '=',
 	            symbol: '='
 	        },
-	        template: '<span class="abl-currency-directive"><span ng-if="!html">{{price | ablCurrency: currency : html : symbol}}</span><span ng-if="html"><span ng-bind-html="price | ablCurrency: currency : html : symbol"></span></span>',
+	        template: '<span class="abl-currency-directive"><span ng-if="!html">{{price | ablCurrency: currency : html : symbol}}</span><span ng-if="html"><span ng-bind-html="price | ablCurrency: currency : html : symbol"></span></span></span>',
 	        link: function link(scope, element, attrs) {
 	            scope.getCountryCode = function (currency) {
 	                return currencyService.getCountryCode(currency);
