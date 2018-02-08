@@ -129,7 +129,7 @@ angular.module('currency-component')
                 html: '=',
                 symbol: '='
             },
-            template: '<span class="abl-currency-directive"><span ng-if="!html">{{price | ablCurrency: currency : html : symbol}}</span><span ng-if="html"><span ng-bind-html="price | ablCurrency: currency : html : symbol"></span></span>',
+            template: '<span class="abl-currency-directive"><span ng-if="!html">{{price | ablCurrency: currency : html : symbol}}</span><span ng-if="html"><span ng-bind-html="price | ablCurrency: currency : html : symbol"></span></span></span>',
             link: function(scope, element, attrs){
                 scope.getCountryCode = function(currency){
                     return currencyService.getCountryCode(currency);
