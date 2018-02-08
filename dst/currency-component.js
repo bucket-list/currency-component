@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "bfb758effbd2cef53e82"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "41041a99a9b9e37e841b"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -613,8 +613,9 @@
 	            return config;
 	        }
 	    };
-	}]).factory('currencyService', function ($filter) {
+	}]).factory('currencyService', function ($filter, $http) {
 	    return {
+	        rates: null,
 	        //method to get current currency in current filter
 	        getCurrentCurrency: function getCurrentCurrency(currency) {
 	            return $filter('filter')(this.getAvailableCurrencies(), {
@@ -691,6 +692,49 @@
 	        getCountryCode: function getCountryCode(currency) {
 	            var countriesCode = { 'usd': 'us', 'cad': 'ca', 'aud': 'au', 'hkd': 'hk', 'nzd': 'nz', 'sgd': 'sg', 'eur': 'eu', 'dkk': 'dk', 'nok': 'no', 'sek': 'se', 'jpy': 'jp', 'mxn': 'mx', 'gbp': 'gb', 'chf': 'ch', 'xpf': 'pf', 'brl': 'br' };
 	            return countriesCode[currency];
+	        },
+	        getExchangeRatesResponse: function getExchangeRatesResponse() {
+	            //get exchange rates from the service
+	            return $http({
+	                method: 'GET',
+	                headers: { 'Access-Control-Allow-Headers': undefined },
+	                withCredentials: false,
+	                url: 'https://openexchangerates.org/api/latest.json?app_id=80e64be205af403da1e6f04c0ea9f2e3&base=USD'
+	            }).then(function successCallback(response) {
+	                return response.data;
+	            }, function errorCallback(response) {
+	                return response;
+	            });
+	        },
+	        getExchangeRateByCurrency: function getExchangeRateByCurrency(currency, rates) {
+	            //return rates by currency (look into the object returned by the exchange rates service)
+	            var rate = null;
+	            angular.forEach(rates, function (value, key) {
+	                if (key === currency.toUpperCase()) {
+	                    rate = { exchangeCurrency: currency, value: value };
+	                }
+	            });
+	            return rate;
+	        },
+	        conversor: function conversor(original, conversion) {
+	            //return the exchange rate conversion
+	            return Math.round((original / conversion).toFixed(2));
+	        }
+	    };
+	}).directive('ablCurrencyDirective', function (currencyService) {
+	    return {
+	        restrict: 'E',
+	        scope: {
+	            price: '=',
+	            currency: '@',
+	            html: '=',
+	            symbol: '='
+	        },
+	        template: '<span class="abl-currency-directive"><span ng-if="!html">{{price | ablCurrency: currency : html : symbol}}</span><span ng-if="html"><span ng-bind-html="price | ablCurrency: currency : html : symbol"></span></span>',
+	        link: function link(scope, element, attrs) {
+	            scope.getCountryCode = function (currency) {
+	                return currencyService.getCountryCode(currency);
+	            };
 	        }
 	    };
 	}).filter('ablCurrency', function ($filter, $rootScope, currencyService, $ablCurrencyComponentProvider, $log) {

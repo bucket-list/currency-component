@@ -32,8 +32,9 @@ app.run(function($ablCurrencyComponentProvider) {
     })
     .controller('SampleController', ['$scope', '$mdMedia', '$rootScope', '$window', '$timeout', '$filter', '$ablCurrencyComponentProvider', 'currencyService', '$log', function($scope, $mdMedia, $rootScope, $window, $timeout, $filter, $ablCurrencyComponentProvider, currencyService, $log) {
         var vm = this;
-        vm.price = 1234;
-        vm.customPrice = 1234;
+        vm.price = 123456;
+        vm.customPrice = 123456;
+        vm.diff = 8765;
         var currencies = [{
             name: 'usd',
             symbol: '$',
@@ -151,7 +152,7 @@ app.run(function($ablCurrencyComponentProvider) {
         $log.debug('$ablCurrencyComponentProvider:sample', vm.customCurrencies);
         vm.customCurrency = this.customCurrencies[0].name;
         vm.getCountryCode = function(currency){
-            console.log('getCountryCode()', currency);
+            //console.log('getCountryCode()', currency);
             return currencyService.getCountryCode(currency);
         }
         vm.getCurrencyObject = function(currency) {
@@ -161,12 +162,23 @@ app.run(function($ablCurrencyComponentProvider) {
             return currentCurrency.length > 0 ? $filter('objToString')(currentCurrency[0]) : 'Currency not found';
         }
         
+        var exchangeRates = null;
         $scope.$watch(function(){
             return vm.customCurrency;
         }, function(newValue, oldValue){
             if(newValue){
-                $log.debug('currencyService', currencyService.getCurrentCurrency(vm.customCurrency));
+                $log.debug('currencyService', newValue);
+                if(exchangeRates === null){
+                    currencyService.getExchangeRatesResponse().then(function(response){
+                        exchangeRates = response;
+                        vm.customPrice = currencyService.conversor(123456, currencyService.getExchangeRateByCurrency(vm.customCurrency, response.rates).value);
+                        console.log('$scope.getExchangeRates:apicall', vm.customCurrency, vm.customPrice);
+                    });
+                }else{
+                    vm.customPrice = currencyService.conversor(123456, currencyService.getExchangeRateByCurrency(vm.customCurrency, exchangeRates.rates).value);
+                    console.log('$scope.getExchangeRates:saved', vm.customCurrency, vm.customPrice);
+                }
             }
-        })
-        
+        });
+       
     }]);
