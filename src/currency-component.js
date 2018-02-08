@@ -97,7 +97,11 @@ angular.module('currency-component')
             getExchangeRatesResponse: function(){//get exchange rates from the service
                 return $http({
                   method: 'GET',
-                  headers: { 'Access-Control-Allow-Headers': undefined },
+                  headers: { 
+                      'Access-Control-Allow-Headers': undefined, 
+                      'x-abl-access-key': undefined,
+                      'x-abl-date': undefined
+                      },
                   withCredentials: false,
                   url: 'https://openexchangerates.org/api/latest.json?app_id=80e64be205af403da1e6f04c0ea9f2e3&base=USD'
                 }).then(function successCallback(response) {
