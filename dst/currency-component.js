@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ddcc55a8d2ab568d1963"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "7eb48ba94303fbaa07d1"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -802,7 +802,7 @@
 	
 	        //calculate price taking factor and adding the decimals
 	        var negativePriceFactorixed = false; //save negative sign for adding it later to the formatter
-	        var priceFactorixed = currentCurrency[0].factor === null ? price : (price / currentCurrency[0].factor).toFixed(currentCurrency[0].decimals);
+	        var priceFactorixed = currentCurrency[0].factor === null ? Number(price).toFixed(currentCurrency[0].decimals) : (Number(price) / currentCurrency[0].factor).toFixed(currentCurrency[0].decimals);
 	        if (priceFactorixed < 0) {
 	            var negativePriceFactorixed = true;
 	            priceFactorixed = (priceFactorixed * -1).toFixed(currentCurrency[0].decimals); //add decimals after making number positive
