@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "c6cb3bfbedcf3004b5d5"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "7eb48ba94303fbaa07d1"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -613,8 +613,9 @@
 	            return config;
 	        }
 	    };
-	}]).factory('currencyService', function ($filter) {
+	}]).factory('currencyService', function ($filter, $http) {
 	    return {
+	        rates: null,
 	        //method to get current currency in current filter
 	        getCurrentCurrency: function getCurrentCurrency(currency) {
 	            return $filter('filter')(this.getAvailableCurrencies(), {
@@ -687,15 +688,61 @@
 	                factor: 100,
 	                decimals: 2
 	            }];
+	        },
+	        getCountryCode: function getCountryCode(currency) {
+	            var countriesCode = { 'usd': 'us', 'cad': 'ca', 'aud': 'au', 'hkd': 'hk', 'nzd': 'nz', 'sgd': 'sg', 'eur': 'eu', 'dkk': 'dk', 'nok': 'no', 'sek': 'se', 'jpy': 'jp', 'mxn': 'mx', 'gbp': 'gb', 'chf': 'ch', 'xpf': 'pf', 'brl': 'br' };
+	            return countriesCode[currency];
+	        },
+	        getExchangeRatesResponse: function getExchangeRatesResponse() {
+	            //get exchange rates from the service
+	            return $http({
+	                method: 'GET',
+	                headers: {
+	                    'Access-Control-Allow-Headers': undefined,
+	                    'x-abl-access-key': undefined,
+	                    'x-abl-date': undefined
+	                },
+	                withCredentials: false,
+	                url: 'https://openexchangerates.org/api/latest.json?app_id=80e64be205af403da1e6f04c0ea9f2e3&base=USD'
+	            }).then(function successCallback(response) {
+	                return response.data;
+	            }, function errorCallback(response) {
+	                return response;
+	            });
+	        },
+	        getExchangeRateByCurrency: function getExchangeRateByCurrency(currency, rates) {
+	            //return rates by currency (look into the object returned by the exchange rates service)
+	            var rate = null;
+	            angular.forEach(rates, function (value, key) {
+	                if (key === currency.toUpperCase()) {
+	                    rate = { exchangeCurrency: currency, value: value };
+	                }
+	            });
+	            return rate;
+	        },
+	        conversor: function conversor(original, conversion) {
+	            //return the exchange rate conversion
+	            return Math.round((original / conversion).toFixed(2));
+	        }
+	    };
+	}).directive('ablCurrencyDirective', function (currencyService) {
+	    return {
+	        restrict: 'E',
+	        scope: {
+	            price: '=',
+	            currency: '@',
+	            html: '=',
+	            symbol: '='
+	        },
+	        template: '<span class="abl-currency-directive">' + '<span ng-if="!html">{{price | ablCurrency: currency : html : symbol}}</span>' + '<span ng-if="html">' + '<span ng-bind-html="price | ablCurrency: currency : html : symbol"></span>' + '</span>' + '</span>',
+	        link: function link(scope, element, attrs) {
+	            scope.getCountryCode = function (currency) {
+	                return currencyService.getCountryCode(currency);
+	            };
 	        }
 	    };
 	}).filter('ablCurrency', function ($filter, $rootScope, currencyService, $ablCurrencyComponentProvider, $log) {
 	    var filter = this;
-	
-	    filter.getCountryCode = function (currency) {
-	        var countriesCode = { 'usd': 'us', 'cad': 'ca', 'aud': 'au', 'hkd': 'hk', 'nzd': 'nz', 'sgd': 'sg' };
-	        return countriesCode[currency];
-	    };
 	
 	    return function (price, currency, html, symbol) {
 	        //vars
@@ -755,7 +802,7 @@
 	
 	        //calculate price taking factor and adding the decimals
 	        var negativePriceFactorixed = false; //save negative sign for adding it later to the formatter
-	        var priceFactorixed = currentCurrency[0].factor === null ? price : (price / currentCurrency[0].factor).toFixed(currentCurrency[0].decimals);
+	        var priceFactorixed = currentCurrency[0].factor === null ? Number(price).toFixed(currentCurrency[0].decimals) : (Number(price) / currentCurrency[0].factor).toFixed(currentCurrency[0].decimals);
 	        if (priceFactorixed < 0) {
 	            var negativePriceFactorixed = true;
 	            priceFactorixed = (priceFactorixed * -1).toFixed(currentCurrency[0].decimals); //add decimals after making number positive
@@ -823,7 +870,7 @@
 /* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(4)(undefined);
+	exports = module.exports = __webpack_require__(4)(false);
 	// imports
 	
 	

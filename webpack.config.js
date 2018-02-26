@@ -12,7 +12,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dst'),
     filename: 'currency-component.js'
   },
-  
+
   //  Make sure we include sourcemaps. This is for the bundled
   //  code, not the uglfied code (we uglify with npm run build,
   //  see package.json for details).
@@ -24,8 +24,11 @@ module.exports = {
   },
 
   module: {
-    loaders: [
-      {
+    rules: [{
+      test: /\.(png|svg|jpg|gif)$/,
+      use: ['file-loader']
+    }],
+    loaders: [{
         test: /\.js/,
         loader: 'babel',
         include: __dirname + '/src',
@@ -34,16 +37,19 @@ module.exports = {
         test: /\.css/,
         loaders: ['style', 'css'],
         include: __dirname + '/src'
+      },
+      {
+        test: /\.svg$/,
+        loader: 'svg-inline-loader'
       }
     ],
-    preLoaders: [
-      {
+    preLoaders: [{
         test: /\.js$/,
         exclude: [
           path.resolve('node_modules/')
         ],
         loader: 'babel'
-      },{
+      }, {
         test: /\.js$/,
         include: path.resolve('src/'),
         loader: 'ng-annotate'

@@ -76,7 +76,7 @@ gulp.task('watch', function() {
 
 gulp.task("webpack-dev-server", function(callback) {
       var myConfig = Object.create(webpackDevConfig);
-      var port = 3233;
+      var port = 3232;
       myConfig.entry.unshift("webpack-dev-server/client?http://localhost:" + port + "/", "webpack/hot/dev-server");
 
       myConfig.devtool = "eval";
